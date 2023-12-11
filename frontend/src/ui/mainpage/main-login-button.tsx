@@ -11,7 +11,6 @@ export function MainLoginButton() {
       <Image
         src="/login-via-42.svg"
         alt="Login"
-        className="dark:invert"
         width={200}
         height={24}
         priority

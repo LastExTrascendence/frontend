@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import MainLoginButton from "@/ui/mainpage/main-login-button";
 import LetLogo from "@/ui/mainpage/let-logo";
 import Mainpage from "@/ui/mainpage/mainpage";
