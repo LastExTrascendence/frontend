@@ -1,4 +1,3 @@
-
 export type User = {
   id: string;
   name: string;
@@ -24,6 +23,12 @@ export type Game = {
   name: string;
   join_users: [string];
   date: string;
-  status: 'play' | 'wait';
+  status: "play" | "wait";
   map: string;
+};
+
+export type LinkItemProps = {
+  href: string;
+  title: string;
+  description: string;
 };
