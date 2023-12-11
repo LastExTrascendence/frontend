@@ -2,8 +2,6 @@ FROM node:lts-alpine3.18
 
 WORKDIR /app
 
-RUN yarn install
+EXPOSE 3333
 
-EXPOSE 8080
-
-ENTRYPOINT [ "/bin/sh", "-c", "yarn dev" ]
+ENTRYPOINT [ "/bin/sh", "-c", "yarn install && yarn dev" ]
