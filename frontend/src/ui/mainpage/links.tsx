@@ -13,9 +13,9 @@ const links = [
     description: "Create or join a game room.",
   },
   {
-    href: "/chat",
+    href: "/channel",
     title: "Channel",
-    description: "Join a channel where chat is available.",
+    description: "Join a channel where channel is available.",
   },
   {
     href: "/profile",
