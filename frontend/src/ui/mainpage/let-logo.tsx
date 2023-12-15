@@ -11,14 +11,7 @@ export function LetLogo() {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <Image
-        src="/LET.svg"
-        alt="LET Logo"
-        className="dark:invert"
-        width={100}
-        height={24}
-        priority
-      />
+      <Image src="/LET.svg" alt="LET Logo" width={100} height={24} priority />
     </Link>
   );
 }
