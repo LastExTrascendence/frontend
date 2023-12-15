@@ -32,3 +32,10 @@ export type LinkItemProps = {
   title: string;
   description: string;
 };
+
+export type FollowlistProps = {
+  id: string;
+  online: boolean;
+  status: string;
+  profile: string;
+};
