@@ -16,6 +16,7 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "clsx": "^2.0.0",
     "recoil": "^0.7.7"
   },
   "devDependencies": {
@@ -27,6 +28,8 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
