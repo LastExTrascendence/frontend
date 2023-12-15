@@ -2,7 +2,7 @@
 
 const nextConfig = {
   images: {
-    domains: ["cdnb.artstation.com", "cdn.intra.42.fr"],
+    domains: ["cdnb.artstation.com"],
   },
   env: {
     CLIENT_ID: process.env.CLIENT_ID,

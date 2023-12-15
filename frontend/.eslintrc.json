@@ -6,25 +6,9 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": "frontend"
+    "project": "./tsconfig.json"
   },
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ]
-  },
-  "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".{ts,tsx}"]
-    }
+    "react/react-in-jsx-scope": "off"
   }
 }
