@@ -1,27 +1,82 @@
-import chats from "@/lib/game-data";
+"use client";
+
+import React, { useState } from "react";
+import Search from "@/components/SearchChannel";
+import chats from "@/lib/chat-data";
+import Modal from "@/components/Modal";
 
 export default function Page() {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <div className="flex flex-row h-screen">
-      {/* 왼쪽 섹션 - 채팅 */}
-      <div className="flex-1 p-4 bg-gray-50">
-        {/* 여기에 채팅 컴포넌트를 배치합니다 */}
-        <p>채팅 내용...</p>
+    <div className="flex h-full w-full scroll-m-0 flex-col">
+      <div className="flex h-[50px] flex-row">
+        <Search placeholder="Search channels" />
+        <button
+          type="button"
+          className="bg-buttonColor h-full w-48 rounded-[30px]"
+          onClick={toggleModal}
+        >
+          NEW
+        </button>
       </div>
 
-      {/* 오른쪽 섹션 - 채팅 목록 */}
-      <div className="flex-1 p-4">
-        {chats.map((channel) => (
-          <button
-            key={channel.id}
-            // onClick={ -TODO: channel room info modal}
-
-            className="flex grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
-          >
-            <p>Name: {channel.name}</p>
-          </button>
+      <div className="flex flex-row">
+        <p>Channel</p>
+        <p>Creator</p>
+        <p>Users</p>
+        <p>Type</p>
+      </div>
+      <div>
+        {chats.map((chat) => (
+          <div className="flex flex-row">
+            <p>{chat.channel}</p>
+            <p>{chat.creator}</p>
+            <p>{chat.users}</p>
+            <p>{chat.type}</p>
+          </div>
         ))}
       </div>
+
+      {showModal && (
+        <Modal onClose={toggleModal}>
+          <form className="flex flex-col">
+            <label>
+              Channel
+              <input
+                type="text"
+                name="channel"
+                className="bg-gray-800 text-center"
+              />
+            </label>
+            {/* <label>
+              Creator
+              <input type="text" name="creator" className="bg-gray-800" />
+            </label> */}
+            <label>
+              Users
+              <input
+                type="number"
+                name="users"
+                className="bg-gray-800 text-center"
+              />
+            </label>
+            <label>
+              Type
+              <input
+                type="text"
+                name="type"
+                className="bg-gray-800 text-center"
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </form>
+        </Modal>
+      )}
     </div>
   );
 }
