@@ -9,7 +9,7 @@ import userSearchList from "@/ui/overview/topnavbar/topnav-mock";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
 
-export default function Search({ placeholder }: { placeholder: string }) {
+export default function SearchUser({ placeholder }: { placeholder: string }) {
   const [searchedResults, setSearchedResults] = useState<UserlistProps[]>([]);
   const [query, setQuery] = useState("");
 
