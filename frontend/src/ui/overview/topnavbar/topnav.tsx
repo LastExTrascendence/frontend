@@ -1,4 +1,4 @@
-import Search from "@/components/search";
+import Search from "@/components/SearchUser";
 
 export default function Topnav({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +8,7 @@ export default function Topnav({ children }: { children: React.ReactNode }) {
           <Search placeholder="Search User" />
         </div>
       </div>
-      <div className="flex-growp-6 md:overflow-y-auto md:p-12">{children}</div>
+      <div>{children}</div>
     </div>
   );
 }
