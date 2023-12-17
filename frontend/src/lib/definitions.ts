@@ -1,3 +1,15 @@
+// types/HttpMethod.ts
+export type HttpMethod =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "PATCH"
+  | "HEAD"
+  | "OPTIONS"
+  | "CONNECT"
+  | "TRACE";
+
 export type User = {
   id: string;
   name: string;
@@ -37,5 +49,10 @@ export type FollowlistProps = {
   id: string;
   online: boolean;
   status: string;
+  profile: string;
+};
+
+export type UserlistProps = {
+  id: string;
   profile: string;
 };

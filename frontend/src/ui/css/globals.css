@@ -10,6 +10,7 @@
   --background-cyan-rgb: 98, 213, 223;
   --background-magenta-rgb: 234, 51, 114;
   --background-orange-rgb: 239, 142, 111;
+  --background-gray-rgb: 49, 51, 56;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,14 +23,5 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      /* rgb(var(--background-purple-rgb)),
-      rgb(var(--background-orange-rgb)),
-      rgb(var(--background-cyan-rgb)),
-      rgb(var(--background-magenta-rgb)), */
-        rgb(var(--background-white-rgb))
-    )
-    rgb(var(--background-black-rgb));
+  background: rgb(var(--background-gray-rgb));
 }
