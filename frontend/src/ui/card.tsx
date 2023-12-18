@@ -18,7 +18,7 @@ export default function Card({
   return (
     <CardStyled $width={width} $height={height} $isTransparent={isTransparent}>
       <CardContentWrapperStyled>
-        {title && <CardHeaderStyled>title</CardHeaderStyled>}
+        {title && <CardHeaderStyled>{title}</CardHeaderStyled>}
         {children}
       </CardContentWrapperStyled>
     </CardStyled>
@@ -48,6 +48,7 @@ const CardHeaderStyled = styled.div`
   align-items: center;
   font-size: 1.2em;
   font-weight: bold;
+  color: var(--main-dark-purple);
 `;
 
 const CardContentWrapperStyled = styled.div`
