@@ -11,6 +11,10 @@
   --background-magenta-rgb: 234, 51, 114;
   --background-orange-rgb: 239, 142, 111;
   --background-gray-rgb: 49, 51, 56;
+  --light-gray: #cccccc;
+  --white: #ffffff;
+  --main-purple: #827baf;
+  --main-dark-purple: #5849b6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +23,12 @@
     --background-black-rgb: 0, 0, 0;
     --background-magenta-rgb: 0, 0, 0;
   }
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
 
 body {
