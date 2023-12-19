@@ -7,6 +7,11 @@ const nextConfig = {
   env: {
     CLIENT_ID: process.env.CLIENT_ID,
     REDIRECT_URI: process.env.REDIRECT_URI,
+    BE_SERVER: process.env.BE_SERVER,
+    FE_DOMAIN: process.env.FE_DOMAIN,
+  },
+  compiler: {
+    styledComponents: true,
   },
 };
 
