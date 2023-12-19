@@ -1,5 +1,4 @@
-export interface RegistrationDataDto {
+export interface UserRegisterDataDto {
   nickname: string;
   avatar: string;
-  bio: string;
 }

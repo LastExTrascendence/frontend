@@ -5,30 +5,53 @@ import styled from "styled-components";
 import Image from "next/image";
 import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
-import { RegistrationDataDto } from "@/types/dto/user.dto";
+import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
+import ProfileImage from "@/ui/profile-image";
 
 const token = getCookie("access_token");
 
-export enum RegistrationCard {
-  Nickname = "NicknameCard",
-  Avatar = "AvatarCard",
-  Bio = "BioCard",
-  Welcome = "WelcomeCard",
+export enum UserRegisterCard {
+  Nickname = "Nickname",
+  Avatar = "Avatar",
+  Welcome = "Welcome",
 }
 
-export type RegistrationCardType =
-  | RegistrationCard.Nickname
-  | RegistrationCard.Avatar
-  | RegistrationCard.Bio
-  | RegistrationCard.Welcome;
+export enum UserRegisterCardTitle {
+  Nickname = "닉네임을 입력해주세요",
+  Avatar = "아바타를 선택해주세요",
+  Welcome = "Welcome!",
+}
 
-export interface RegistrationCardProps {
-  setRegistrationData: React.Dispatch<
-    React.SetStateAction<RegistrationDataDto>
+export const useRegistrationSteps = () => {
+  const [currentStep, setCurrentStep] = useState<UserRegisterCard>(
+    UserRegisterCard.Nickname,
+  );
+
+  const steps = Object.values(UserRegisterCard);
+
+  const nextStep = () => {
+    const currentIndex = steps.indexOf(currentStep);
+    const nextIndex =
+      currentIndex + 1 < steps.length ? currentIndex + 1 : currentIndex;
+    setCurrentStep(steps[nextIndex] as UserRegisterCard);
+  };
+
+  const prevStep = () => {
+    const currentIndex = steps.indexOf(currentStep);
+    const prevIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : currentIndex;
+    setCurrentStep(steps[prevIndex] as UserRegisterCard);
+  };
+
+  return { currentStep, nextStep, prevStep };
+};
+
+export interface UserRegisterCardProps {
+  setUserRegisterData: React.Dispatch<
+    React.SetStateAction<UserRegisterDataDto>
   >;
-  setRegistrationStep: React.Dispatch<React.SetStateAction<RegistrationCard>>;
+  setUserRegisterStep: React.Dispatch<React.SetStateAction<UserRegisterCard>>;
 }
 
 const encodeFileToBase64 = (image: File) => {
@@ -45,29 +68,26 @@ export default function Page() {
   const [nickname, setNickname] = useState("");
   const [avatar, setAvatar] = useState("");
   const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
-  const [bio, setBio] = useState("");
-  const [cardStatus, setCardStatus] = useState<RegistrationCardType>(
-    RegistrationCard.Nickname,
-  );
+  const { currentStep, nextStep, prevStep } = useRegistrationSteps();
 
-  const registrationFinished = async () => {
+  const UserRegisterFinished = async () => {
     const data = {
       nickname,
       // avatar: base64Image?.url,
       avatar: avatar,
-      bio,
+      // bio,
     };
     const res = axiosCreateUser(data);
     console.log("resonse: ", res);
     console.log("data: ", data);
-    // setTimeout(() => {
-    //   window.location.href = "/";
-    // }, 3000);
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 5000);
   };
 
   useEffect(() => {
     if (!token) {
-      window.location.href = "/";
+      window.location.href = "/login";
     } else {
     }
     // if (avatar) {
@@ -75,8 +95,7 @@ export default function Page() {
     //     setBase64Image({ image: avatar, url: base64Image });
     //   });
     // }
-    console.log(nickname, avatar, bio);
-  }, [avatar, nickname, bio]);
+  }, [avatar, nickname]);
 
   return (
     <RegisterPageStyled>
@@ -90,52 +109,68 @@ export default function Page() {
         />
         <RegisterTitleStyled>L.E.T</RegisterTitleStyled>
       </RegisterTitleWrapperStyled>
-      <RegisterCardsStyled>
-        {/* {cardStatus === RegistrationCard.Nickname && ( */}
-        <Card title="닉네임을 입력해주세요">
-          <>
-            <InputContainer $isValid={isValid}>
-              <input
-                type="text"
-                placeholder="test"
-                value={nickname}
-                minLength={3}
-                maxLength={16}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    if (nickname.length < 3 || nickname.length > 16) {
-                      setIsValid(false);
-                    } else {
-                      setIsValid(true);
-                      setCardStatus(RegistrationCard.Avatar);
+      <RegisterCardsWrapperStyled>
+        {currentStep === UserRegisterCard.Nickname && (
+          <Card title={UserRegisterCardTitle[currentStep]}>
+            <>
+              <ProfileImage />
+              <InputContainer $isValid={isValid}>
+                <input
+                  type="text"
+                  placeholder="..."
+                  value={nickname}
+                  minLength={3}
+                  maxLength={16}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (nickname.length < 3 || nickname.length > 16) {
+                        setIsValid(false);
+                      } else {
+                        setIsValid(true);
+                        nextStep();
+                        console.log(currentStep);
+                      }
                     }
-                  }
-                }}
-                onChange={(e) => setNickname(e.target.value)}
+                  }}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+              </InputContainer>
+              <PillButton
+                text="확인"
+                width="260px"
+                fontWeight="400"
+                theme="purple"
+                onClick={nextStep}
               />
-            </InputContainer>
-          </>
-        </Card>
-        {/* )} */}
-        {/* {cardStatus === RegistrationCard.Avatar && ( */}
-        <Card title="아바타를 선택해주세요">
-          <></>
-        </Card>
-        {/* )} */}
-        {/* {cardStatus === RegistrationCard.Bio && ( */}
-        <Card title="자기소개를 입력해주세요">
-          <>
-            <PillButton
-              text="확인"
-              fontWeight="200"
-              theme="purple"
-              onClick={registrationFinished}
-            />
-          </>
-        </Card>
-        {/* )} */}
-        {cardStatus === RegistrationCard.Welcome && <h1>Welcome!</h1>}
-      </RegisterCardsStyled>
+            </>
+          </Card>
+        )}
+        {currentStep === UserRegisterCard.Avatar && (
+          <Card title="아바타를 선택해주세요">
+            <>
+              <ProfileImage />
+              <PillButton
+                text="돌아가기"
+                width="260px"
+                fontWeight="400"
+                theme="white"
+                onClick={prevStep}
+              />
+              <PillButton
+                text="확인"
+                width="260px"
+                fontWeight="400"
+                theme="purple"
+                onClick={() => {
+                  nextStep();
+                  UserRegisterFinished();
+                }}
+              />
+            </>
+          </Card>
+        )}
+        {currentStep === UserRegisterCard.Welcome && <h1>Welcome!</h1>}
+      </RegisterCardsWrapperStyled>
     </RegisterPageStyled>
   );
 }
@@ -164,6 +199,7 @@ const RegisterTitleStyled = styled.div`
   font-weight: 800;
   line-height: normal;
   color: var(--white);
+  margin-left: 25px;
 `;
 
 const InputContainer = styled.div<{ $isValid: boolean }>`
@@ -171,22 +207,24 @@ const InputContainer = styled.div<{ $isValid: boolean }>`
   align-items: center;
 
   input {
-    width: 250px;
-    height: 40px;
+    width: 300px;
+    height: 60px;
     outline: none;
-    border: 2px solid var(--main-purple);
+    border: 3px solid var(--main-purple);
     color: var(--main-purple);
     animation: ${(props) => (props.$isValid ? "none" : "shake 0.5s")};
-    font-size: 2rem;
+    font-size: 1.75rem;
     padding: 0 1rem;
+    border-radius: 20px;
   }
   input::placeholder {
     color: var(--main-purple);
-    font-size: 2rem;
+    font-style: italic;
+    font-size: 1rem;
   }
 `;
 
-const RegisterCardsStyled = styled.div`
+const RegisterCardsWrapperStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
