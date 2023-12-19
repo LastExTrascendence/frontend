@@ -46,7 +46,7 @@ const CardHeaderStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2em;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--main-dark-purple);
 `;
@@ -58,7 +58,8 @@ const CardContentWrapperStyled = styled.div`
   background: var(--white);
   box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  padding: 40px 0;
 `;
