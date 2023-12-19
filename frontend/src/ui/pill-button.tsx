@@ -13,8 +13,8 @@ export interface PillButtonProps {
 export default function PillButton({
   onClick,
   text,
-  width,
-  height,
+  width = "320px",
+  height = "70px",
   fontWeight,
   theme,
   disabled,
@@ -43,8 +43,8 @@ const PillButtonStyled = styled.button<{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${(props) => (props.width ? props.width : "320px")};
-  height: ${(props) => (props.height ? props.height : "70px")};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   border-radius: 100px;
   font-size: 20px;
   font-weight: ${(props) => props.$fontWeight};
@@ -70,7 +70,7 @@ const PillButtonStyled = styled.button<{
     props.theme === "white" &&
     css`
       background-color: var(--white);
-      border: 1px solid var(--main-purple);
+      border: 2px solid var(--main-purple);
       color: var(--main-purple);
     `}
 `;
