@@ -33,10 +33,10 @@ export default function Page() {
       </div>
       <div className="h-full w-full rounded-[20px] bg-zinc-800">
         <div className="flex flex-row border-b-2">
-          <p>Channel</p>
-          <p>Creator</p>
-          <p>Users</p>
-          <p>Type</p>
+          <p className="mr-4 flex-1">Channel</p>
+          <p className="mr-4 flex-1">Creator</p>
+          <p className="mr-4 flex-1">Users</p>
+          <p className="mr-4 flex-1">Type</p>
         </div>
         <div>
           {chats.map((chat) => (
@@ -45,10 +45,10 @@ export default function Page() {
               className="flex cursor-pointer flex-row border-b-2"
               onClick={() => openModal(chat)}
             >
-              <p>{chat.channel}</p>
-              <p>{chat.creator}</p>
-              <p>{chat.users}</p>
-              <p>{chat.type}</p>
+              <p className="mr-4 flex-1">{chat.channel}</p>
+              <p className="mr-4 flex-1">{chat.creator}</p>
+              <p className="mr-4 flex-1">{chat.users}</p>
+              <p className="mr-4 flex-1">{chat.type}</p>
             </div>
           ))}
         </div>
