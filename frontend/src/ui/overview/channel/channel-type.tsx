@@ -1,4 +1,10 @@
-export default function channelType({ channelType, setChannelType }) {
+export default function ChannelType({
+  channelType,
+  setChannelType,
+}: {
+  channelType: string;
+  setChannelType: (channelType: string) => void;
+}) {
   return (
     <div className="relative mb-3 flex flex-col">
       <legend className="mb-1 items-start justify-center">Type</legend>
@@ -46,7 +52,7 @@ export default function channelType({ channelType, setChannelType }) {
           <input
             type="password"
             name="password"
-            className="bg-buttonColor mt-2 rounded p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
+            className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
           />
         </label>
       </div>

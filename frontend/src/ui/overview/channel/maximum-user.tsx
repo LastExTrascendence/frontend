@@ -1,4 +1,4 @@
-export default function maximumUser({
+export default function MaximumUser({
   userCount,
   setUserCount,
 }: {
