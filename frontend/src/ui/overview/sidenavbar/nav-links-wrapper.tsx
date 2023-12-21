@@ -5,11 +5,14 @@ import { PowerIcon } from "@heroicons/react/24/outline";
 
 export default function NavLinksWrapper() {
   return (
-    <div className="flex h-full flex-col px-3 py-4 md:px-2 ">
-      <NavLogo />
-      <div className=" flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
+    <div className="flex h-full w-full flex-row px-5 py-2 md:flex-col md:px-2 md:py-6 ">
+      <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
+        <NavLogo />
         <NavLinks />
-        <div className="hidden h-auto w-full grow rounded-md md:block"></div>
+
+        <div className="h-auto w-auto grow"></div>
+        {/* <div className="h-auto w-auto grow rounded-md md:block"></div> */}
+
         <form /*action={async () => {
           'use server';
           await signOut();

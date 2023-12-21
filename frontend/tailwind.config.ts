@@ -18,6 +18,8 @@ const config: Config = {
         hoverColor: "rgb(187, 159, 270)",
         semanticColor: "#CCCCCC",
         bgGrayColor: "#313338",
+        rNavColor: "#2B2D31",
+        lNavColor: "#1E1F22",
       },
     },
   },
