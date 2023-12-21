@@ -5,9 +5,9 @@ import { useDebouncedCallback } from "use-debounce";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import userSearchList from "@/ui/overview/topnavbar/topnav-mock";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
+import chats from "@/lib/chat-data";
 
 export default function SearchChannel({
   placeholder,
@@ -50,18 +50,11 @@ export default function SearchChannel({
 
       {query && (
         <div className="absolute top-full z-50 mt-2 w-full bg-zinc-800">
-          {userSearchList.map((result) => (
-            <Link key={result.id} href={`/user/${result.id}`}>
+          {chats.map((result) => (
+            <Link key={result.id} href={`/channel/${result.id}`}>
               <div className="flex flex-row items-center justify-center ">
-                <Image
-                  className="h-[30px] w-[30px] items-center justify-center rounded-[32px] border-black border-opacity-50"
-                  width={30}
-                  height={30}
-                  src={result.profile}
-                  alt="profile"
-                />
                 <p className="block h-full w-full rounded-[32px] border-black border-opacity-50 p-2 text-white hover:bg-gray-100">
-                  {result.id}
+                  {result.channel}
                 </p>
               </div>
             </Link>
