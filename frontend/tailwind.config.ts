@@ -17,6 +17,7 @@ const config: Config = {
         buttonColor: "#827AAF",
         hoverColor: "rgb(187, 159, 270)",
         semanticColor: "#CCCCCC",
+        bgGrayColor: "#313338",
       },
     },
   },
