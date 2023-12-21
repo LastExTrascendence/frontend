@@ -45,7 +45,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
       <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
 
       {query && (
-        <div className="absolute top-full mt-2 w-full bg-zinc-800">
+        <div className="absolute top-full w-full bg-zinc-800">
           {userSearchList.map((result) => (
             <Link key={result.id} href={`/user/${result.id}`}>
               <div className="flex flex-row items-center justify-center ">

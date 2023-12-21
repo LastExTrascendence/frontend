@@ -9,7 +9,7 @@ import userSearchList from "@/ui/overview/topnavbar/topnav-mock";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
 
-export default function searchChannel({
+export default function SearchChannel({
   placeholder,
 }: {
   placeholder: string;
@@ -33,9 +33,9 @@ export default function searchChannel({
     fetchSearchResults(term);
   }, 300);
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className="relative flex h-full flex-1 flex-shrink-0">
       <input
-        className="block h-[60px] w-[350px] rounded-[20px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
+        className="block h-4/5 min-h-[60px] w-2/5 min-w-[100px] rounded-[20px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);
@@ -46,10 +46,10 @@ export default function searchChannel({
         }}
         defaultValue={query}
       />
-      <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
+      <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-4/5 min-h-[18px] w-[18px] min-w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
 
       {query && (
-        <div className="absolute top-full mt-2 w-full bg-zinc-800">
+        <div className="absolute top-full z-50 mt-2 w-full bg-zinc-800">
           {userSearchList.map((result) => (
             <Link key={result.id} href={`/user/${result.id}`}>
               <div className="flex flex-row items-center justify-center ">
