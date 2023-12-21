@@ -9,7 +9,7 @@ import userSearchList from "@/ui/overview/topnavbar/topnav-mock";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
 
-export default function SearchChannel({
+export default function searchChannel({
   placeholder,
 }: {
   placeholder: string;
