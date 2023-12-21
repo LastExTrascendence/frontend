@@ -1,27 +1,47 @@
-import chats from "@/lib/game-data";
+"use client";
+
+import React, { useState } from "react";
+import SearchChannel from "@/ui/overview/channel/search-channel";
+import chats from "@/lib/chat-data";
+import Modal from "@/components/Modal";
+import NewChannel from "@/ui/overview/channel/new-channel";
+import NewChannelButton from "@/ui/overview/channel/new-channel-button";
+import ChannelList from "@/ui/overview/channel/channel-list";
+import JoinChannel from "@/ui/overview/channel/join-channel";
 
 export default function Page() {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
+
+  const toggleJoinChannelModal = (chat) => {
+    setSelectedChat(chat);
+  };
+
+  const toggleNewChannelModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <div className="flex flex-row h-screen">
-      {/* 왼쪽 섹션 - 채팅 */}
-      <div className="flex-1 p-4 bg-gray-50">
-        {/* 여기에 채팅 컴포넌트를 배치합니다 */}
-        <p>채팅 내용...</p>
+    <div className="bg-gray-60 relative h-full w-full items-center justify-center p-3">
+      <div className="flex h-full w-full scroll-m-0 flex-col">
+        <div className="flex h-4/5 min-h-[60px] flex-row">
+          <SearchChannel placeholder="Search channels" />
+          <NewChannelButton toggleModal={toggleNewChannelModal} />
+        </div>
+        <ChannelList chats={chats} openModal={toggleJoinChannelModal} />
       </div>
 
-      {/* 오른쪽 섹션 - 채팅 목록 */}
-      <div className="flex-1 p-4">
-        {chats.map((channel) => (
-          <button
-            key={channel.id}
-            // onClick={ -TODO: channel room info modal}
+      {selectedChat && (
+        <Modal onClose={() => setSelectedChat(null)}>
+          <JoinChannel selectedChat={selectedChat} />
+        </Modal>
+      )}
 
-            className="flex grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
-          >
-            <p>Name: {channel.name}</p>
-          </button>
-        ))}
-      </div>
+      {showModal && (
+        <Modal onClose={toggleNewChannelModal}>
+          <NewChannel onClose={toggleNewChannelModal} />
+        </Modal>
+      )}
     </div>
   );
 }
