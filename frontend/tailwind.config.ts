@@ -15,7 +15,8 @@ const config: Config = {
       },
       colors: {
         buttonColor: "#827AAF",
-        modalColor: "#827AAF",
+        hoverColor: "rgb(187, 159, 270)",
+        semanticColor: "#CCCCCC",
       },
     },
   },
