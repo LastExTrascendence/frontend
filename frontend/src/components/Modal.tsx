@@ -1,11 +1,24 @@
-function Modal({ onClose, children }) {
+function Modal({
+  onClose,
+  children,
+}: {
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-modalColor rounded p-4">
-        <button type="button" onClick={onClose}>
-          Close
-        </button>
-        {children}
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
+      <div className="relative min-h-fit min-w-fit items-center justify-center rounded-lg bg-stone-300 p-3">
+        <div
+          className="relative h-full w-full items-center justify-center rounded-lg bg-white p-6"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
