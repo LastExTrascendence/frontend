@@ -1,12 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import Search from "@/components/SearchChannel";
+import Search from "@/ui/overview/channel/search-channel";
 import chats from "@/lib/chat-data";
 import Modal from "@/components/Modal";
+import NewChannel from "@/ui/overview/channel/new-channel";
+import Link from "next/link";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
+
+  const openModal = (chat) => {
+    setSelectedChat(chat);
+  };
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -18,63 +25,49 @@ export default function Page() {
         <Search placeholder="Search channels" />
         <button
           type="button"
-          className="bg-buttonColor h-full w-48 rounded-[30px]"
+          className="h-full w-48 rounded-[30px] bg-buttonColor"
           onClick={toggleModal}
         >
           NEW
         </button>
       </div>
-
-      <div className="flex flex-row">
-        <p>Channel</p>
-        <p>Creator</p>
-        <p>Users</p>
-        <p>Type</p>
-      </div>
-      <div>
-        {chats.map((chat) => (
-          <div className="flex flex-row">
-            <p>{chat.channel}</p>
-            <p>{chat.creator}</p>
-            <p>{chat.users}</p>
-            <p>{chat.type}</p>
-          </div>
-        ))}
+      <div className="h-full w-full rounded-[20px] bg-zinc-800">
+        <div className="flex flex-row border-b-2">
+          <p>Channel</p>
+          <p>Creator</p>
+          <p>Users</p>
+          <p>Type</p>
+        </div>
+        <div>
+          {chats.map((chat) => (
+            <div
+              key={chat.id}
+              className="flex cursor-pointer flex-row border-b-2"
+              onClick={() => openModal(chat)}
+            >
+              <p>{chat.channel}</p>
+              <p>{chat.creator}</p>
+              <p>{chat.users}</p>
+              <p>{chat.type}</p>
+            </div>
+          ))}
+        </div>
+        {selectedChat && (
+          <Modal chat={selectedChat} onClose={() => setSelectedChat(null)}>
+            <div className="text-black">
+              <p>Channel: {selectedChat.channel}</p>
+              <p>Creator: {selectedChat.creator}</p>
+              <p>Users: {selectedChat.users}</p>
+              <p>Type: {selectedChat.type}</p>
+              <Link href={`/channel/${selectedChat.id}`}>Go to Channel</Link>
+            </div>
+          </Modal>
+        )}
       </div>
 
       {showModal && (
         <Modal onClose={toggleModal}>
-          <form className="flex flex-col">
-            <label>
-              Channel
-              <input
-                type="text"
-                name="channel"
-                className="bg-gray-800 text-center"
-              />
-            </label>
-            {/* <label>
-              Creator
-              <input type="text" name="creator" className="bg-gray-800" />
-            </label> */}
-            <label>
-              Users
-              <input
-                type="number"
-                name="users"
-                className="bg-gray-800 text-center"
-              />
-            </label>
-            <label>
-              Type
-              <input
-                type="text"
-                name="type"
-                className="bg-gray-800 text-center"
-              />
-            </label>
-            <button type="submit">Submit</button>
-          </form>
+          <NewChannel onClose={toggleModal} />
         </Modal>
       )}
     </div>
