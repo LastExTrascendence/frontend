@@ -20,6 +20,7 @@ const config: Config = {
         bgGrayColor: "#313338",
         rNavColor: "#2B2D31",
         lNavColor: "#1E1F22",
+        myNavColor: "#232428",
       },
     },
   },

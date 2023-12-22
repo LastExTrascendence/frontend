@@ -10,7 +10,7 @@ function SidenavFollowListOnlineCount({
   ).length;
 
   return (
-    <p className="font-['Noto Sans KR'] flex flex-shrink-0 border-b-2 border-neutral-600 text-2xl font-normal text-white">
+    <p className="flex min-h-[50px] w-full min-w-[60px] flex-shrink-0 items-center justify-start border-b-2 border-neutral-600 text-2xl font-normal text-white">
       Online ({onlinePerTotal}/{followList.length})
     </p>
   );
