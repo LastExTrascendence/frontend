@@ -11,7 +11,7 @@ export default function GameList({
         <p className="mr-4 flex-1">Game</p>
         <p className="mr-4 flex-1">Creator</p>
         <p className="mr-4 flex-1">Users</p>
-        <p className="mr-4 flex-1">Type</p>
+        <p className="mr-4 flex-1">Status</p>
       </div>
       <div>
         {games.map((game) => (
