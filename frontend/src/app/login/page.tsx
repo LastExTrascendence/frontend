@@ -26,7 +26,7 @@ export default function Page() {
         </LoginTitleWrapperStyled>
       </LeftSideStyled>
       <RightSideStyled>
-        <Card>
+        <Card width="360px" height="420px">
           <>
             <CardTitleWrapperStyled>
               <Image
@@ -46,8 +46,11 @@ export default function Page() {
               passHref={true}
             >
               <PillButton
+                width="240px"
+                height="55px"
                 text="Join via 42 Network"
                 fontWeight="200"
+                fontStyle="italic"
                 theme="purple"
                 onClick={() => {}}
               />
@@ -82,8 +85,9 @@ const LeftSideStyled = styled.div`
   flex-direction: column;
 
   @media (max-width: 768px) {
-    width: 100%;
-    height: 60%;
+    /* width: 100%; */
+    /* height: 60%; */
+    display: none;
   }
 `;
 
@@ -97,7 +101,7 @@ const LoginTitleStyled = styled.div<{
   $fontStyle?: string;
   $fontWeight: string;
 }>`
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: ${(props) => props.$fontWeight};
   font-style: ${(props) => props.$fontStyle};
   color: var(--white);
@@ -117,7 +121,7 @@ const RightSideStyled = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 40%;
+    height: 100%;
   }
 `;
 
@@ -138,7 +142,7 @@ const CardTitleStyled = styled.div`
 
 const CardDescriptionStyled = styled.div`
   display: flex;
-  height: 180px;
+  height: 160px;
   font-size: 1.25rem;
   font-weight: 300;
   color: var(--main-purple);
