@@ -1,7 +1,7 @@
 "use client";
 import styled from "styled-components";
 import Image from "next/image";
-import LinksList from "@/ui/mainpage/links";
+import MainButtonList from "@/ui/mainpage/main-buttons";
 
 export default function Home() {
   return (
@@ -36,7 +36,7 @@ export default function Home() {
         />
       </MainLogoContainer>
       <ButtonGroupContainer>
-        <LinksList />
+        <MainButtonList />
       </ButtonGroupContainer>
     </MainPageStyled>
   );

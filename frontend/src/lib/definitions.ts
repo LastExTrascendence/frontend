@@ -39,7 +39,7 @@ export type Game = {
   map: string;
 };
 
-export type LinkItemProps = {
+export type MainButtonItemProps = {
   href: string;
   title: string;
   description: string;
