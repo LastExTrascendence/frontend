@@ -23,11 +23,11 @@
     }
   },
   "include": [
-    "next-env.d.ts", 
+    "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", 
+    "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/placeholder-data.js",
+    "lib/placeholder-data.js"
   ],
   "exclude": ["node_modules"]
 }

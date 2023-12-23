@@ -21,6 +21,8 @@ const config: Config = {
         rNavColor: "#2B2D31",
         lNavColor: "#1E1F22",
         myNavColor: "#232428",
+        chatColor: "#2B2D31",
+        userInfoColor: "#232428",
       },
     },
   },
