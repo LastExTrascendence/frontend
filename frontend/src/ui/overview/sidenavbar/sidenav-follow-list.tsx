@@ -11,10 +11,12 @@ export default function SideNavFollowList() {
   // const followList = fetch();
 
   return (
-    <div className="flex h-screen flex-col">
-      <SideNavFollowListLogo />
-      <SideNavFollowListOnlineCount followList={followlist} />
-      <SideNavFollowListFollowing followList={followlist} />
+    <div className="flex h-screen min-w-[60px] flex-col">
+      <div className="flex h-screen min-w-[60px] flex-col p-3">
+        <SideNavFollowListLogo />
+        <SideNavFollowListOnlineCount followList={followlist} />
+        <SideNavFollowListFollowing followList={followlist} />
+      </div>
       <SideNavFollowListMe />
     </div>
   );

@@ -4,15 +4,14 @@ import Image from "next/image";
 export default function NavLinksWrapper() {
   return (
     <Link
-      className="bg-black-300 mb-2 hidden h-20 items-end justify-center rounded-md p-4 md:block md:h-16"
       href="/"
+      className="relative items-center justify-center rounded-md p-4"
     >
       <Image
-        src="/LET.svg"
+        src="/LET_logo.svg"
         alt="LET Logo"
-        className="dark:invert"
-        width={120}
-        height={24}
+        layout="fill"
+        objectFit="contain"
         priority
       />
     </Link>
