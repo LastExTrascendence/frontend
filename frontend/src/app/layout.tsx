@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/ui/css/globals.css";
 import RecoilRootProvider from "@/utils/recoilRootProvider";
+import SocketProvider from "@/components/SocketProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <RecoilRootProvider>{children}</RecoilRootProvider>
+        <SocketProvider>
+          <RecoilRootProvider>{children}</RecoilRootProvider>
+        </SocketProvider>
       </body>
     </html>
   );
