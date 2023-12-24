@@ -19,9 +19,8 @@ function IconContainer({
         width={width}
         height={height}
         style={{ fill: iconColor }}
-        layout="fixed"
       />
-      <IconTextStyled fontColor={fontColor}>{text}</IconTextStyled>
+      <IconTextStyled $fontColor={fontColor}>{text}</IconTextStyled>
     </IconContainerStyled>
   );
 }
@@ -35,8 +34,8 @@ const IconContainerStyled = styled.div`
   cursor: pointer;
 `;
 
-const IconTextStyled = styled.span<{ fontColor: string }>`
-  color: ${(props) => props.fontColor};
+const IconTextStyled = styled.span<{ $fontColor: string }>`
+  color: ${(props) => props.$fontColor};
 `;
 
 export default IconContainer;

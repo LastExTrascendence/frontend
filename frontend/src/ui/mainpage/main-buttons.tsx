@@ -30,7 +30,7 @@ function MainButtonList() {
   return (
     <>
       {buttons.map((button) => (
-        <ButtonContainer>
+        <ButtonContainer key={button.title}>
           <PillButton
             width="320px"
             height="80px"

@@ -14,13 +14,7 @@ export default function Home() {
       </TopNavStyled>
       <MainLogoContainer>
         <MainLogoTitleStyled>L.E.T</MainLogoTitleStyled>
-        <Image
-          src="/LET_logo_white.svg"
-          alt="Logo"
-          width={120}
-          height={120}
-          layout="absolute"
-        />
+        <Image src="/LET_logo_white.svg" alt="Logo" width={120} height={120} />
       </MainLogoContainer>
       <ButtonGroupContainer>
         <MainButtonList />
