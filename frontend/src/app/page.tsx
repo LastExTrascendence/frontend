@@ -2,33 +2,20 @@
 import styled from "styled-components";
 import Image from "next/image";
 import MainButtonList from "@/ui/mainpage/main-buttons";
+import LogoutIcon from "@/ui/icon/logout-icon";
+import InfoIcon from "@/ui/icon/info-icon";
 
 export default function Home() {
   return (
     <MainPageStyled>
       <TopNavStyled>
-        <Image
-          src="/info.svg"
-          alt="Logo"
-          width={40}
-          height={40}
-          layout="fixed"
-        />
-        <TopNavButtonContainer>
-          <Image
-            src="/logout.svg"
-            alt="Logo"
-            width={40}
-            height={40}
-            layout="fixed"
-          />
-          Logout
-        </TopNavButtonContainer>
+        <InfoIcon />
+        <LogoutIcon />
       </TopNavStyled>
       <MainLogoContainer>
         <MainLogoTitleStyled>L.E.T</MainLogoTitleStyled>
         <Image
-          src="/LET_logo.svg"
+          src="/LET_logo_white.svg"
           alt="Logo"
           width={120}
           height={120}
@@ -60,15 +47,6 @@ const TopNavStyled = styled.div`
   align-items: center;
   position: relative;
   padding: 0 2rem;
-`;
-
-const TopNavButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  color: var(--light-gray);
 `;
 
 const MainLogoContainer = styled.div`
