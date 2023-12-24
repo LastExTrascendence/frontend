@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/ui/css/globals.css";
 import RecoilRootProvider from "@/utils/recoilRootProvider";
+import StyledComponentsRegistry from "@/lib/registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <RecoilRootProvider>{children}</RecoilRootProvider>
+        <RecoilRootProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </RecoilRootProvider>
       </body>
     </html>
   );

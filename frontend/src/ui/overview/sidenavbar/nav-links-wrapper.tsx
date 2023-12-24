@@ -1,7 +1,7 @@
 import NavLinks from "@/ui/overview/sidenavbar/nav-links";
 import NavLogo from "./nav-links-logo";
-import { PowerIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import LogoutIcon from "@/ui/icon/logout-icon";
 // import { signOut } from '@/auth';
 
 export default function NavLinksWrapper() {
@@ -22,10 +22,7 @@ export default function NavLinksWrapper() {
           await signOut();
         }}*/
         >
-          <button className="flex h-20 w-20 flex-col items-center justify-center gap-2 rounded-[32px] p-3 text-sm hover:bg-gray-100 hover:text-gray-700 md:flex-none md:justify-start md:p-2 md:px-3">
-            <PowerIcon className="w-6" />
-            <div className="hidden md:block">LogOut</div>
-          </button>
+          <LogoutIcon />
         </form>
       </div>
     </div>
