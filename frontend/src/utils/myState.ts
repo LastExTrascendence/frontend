@@ -4,6 +4,7 @@ export const myState = atom({
   key: "myState", // 고유한 키
   // default: null, // 기본값, 여기서는 초기 user 정보를 null로 설정
   default: {
+    
     id: "chan",
     status: "Quickly match 1:1 games.",
     profile:

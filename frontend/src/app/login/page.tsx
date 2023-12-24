@@ -46,7 +46,7 @@ export default function Page() {
               passHref={true}
             >
               <PillButton
-                text="Join via 42 Network"
+                text="Join via 42 Ncetwork"
                 fontWeight="200"
                 theme="purple"
                 onClick={() => {}}
