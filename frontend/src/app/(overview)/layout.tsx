@@ -1,3 +1,4 @@
+"use client";
 import NavLinksWrapper from "@/ui/overview/sidenavbar/nav-links-wrapper";
 import SideNavFollowList from "@/ui/overview/sidenavbar/sidenav-follow-list";
 import Topnav from "@/ui/overview/topnavbar/topnav";
