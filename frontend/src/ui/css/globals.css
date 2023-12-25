@@ -12,9 +12,11 @@
   --background-orange-rgb: 239, 142, 111;
   --background-gray-rgb: 49, 51, 56;
   --light-gray: #cccccc;
+  --dark-gray: #1e1f22;
   --white: #ffffff;
   --main-purple: #827baf;
   --main-dark-purple: #5849b6;
+  --line-color-dark: #4c4c4c;
 }
 
 @media (prefers-color-scheme: dark) {
