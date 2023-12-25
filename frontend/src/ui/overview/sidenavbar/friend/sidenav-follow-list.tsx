@@ -1,5 +1,5 @@
 "use client";
-import followlist from "./followlist-mock";
+import followlist from "../followlist-mock";
 import SideNavFollowListOnlineCount from "./sidenav-follow-list-online-count";
 import SideNavFollowListFollowing from "./sidenav-follow-list-following";
 import SideNavFollowListMe from "./sidenav-follow-list-me";

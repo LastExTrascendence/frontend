@@ -7,7 +7,7 @@ import UserStatusSetting from "@/ui/user-status/user-card-setting";
 export default function Page() {
   return (
     <UserProfileContainerStyled>
-      <UserProfileStyled>
+      {/* <UserProfileStyled>
         <UserProfile>
           <UserStatusSetting />
         </UserProfile>
@@ -15,7 +15,7 @@ export default function Page() {
         <UserProfileSummary>
           <UserCardInfo followList={followlist} />
         </UserProfileSummary>
-      </UserProfileStyled>
+      </UserProfileStyled> */}
     </UserProfileContainerStyled>
   );
 }

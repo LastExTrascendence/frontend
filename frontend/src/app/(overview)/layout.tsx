@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 const MainSectionStyled = styled.main`
   display: flex;
-  height: 100%;
+  height: calc(100% - 90px);
   width: 100%;
   overflow: hidden;
 `;

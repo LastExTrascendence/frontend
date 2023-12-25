@@ -13,16 +13,19 @@
   --background-gray-rgb: 49, 51, 56;
   --background-gray: #313338;
 
+  --white: #ffffff;
   --light-gray: #cccccc;
+  --green: #55d428;
   --gray: #2b2d31;
   --dark-gray: #1e1f22;
-  --white: #ffffff;
+  --black: #000000;
 
   --main-purple: #827baf;
   --main-dark-purple: #5849b6;
 
-  --line-color-gray: #4c4c4c;
-  --line-color-dark-gray: #282828;
+  --line-color-light-gray: #4c4c4c;
+  --line-color-gray: #282828;
+  --line-color-dark-gray: #262626;
 
   --button-hover-dark-gray: #3e3e3e;
 }
@@ -60,4 +63,5 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-gray-rgb));
+  /* overflow: hidden; */
 }

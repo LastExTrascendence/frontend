@@ -14,17 +14,12 @@ export default function Topnav() {
           <TopNavTextLogo />
         </FriendSectionStyled>
       </SideBarSectionStyled>
-      <div className="mr-10">
-        <Search placeholder="Search User" />
-      </div>
+      <MainSectionStyled>
+        <SearchBarWrapperStyled>
+          <Search placeholder="Search User" />
+        </SearchBarWrapperStyled>
+      </MainSectionStyled>
     </TopNavStyled>
-    // <div className="bgGrayColor flex h-full  w-full flex-col border-b-2 border-neutral-800">
-    //   <div className="relative h-[100px] w-full flex-shrink-0">
-    //     <div className="absolute right-[50px] top-[20px]">
-    //       <Search placeholder="Search User" />
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 
@@ -61,7 +56,7 @@ const LogoSectionStyled = styled.div`
     bottom: 0;
     width: 80%;
     height: 1px;
-    background-color: var(--line-color-gray);
+    background-color: var(--line-color-light-gray);
   }
 
   @media only screen and (max-width: 1000px) {
@@ -77,10 +72,23 @@ const FriendSectionStyled = styled.div`
   width: 240px;
   height: 90px;
   display: flex;
-  align-items: flex-start;
   position: relative;
   align-items: center;
   background-color: var(--gray);
-  border-bottom: 2px solid var(--line-color-dark-gray);
+  border-bottom: 2px solid var(--line-color-gray);
   padding-left: 1.5rem;
+`;
+
+const MainSectionStyled = styled.div`
+  width: calc(100% - 240px - 90px);
+  height: 90px;
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 2px solid var(--line-color-dark-gray);
+`;
+
+const SearchBarWrapperStyled = styled.div`
+  margin-right: 1.5rem;
 `;
