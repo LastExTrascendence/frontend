@@ -114,7 +114,7 @@ export default function Page() {
           <Card title={UserRegisterCardTitle[currentStep]}>
             <>
               <ProfileImage />
-              <InputContainer $isValid={isValid}>
+              <InputContainerStyled $isValid={isValid}>
                 <input
                   type="text"
                   placeholder="..."
@@ -134,7 +134,7 @@ export default function Page() {
                   }}
                   onChange={(e) => setNickname(e.target.value)}
                 />
-              </InputContainer>
+              </InputContainerStyled>
               <PillButton
                 text="확인"
                 width="260px"
@@ -202,7 +202,7 @@ const RegisterTitleStyled = styled.div`
   margin-left: 25px;
 `;
 
-const InputContainer = styled.div<{ $isValid: boolean }>`
+const InputContainerStyled = styled.div<{ $isValid: boolean }>`
   display: flex;
   align-items: center;
 

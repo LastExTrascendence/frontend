@@ -12,13 +12,13 @@ export default function Home() {
         <InfoIcon />
         <LogoutIcon />
       </TopNavStyled>
-      <MainLogoContainer>
+      <MainLogoContainerStyled>
         <MainLogoTitleStyled>L.E.T</MainLogoTitleStyled>
         <Image src="/LET_logo_white.svg" alt="Logo" width={120} height={120} />
-      </MainLogoContainer>
-      <ButtonGroupContainer>
+      </MainLogoContainerStyled>
+      <ButtonGroupContainerStyled>
         <MainButtonList />
-      </ButtonGroupContainer>
+      </ButtonGroupContainerStyled>
     </MainPageStyled>
   );
 }
@@ -43,7 +43,7 @@ const TopNavStyled = styled.div`
   padding: 0 2rem;
 `;
 
-const MainLogoContainer = styled.div`
+const MainLogoContainerStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -57,7 +57,7 @@ const MainLogoTitleStyled = styled.div`
   margin-right: 2rem;
 `;
 
-const ButtonGroupContainer = styled.div`
+const ButtonGroupContainerStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

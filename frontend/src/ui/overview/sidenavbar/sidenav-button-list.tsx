@@ -24,7 +24,7 @@ const SideNavButtonList = () => {
   return (
     <>
       {buttons.map((button) => (
-        <SideNavButtonContainer key={button.text}>
+        <SideNavButtonContainerStyled key={button.text}>
           <IconContainer
             key={button.text}
             width={40}
@@ -37,13 +37,13 @@ const SideNavButtonList = () => {
               window.location.href = button.href;
             }}
           />
-        </SideNavButtonContainer>
+        </SideNavButtonContainerStyled>
       ))}
     </>
   );
 };
 
-export const SideNavButtonContainer = styled.li`
+export const SideNavButtonContainerStyled = styled.li`
   display: flex;
   flex-direction: column;
   height: 80px;

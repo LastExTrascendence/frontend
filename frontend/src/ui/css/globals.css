@@ -11,12 +11,19 @@
   --background-magenta-rgb: 234, 51, 114;
   --background-orange-rgb: 239, 142, 111;
   --background-gray-rgb: 49, 51, 56;
+  --background-gray: #313338;
+
   --light-gray: #cccccc;
+  --gray: #2b2d31;
   --dark-gray: #1e1f22;
   --white: #ffffff;
+
   --main-purple: #827baf;
   --main-dark-purple: #5849b6;
-  --line-color-dark: #4c4c4c;
+
+  --line-color-gray: #4c4c4c;
+  --line-color-dark-gray: #282828;
+
   --button-hover-dark-gray: #3e3e3e;
 }
 
@@ -28,18 +35,18 @@
   }
 }
 
-@media only screen and (max-width: 1080px) {
+@media only screen and (max-width: 1000px) {
   #sideNavWrap {
     position: fixed;
-    top: 0;
+    top: 90px;
     left: 0;
-    height: 100%;
+    height: calc(100% - 90px);
     z-index: 10;
     transition: all 0.3s ease-in-out;
     transform: translateX(-100%);
   }
   #sideNavWrap.on {
-    transform: translateX(0);
+    transform: translateX(0%);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
 }
