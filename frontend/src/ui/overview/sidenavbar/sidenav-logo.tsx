@@ -1,9 +1,36 @@
-import Link from "next/link";
 import Image from "next/image";
 
 export default function SideNavLogo() {
+  const toggleSideNav = () => {
+    console.log("toggleSideNav");
+    if (
+      document.getElementById("sideNavWrap")?.classList.contains("on") === true
+    ) {
+      closeSideNav();
+    } else {
+      openSideNav();
+    }
+  };
+
+  const openSideNav = () => {
+    document.getElementById("sideNavWrap")?.classList.add("on");
+  };
+
+  const closeSideNav = () => {
+    if (
+      document.getElementById("sideNavWrap")?.classList.contains("on") === true
+    ) {
+      document.getElementById("sideNavWrap")?.classList.remove("on");
+    }
+  };
+
   return (
-    <Link href="/" className="relative items-center justify-center rounded-md">
+    <div
+      className="relative items-center justify-center rounded-md"
+      onClick={() => {
+        toggleSideNav();
+      }}
+    >
       <Image
         src="/LET_logo.svg"
         alt="LET Logo"
@@ -11,6 +38,6 @@ export default function SideNavLogo() {
         height={60}
         priority
       />
-    </Link>
+    </div>
   );
 }

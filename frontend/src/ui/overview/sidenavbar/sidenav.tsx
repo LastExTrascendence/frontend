@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import SideNavLogo from "./sidenav-logo";
-import SideNavButtonList from "./sidenav-button-list";
+import SideNavButtonList, {
+  SideNavButtonContainer,
+} from "./sidenav-button-list";
 import LogoutIcon from "@/ui/icon/logout-icon";
 
 const SideNav = () => {
   return (
-    <SideNavWrapper>
+    <SideNavWrapper id="sideNavWrap">
       <SideNavStyled>
         <TopSectionStyled>
           <LogoSectionStyled>
@@ -16,7 +18,9 @@ const SideNav = () => {
           </TopButtonGroupStyled>
         </TopSectionStyled>
         <BottomSectionStyled>
-          <LogoutIcon />
+          <SideNavButtonContainer>
+            <LogoutIcon />
+          </SideNavButtonContainer>
         </BottomSectionStyled>
       </SideNavStyled>
     </SideNavWrapper>
@@ -71,7 +75,6 @@ const BottomSectionStyled = styled.section`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 2.5vh;
 `;
 
 export default SideNav;

@@ -40,46 +40,23 @@ const SideNavButtonList = () => {
         </SideNavButtonContainer>
       ))}
     </>
-    // <>
-    //   {buttons.map((button) => (
-    //     <SideNavButtonContainer key={button.text}>
-    //       <Link
-    //         href={button.href}
-    //         className="relative items-center justify-center rounded-md"
-    //       >
-    //         <Image
-    //           src={button.iconPath}
-    //           alt={button.text}
-    //           width={40}
-    //           height={40}
-    //           priority
-    //         />
-    //       </Link>
-    //       <SideNavButtonTextStyled>{button.text}</SideNavButtonTextStyled>
-    //     </SideNavButtonContainer>
-    //   ))}
-    // </>
   );
 };
 
-const SideNavButtonContainer = styled.li`
+export const SideNavButtonContainer = styled.li`
   display: flex;
   flex-direction: column;
   height: 80px;
   width: 80px;
   border-radius: 32px;
-  margin-bottom: 2.5vh;
+  margin-bottom: 2vh;
   justify-content: center;
   align-items: center;
-`;
-
-const SideNavButtonTextStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: var(--light-gray);
-  font-size: 1rem;
-  font-weight: 400;
+  transition: background-color 0.2s ease-in-out;
+  &:hover {
+    background-color: var(--button-hover-dark-gray);
+    transition: background-color 0.2s ease-in-out;
+  }
 `;
 
 export default SideNavButtonList;
