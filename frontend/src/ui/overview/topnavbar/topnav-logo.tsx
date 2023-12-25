@@ -14,6 +14,8 @@ export default function TopNavLogo() {
 
   const openSideNav = () => {
     document.getElementById("sideNavWrap")?.classList.add("on");
+    document.getElementById("topNavLogo")?.classList.add("on");
+    document.getElementById("topNavTextLogo")?.classList.add("on");
   };
 
   const closeSideNav = () => {
@@ -21,6 +23,8 @@ export default function TopNavLogo() {
       document.getElementById("sideNavWrap")?.classList.contains("on") === true
     ) {
       document.getElementById("sideNavWrap")?.classList.remove("on");
+      document.getElementById("topNavLogo")?.classList.remove("on");
+      document.getElementById("topNavTextLogo")?.classList.remove("on");
     }
   };
 

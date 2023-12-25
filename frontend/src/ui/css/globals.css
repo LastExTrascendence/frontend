@@ -45,12 +45,30 @@
     left: 0;
     height: calc(100% - 90px);
     z-index: 10;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
     transform: translateX(-100%);
   }
   #sideNavWrap.on {
     transform: translateX(0%);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
+  }
+
+  #topNavLogo.on {
+    background-color: var(--dark-gray);
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  #topNavTextLogo {
+    height: 90px;
+    width: 240px;
+    z-index: 10;
+    transition: all 0.5s ease-in-out;
+    transform: translateX(calc(-100% - 90px));
+  }
+  #topNavTextLogo.on {
+    transform: translateX(0%);
+    display: block;
+    line-height: 90px;
   }
 }
 
@@ -63,5 +81,5 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-gray-rgb));
-  /* overflow: hidden; */
+  overflow: hidden;
 }

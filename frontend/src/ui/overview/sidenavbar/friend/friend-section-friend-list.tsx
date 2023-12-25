@@ -71,7 +71,7 @@ const FriendStatusWrapperStyled = styled.div<{ status: string }>`
   margin-left: 32px;
   margin-top: 32px;
   border-radius: 50%;
-  border: 1px solid var(--line-color-light-gray);
+  border: 1px solid var(--light-gray);
   z-index: 1;
   background-color: ${({ status }) =>
     status === "online"

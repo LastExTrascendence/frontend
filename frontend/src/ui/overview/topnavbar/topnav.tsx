@@ -7,10 +7,10 @@ export default function Topnav() {
   return (
     <TopNavStyled>
       <SideBarSectionStyled>
-        <LogoSectionStyled>
+        <LogoSectionStyled id="topNavLogo">
           <TopNavLogo />
         </LogoSectionStyled>
-        <FriendSectionStyled>
+        <FriendSectionStyled id="topNavTextLogo">
           <TopNavTextLogo />
         </FriendSectionStyled>
       </SideBarSectionStyled>
@@ -38,6 +38,21 @@ const SideBarSectionStyled = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    &::after {
+      width: 100%;
+      height: 2px;
+      background-color: var(--line-color-dark-gray);
+    }
+  }
 `;
 
 const LogoSectionStyled = styled.div`
@@ -62,8 +77,11 @@ const LogoSectionStyled = styled.div`
   @media only screen and (max-width: 1000px) {
     background-color: var(--background-gray);
     transition: background-color 0.3s ease-in-out;
+
     &::after {
-      display: none;
+      width: 100%;
+      height: 2px;
+      background-color: var(--line-color-dark-gray);
     }
   }
 `;

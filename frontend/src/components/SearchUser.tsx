@@ -29,7 +29,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
   return (
     <div className="relative flex">
       <input
-        className="h-[40px] w-[300px] rounded-[15px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
+        className="h-[40px] w-[260px] rounded-[15px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

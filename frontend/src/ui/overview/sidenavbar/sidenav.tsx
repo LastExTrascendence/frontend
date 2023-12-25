@@ -6,7 +6,7 @@ import LogoutIcon from "@/ui/icon/logout-icon";
 
 const SideNav = () => {
   return (
-    <SideNavWrapperStyled id="sideNavWrap">
+    <SideNavWrapperStyled>
       <SideNavStyled>
         <TopSectionStyled>
           <TopButtonGroupStyled>
