@@ -1,4 +1,3 @@
-"use client";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
 import styled from "styled-components";
