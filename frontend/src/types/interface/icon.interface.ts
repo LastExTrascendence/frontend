@@ -6,6 +6,7 @@
  * @param {string} iconPath - 아이콘 path
  * @param {string} iconColor - 아이콘 fill 색깔
  * @param {string} fontColor - 폰트 색깔
+ * @param {string} fontWeight - 폰트 굵기
  * @param {string} text - 아이콘 밑에 표시할 텍스트
  * @param {() => void} onClick - 아이콘 클릭시 실행할 함수
  */
@@ -15,6 +16,7 @@ export interface IconContainerProps {
   iconPath: string;
   iconColor?: string;
   fontColor?: string;
+  fontWeight?: number;
   text?: string;
   onClick: () => void;
 }

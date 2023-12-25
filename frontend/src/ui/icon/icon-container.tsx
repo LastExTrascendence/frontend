@@ -8,6 +8,7 @@ function IconContainer({
   iconPath,
   iconColor = "var(--light-gray)",
   fontColor = "var(--light-gray)",
+  fontWeight = 400,
   text,
   onClick,
 }: IconContainerProps) {
@@ -15,12 +16,14 @@ function IconContainer({
     <IconContainerStyled onClick={onClick}>
       <Image
         src={iconPath}
-        alt="Logo"
+        alt={`${text} icon`}
         width={width}
         height={height}
         style={{ fill: iconColor }}
       />
-      <IconTextStyled $fontColor={fontColor}>{text}</IconTextStyled>
+      <IconTextStyled $fontColor={fontColor} $fontWeight={fontWeight}>
+        {text}
+      </IconTextStyled>
     </IconContainerStyled>
   );
 }
@@ -34,8 +37,9 @@ const IconContainerStyled = styled.div`
   cursor: pointer;
 `;
 
-const IconTextStyled = styled.span<{ $fontColor: string }>`
+const IconTextStyled = styled.span<{ $fontColor: string; $fontWeight: number }>`
   color: ${(props) => props.$fontColor};
+  font-weight: ${(props) => props.$fontWeight};
 `;
 
 export default IconContainer;
