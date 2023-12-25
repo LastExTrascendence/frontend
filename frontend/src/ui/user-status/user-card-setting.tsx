@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PillButton from "@/ui/pill-button";
 import { useState } from "react";
 
-export default function UserStatusSetting() {
+function UserStatusSetting() {
   const [selectedButton, setSelectedButton] = useState("Disabled");
   const [changeNick, setChangeNick] = useState("NickName");
 
@@ -30,9 +30,9 @@ export default function UserStatusSetting() {
   return (
     <UserSettingContainer>
       <UserSettingRow>
-        <UserSettingColumn>
+        <UserSettingColumn isHorizontal={false}>
           <UserSettingLabel>NickName</UserSettingLabel>
-          <UserSettingNickField value={handleChangeChange} type="text" />
+          <UserSettingNickField onClick={handleChangeChange} type="text" />
         </UserSettingColumn>
         <PillButton
           text="Save"
@@ -124,7 +124,6 @@ const StyledButton = styled.button<{ selected: boolean }>`
   height: 50px;
   flex-shrink: 0;
   color: #fff;
-  font-family: "Noto Sans KR";
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -152,7 +151,6 @@ const UserSettingContainer = styled.div`
 
 const UserSettingLabel = styled.div`
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
@@ -162,7 +160,6 @@ const UserSettingLabel = styled.div`
 
 const UserSettingNickName = styled.div`
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
@@ -172,7 +169,6 @@ const UserSettingNickName = styled.div`
 const UserSettingNickField = styled.input`
   line-height: normal;
   font-weight: 400;
-  font-family: Noto Sans KR;
   font-size: 32px;
   font-style: normal;
   color: #fff;
@@ -186,7 +182,6 @@ const UserSettingNickField = styled.input`
 const UserSettingStatusMessage = styled.input`
   line-height: normal;
   font-weight: 400;
-  font-family: Noto Sans KR;
   font-size: 32px;
   font-style: normal;
   color: #fff;
@@ -196,3 +191,5 @@ const UserSettingStatusMessage = styled.input`
   height: 100px;
   flex-shrink: 0;
 `;
+
+export default UserStatusSetting;

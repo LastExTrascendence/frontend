@@ -1,10 +1,6 @@
 "use client";
-
-import user from "@/lib/user-data";
 import UserCardInfo from "@/ui/user-status/user-card";
 import followlist from "@/ui/overview/sidenavbar/followlist-mock";
-import Image from "next/image";
-import Link from "next/link";
 import styled from "styled-components";
 import UserStatusSetting from "@/ui/user-status/user-card-setting";
 

@@ -1,8 +1,5 @@
 "use client";
-
 import { FollowlistProps } from "@/lib/definitions";
-import user from "@/lib/user-data";
-import Image from "next/image";
 import styled from "styled-components";
 import followlist from "@/ui/overview/sidenavbar/followlist-mock";
 
@@ -59,7 +56,6 @@ const UserInfoRow = styled.div`
 const UserInfoNick = styled.div`
   width: 162px;
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -68,7 +64,6 @@ const UserInfoNick = styled.div`
 
 const UserInfoId = styled.div`
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -76,7 +71,6 @@ const UserInfoId = styled.div`
 `;
 const UserInfoEmail = styled.div`
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -110,7 +104,6 @@ const UserInfoDescriptionContainer = styled.div`
   flex-shrink: 0;
   border-radius: 20px;
   color: #fff;
-  font-family: Noto Sans KR;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
