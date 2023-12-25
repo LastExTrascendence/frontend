@@ -71,6 +71,7 @@ const BottomSectionStyled = styled.section`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  padding-bottom: 2.5vh;
 `;
 
 export default SideNav;
