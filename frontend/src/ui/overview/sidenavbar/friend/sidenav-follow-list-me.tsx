@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/utils/myState";

@@ -12,10 +12,11 @@
   --background-orange-rgb: 239, 142, 111;
   --background-gray-rgb: 49, 51, 56;
   --background-gray: #313338;
+  --background-mystatus: #232428;
 
   --white: #ffffff;
-  --light-gray: #cccccc;
   --green: #55d428;
+  --light-gray: #cccccc;
   --gray: #2b2d31;
   --dark-gray: #1e1f22;
   --black: #000000;
@@ -26,6 +27,8 @@
   --line-color-light-gray: #4c4c4c;
   --line-color-gray: #282828;
   --line-color-dark-gray: #262626;
+
+  --scrollbar-color: #4e4e5a;
 
   --button-hover-dark-gray: #3e3e3e;
 }
@@ -50,7 +53,6 @@
   }
   #sideNavWrap.on {
     transform: translateX(0%);
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); */
   }
 
   #topNavLogo.on {
@@ -82,4 +84,13 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-gray-rgb));
   overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  background: var(--gray);
+  width: 0.5em;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color);
+  -webkit-border-radius: 1ex;
 }

@@ -13,11 +13,16 @@ export default function FriendSectionFriendList({
   return (
     <FriendListContainerStyled>
       {friendList.map((friend) => (
+        <FriendSectionCard
+          key={friend.id}
+          friend={friend}
+          width={50}
+          height={50}
+        />
+      ))}
+      {friendList.map((friend) => (
         <FriendSectionCard friend={friend} width={50} height={50} />
       ))}
-      {/* {friendList.map((friend) => (
-        <FriendSectionCard friend={friend} width={50} height={50} />
-      ))} */}
     </FriendListContainerStyled>
   );
 }
@@ -27,5 +32,5 @@ const FriendListContainerStyled = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;

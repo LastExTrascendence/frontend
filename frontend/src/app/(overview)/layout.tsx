@@ -13,9 +13,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SideNav />
           <FriendSection />
         </div>
-        {/* <div className="bg-rNavColor hidden w-1/5 min-w-[60px] flex-none md:block">
-          <SideNavFollowList />
-        </div> */}
         {children}
       </MainSectionStyled>
     </>
