@@ -2,7 +2,6 @@ import styled from "styled-components";
 import FriendSectionOnlineCount from "./friend-section-online-count";
 import followlist from "../followlist-mock";
 import FriendSectionFriendList from "./friend-section-friend-list";
-import SideNavFollowListMe from "./sidenav-follow-list-me";
 import FriendSectionMyStatus from "./friend-section-mystatus";
 
 const FriendSection = () => {

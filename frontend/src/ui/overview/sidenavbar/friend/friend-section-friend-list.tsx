@@ -21,7 +21,12 @@ export default function FriendSectionFriendList({
         />
       ))}
       {friendList.map((friend) => (
-        <FriendSectionCard friend={friend} width={50} height={50} />
+        <FriendSectionCard
+          key={friend.id + " " + friend.id}
+          friend={friend}
+          width={50}
+          height={50}
+        />
       ))}
     </FriendListContainerStyled>
   );

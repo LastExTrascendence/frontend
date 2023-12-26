@@ -32,7 +32,7 @@ const MyStatusContainerStyled = styled.div`
   width: 100%;
   height: 80px;
   min-height: 80px;
-  background-color: var(--background-mystatus);
+  background-color: var(--background-dark-gray);
   align-items: center;
   justify-content: center;
   position: relative;
