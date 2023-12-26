@@ -12,7 +12,7 @@ export default function SideNavFollowListMe() {
   }
 
   return (
-    <div className="bg-myNavColor h-[101px] w-full min-w-[60px] flex-shrink-0 p-2 shadow">
+    <div className="h-[100px] w-full min-w-[60px] flex-shrink-0 bg-myNavColor p-2 shadow">
       <div className="flex h-[90px] flex-row items-center justify-center">
         <div className="relative m-2 min-h-[60px] min-w-[60px] shadow">
           <div className="absolute left-0 top-0 inline-flex h-[60px] w-[60px] items-center justify-center">

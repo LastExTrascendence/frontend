@@ -2,12 +2,15 @@ import styled from "styled-components";
 import FriendSectionOnlineCount from "./friend-section-online-count";
 import followlist from "../followlist-mock";
 import FriendSectionFriendList from "./friend-section-friend-list";
+import SideNavFollowListMe from "./sidenav-follow-list-me";
 
 const FriendSection = () => {
   return (
     <FriendSectionStyled>
       <FriendSectionOnlineCount friendList={followlist} />
       <FriendSectionFriendList friendList={followlist} />
+
+      <SideNavFollowListMe />
       {/* <TopSectionStyled>
         <TopButtonGroupStyled>
           <FriendSectionButtonList />

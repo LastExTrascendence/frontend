@@ -36,10 +36,10 @@ export default function TopNavLogo() {
       }}
     >
       <Image
-        src="/LET_logo.svg"
+        src="/LET_logo_light_purple.svg"
         alt="LET Logo"
-        width={60}
-        height={60}
+        width={50}
+        height={50}
         priority
       />
     </div>
