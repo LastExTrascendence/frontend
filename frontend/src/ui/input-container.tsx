@@ -4,7 +4,6 @@ export default function InputContainer({
   width = "300px",
   height = "45px",
   icon,
-  title = "",
   placeholder,
   value = "",
   borderRadius = "10px",
@@ -13,7 +12,6 @@ export default function InputContainer({
   width: string;
   height: string;
   icon?: string;
-  title?: string;
   placeholder: string;
   value?: string;
   borderRadius: string;
