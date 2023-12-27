@@ -1,29 +1,96 @@
-import SearchMessage from "@/ui/overview/channel/search-message";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useSocket } from "@/components/SocketProvider";
+
+interface Message {
+  sender: number; // mystate id
+  receiver: string; // receiver nickname
+  content: string; //
+}
 
 export default function Page({ params }: { params: { id: string } }) {
-  // -TODO: channel data fetching
-  const id = params.id;
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const { socket, isConnected } = useSocket();
+  const [userId, setUserId] = useState(+new Date());
+
+  useEffect(() => {
+    if (!socket) {
+      return;
+    }
+
+    const messageListener = (message: Message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    socket.on("msgToClient", messageListener);
+
+    // 클린업 함수
+    return () => {
+      socket.off("msgToClient", messageListener);
+    };
+  }, [socket]);
+
+  const sendMessage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log("log: ", userId, currentMessage);
+
+    const messsage: Message = {
+      sender: 1,
+      receiver: "yeomin",
+      content: currentMessage,
+    };
+
+    socket.emit("msgToServer", messsage);
+
+    // await axios.post("/api/chat", {
+    //   userId: userId,
+    //   content: currentMessage,
+    // });
+    setCurrentMessage("");
+  };
+
   return (
-    <main>
-      <div className="bg-gray-60 relative h-full w-full items-center justify-center p-3">
-        <div className="flex h-full w-full scroll-m-0 flex-col">
-          <div className="flex h-4/5 min-h-[60px] flex-row">
-            <SearchMessage placeholder="Search messsage" />
-          </div>
-          <div className="bg-chatColor relative mt-3 flex h-full w-full grow flex-row rounded-[20px] p-6">
-            <div className="flex flex-row items-center justify-center border-b-2">
-              <p className="mr-4 flex-1">Channel</p>
-              <p className="mr-4 flex-1">Creator</p>
-              <p className="mr-4 flex-1">Users</p>
-              <p className="mr-4 flex-1">Type</p>
+    <div className="bg-card text-card-foreground mx-auto w-[300px] rounded-xl border shadow">
+      <div className="p-6">
+        <p>{isConnected ? "연결 완료" : "연결중"}</p>
+      </div>
+      <div className="p-6 pt-0">
+        <div className="space-y-4">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={
+                "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm " +
+                (message.userId !== userId
+                  ? "ml-auto bg-blue-400 text-white"
+                  : "bg-zinc-100")
+              }
+            >
+              {message.content}
             </div>
-            {/* room info */}
-            <p className="bg-userInfoColor flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-              {id}
-            </p>
-          </div>
+          ))}
         </div>
       </div>
-    </main>
+      <div className="flex items-center p-6 pt-0">
+        <form className="flex w-full items-center space-x-2">
+          <input
+            type="text"
+            value={currentMessage}
+            onChange={(e) => setCurrentMessage(e.target.value)}
+            className="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full flex-1 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
+          ></input>
+          <button
+            type="submit"
+            onClick={(e) => sendMessage(e)}
+            className="focus-visible:ring-ring hover:bg-primary/90 inline-flex h-9 w-9 items-center justify-center whitespace-nowrap rounded-md bg-blue-600 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+          >
+            전송
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

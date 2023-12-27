@@ -16,10 +16,10 @@ export default function FriendSectionMyStatus() {
       <MyStatusWrapperStyled>
         <ProfileImage width={50} height={50} showOutline={true} />
         <UserStatusStyled
-          $status={myInfo.online ? "online" : "offline"}
+          $status={myInfo.online ? "ONLINE" : "OFFLINE"}
         ></UserStatusStyled>
         <UserNicknameWrapperStyled $width={50}>
-          <UserNickNameStyled>{myInfo.id}</UserNickNameStyled>
+          <UserNickNameStyled>{myInfo.nickname}</UserNickNameStyled>
         </UserNicknameWrapperStyled>
       </MyStatusWrapperStyled>
     </MyStatusContainerStyled>

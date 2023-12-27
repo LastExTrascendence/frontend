@@ -1,41 +1,45 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSocket } from "@/components/SocketProvider";
 
-interface message {
+interface Message {
   userId: number;
   content: string;
 }
 
-export default function Page() {
-  const [messages, setMessages] = useState<message[]>([]);
+export default function ChatPage() {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
   const [userId, setUserId] = useState(+new Date());
 
   useEffect(() => {
+    console.log(socket);
     if (!socket) {
       return;
     }
 
-    socket.on("message", (data: any) => {
-      setMessages((messages) => [...messages, ...[data]]);
-    });
-
-    return () => {
-      socket.off("message");
+    const messageListener = (message: Message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
     };
-  }, [socket, messages]);
+
+    socket.on("msgToServer", messageListener);
+
+    // 클린업 함수
+    return () => {
+      socket.off("msgToServer", messageListener);
+    };
+  }, [socket]);
 
   const sendMessage = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("log: ", userId, currentMessage);
-    await axios.post("/api/chat", {
-      userId: userId,
-      content: currentMessage,
-    });
+    socket.emit("msgToServer", currentMessage);
+    // await axios.post("/api/chat", {
+    //   userId: userId,
+    //   content: currentMessage,
+    // });
     setCurrentMessage("");
   };
 

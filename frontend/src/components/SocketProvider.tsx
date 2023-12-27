@@ -1,7 +1,13 @@
 "use client";
 
+import path from "path";
 import { createContext, useContext, useEffect, useState } from "react";
-import { io as ClientIO } from "socket.io-client";
+import io from "socket.io-client";
+
+interface ConnectInfo {
+  sender: number; // mystate id
+  receiver: string; // receiver nickname
+}
 
 type SocketContextType = {
   socket: any | null;
@@ -31,32 +37,33 @@ export default function SocketProvider({
     socket.on("disconnect", async () => {
       setIsConnected(false);
     });
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
-    const socketInstance = new (ClientIO as any)(
-      // process.env.NEXT_PUBLIC_SITE_URL,
-      "http://localhost:3334",
+    // const socketInstance = io(`${process.env.NEXT_PUBLIC_SITE_URL}`);
+    const socketInstance = io(
+      `http://10.19.239.198:${process.env.NEXT_PUBLIC_PORT}/dm`,
       {
-        // path: "/api/socket/io",
-        addTrailingSlash: false,
+        // path: "/dm",
         // transports: ["websocket"],
-        // cors: {
-        //   origin: "*",
-        //   methods: ["GET", "POST"],
-        //   credentials: true,
-        // },
       },
     );
+    // const socketInstance = io("http://localhost:3334");
 
     socketInstance.on("connect", async () => {
       setIsConnected(true);
+      const connectInfo: ConnectInfo = {
+        sender: 1,
+        receiver: "yeomin",
+      };
+
+      socketInstance.emit("join", connectInfo);
     });
 
     setSocket(socketInstance);
-
     return () => {
-      socketInstance.disconnect();
+      // console.log("disconnect");
+      // socketInstance.disconnect();
     };
   }, []);
 
