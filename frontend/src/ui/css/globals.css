@@ -31,6 +31,8 @@
   --scrollbar-color: #4e4e5a;
 
   --button-hover-dark-gray: #3e3e3e;
+
+  --input-container-color: #1e1f22;
 }
 
 @media (prefers-color-scheme: dark) {
