@@ -9,12 +9,15 @@ import NewGame from "@/ui/overview/game/new-game";
 import NewGameButton from "@/ui/overview/game/new-game-button";
 import GameList from "@/ui/overview/game/game-list";
 import JoinGame from "@/ui/overview/game/join-game";
+import PillButton from "@/ui/pill-button";
+import styled from "styled-components";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
-  const toggleJoinGameModal = (chat) => {
+  const toggleJoinGameModal = (chat: any) => {
     setSelectedChat(chat);
   };
 
@@ -23,26 +26,52 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-gray-60 relative h-full w-full items-center justify-center p-3">
-      <div className="flex h-full w-full scroll-m-0 flex-col">
-        <div className="flex h-4/5 min-h-[60px] flex-row">
-          <SearchGame placeholder="Search games" />
-          <NewGameButton toggleModal={toggleNewGameModal} />
-        </div>
+    <GamePageStyled>
+      <TopSectionWrapperStyled>
+        <SearchGame placeholder="Search games" />
+        <NewGameButton toggleModal={toggleNewGameModal} />
+      </TopSectionWrapperStyled>
+      <GamePageContainerStyled>
         <GameList games={games} openModal={toggleJoinGameModal} />
-      </div>
-
-      {selectedChat && (
-        <Modal onClose={() => setSelectedChat(null)}>
-          <JoinGame selectedChat={selectedChat} />
-        </Modal>
-      )}
-
-      {showModal && (
-        <Modal onClose={toggleNewGameModal}>
-          <NewGame onClose={toggleNewGameModal} />
-        </Modal>
-      )}
-    </div>
+        {selectedChat && (
+          <Modal onClose={() => setSelectedChat(null)}>
+            <JoinGame selectedChat={selectedChat} />
+          </Modal>
+        )}
+        {showModal && (
+          <Modal onClose={toggleNewGameModal}>
+            <NewGame onClose={toggleNewGameModal} />
+          </Modal>
+        )}
+      </GamePageContainerStyled>
+    </GamePageStyled>
   );
 }
+
+const GamePageStyled = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TopSectionWrapperStyled = styled.div`
+  width: calc(100% - 50px);
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+`;
+
+const GamePageContainerStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 50px);
+  height: calc(100% - 50px);
+  border-radius: 20px;
+  background-color: var(--gray);
+`;
