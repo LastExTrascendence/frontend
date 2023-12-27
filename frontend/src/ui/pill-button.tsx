@@ -21,7 +21,7 @@ export default function PillButton({
   fontStyle = "normal",
   fontSize = "20px",
   theme,
-  disabled,
+  disabled = false,
 }: PillButtonProps) {
   return (
     <PillButtonStyled
@@ -81,5 +81,20 @@ const PillButtonStyled = styled.button<{
       background-color: var(--white);
       border: 2px solid var(--main-purple);
       color: var(--main-purple);
+    `}
+    ${(props) =>
+    props.theme === "gray" &&
+    css`
+      background-color: var(--gray);
+      color: var(--white);
+      &:hover {
+        text-decoration: underline;
+      }
+    `}
+    ${(props) =>
+    props.theme === "lightgray" &&
+    css`
+      background-color: var(--light-gray);
+      color: var(--white);
     `}
 `;

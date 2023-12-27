@@ -1,4 +1,3 @@
-"use client";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
 import styled from "styled-components";
@@ -30,7 +29,7 @@ function MainButtonList() {
   return (
     <>
       {buttons.map((button) => (
-        <ButtonContainer key={button.title}>
+        <ButtonContainerStyled key={button.title}>
           <PillButton
             width="320px"
             height="80px"
@@ -46,13 +45,13 @@ function MainButtonList() {
           <ButtonDescriptionStyled>
             {button.description}
           </ButtonDescriptionStyled>
-        </ButtonContainer>
+        </ButtonContainerStyled>
       ))}
     </>
   );
 }
 
-const ButtonContainer = styled.div`
+const ButtonContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
