@@ -1,5 +1,3 @@
-"use client";
-
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useDebouncedCallback } from "use-debounce";
 import Link from "next/link";
@@ -29,9 +27,9 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     fetchSearchResults(term);
   }, 300);
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className="relative flex">
       <input
-        className="block h-[60px] w-[350px] rounded-[20px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
+        className="h-[40px] w-[260px] rounded-[15px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

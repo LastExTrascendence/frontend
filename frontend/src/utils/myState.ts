@@ -6,6 +6,7 @@ export const myState = atom({
   default: {
     id: "chan",
     status: "Quickly match 1:1 games.",
+    online: true,
     profile:
       "https://cdn.intra.42.fr/users/684b78b28e8b79779609c8ed0def0ebe/chanheki.jpg",
   },

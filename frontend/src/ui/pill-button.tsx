@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 export interface PillButtonProps {
   disabled?: boolean;
   fontWeight?: string;
+  fontStyle?: string;
+  fontSize?: string;
   onClick(event: React.MouseEvent<HTMLButtonElement>): void;
   text: string;
   width?: string;
@@ -16,8 +18,10 @@ export default function PillButton({
   width = "320px",
   height = "70px",
   fontWeight,
+  fontStyle = "normal",
+  fontSize = "20px",
   theme,
-  disabled,
+  disabled = false,
 }: PillButtonProps) {
   return (
     <PillButtonStyled
@@ -25,6 +29,8 @@ export default function PillButton({
       width={width}
       height={height}
       $fontWeight={fontWeight}
+      $fontStyle={fontStyle}
+      $fontSize={fontSize}
       theme={theme}
       disabled={disabled}
     >
@@ -37,6 +43,8 @@ const PillButtonStyled = styled.button<{
   width?: string;
   height?: string;
   $fontWeight?: string;
+  $fontStyle?: string;
+  $fontSize?: string;
   theme: string;
   disabled?: boolean;
 }>`
@@ -46,8 +54,9 @@ const PillButtonStyled = styled.button<{
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   border-radius: 100px;
-  font-size: 20px;
+  font-size: ${(props) => props.$fontSize};
   font-weight: ${(props) => props.$fontWeight};
+  font-style: ${(props) => props.$fontStyle};
   border: none;
   cursor: pointer;
   transition: 0.3s;
@@ -72,5 +81,20 @@ const PillButtonStyled = styled.button<{
       background-color: var(--white);
       border: 2px solid var(--main-purple);
       color: var(--main-purple);
+    `}
+    ${(props) =>
+    props.theme === "gray" &&
+    css`
+      background-color: var(--gray);
+      color: var(--white);
+      &:hover {
+        text-decoration: underline;
+      }
+    `}
+    ${(props) =>
+    props.theme === "lightgray" &&
+    css`
+      background-color: var(--light-gray);
+      color: var(--white);
     `}
 `;

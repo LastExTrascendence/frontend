@@ -1,17 +1,27 @@
-import NavLinksWrapper from "@/ui/overview/sidenavbar/nav-links-wrapper";
-import SideNavFollowList from "@/ui/overview/sidenavbar/sidenav-follow-list";
+"use client";
+import styled from "styled-components";
 import Topnav from "@/ui/overview/topnavbar/topnav";
+import SideNav from "@/ui/overview/sidenavbar/sidenav";
+import FriendSection from "@/ui/overview/sidenavbar/friend/friend-section";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen w-screen grow flex-col md:flex-row md:overflow-hidden">
-      <div className="bg-lNavColor min-w-[60px] flex-none">
-        <NavLinksWrapper />
-      </div>
-      <div className="bg-rNavColor hidden w-1/5 min-w-[60px] flex-none md:block">
-        <SideNavFollowList />
-      </div>
-      <Topnav children={children} />
-    </div>
+    <>
+      <Topnav />
+      <MainSectionStyled>
+        <div id="sideNavWrap" className="flex">
+          <SideNav />
+          <FriendSection />
+        </div>
+        {children}
+      </MainSectionStyled>
+    </>
   );
 }
+
+const MainSectionStyled = styled.main`
+  display: flex;
+  height: calc(100% - 90px);
+  width: 100%;
+  overflow: hidden;
+`;

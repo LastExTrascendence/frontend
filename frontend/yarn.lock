@@ -138,8 +138,13 @@
 
 "@next/swc-darwin-x64@14.0.4":
   version "14.0.4"
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-14.0.4.tgz"
   integrity sha512-IZQ3C7Bx0k2rYtrZZxKKiusMTM9WWcK5ajyhOZkYYTCc8xytmwSzR1skU7qLgVT/EY9xtXDG0WhY6fyujnI3rw==
+=======
+  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.0.4.tgz"
+  integrity sha512-mF05E/5uPthWzyYDyptcwHptucf/jj09i2SXBPwNzbgBNc+XnwzrL0U6BmPjQeOL+FiB+iG1gwBeq7mlDjSRPg==
+>>>>>>> 0141ef0d7113d6b2b9b46e5d6ffeefab47496b7b
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
