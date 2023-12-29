@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import styled from "styled-components";
 import games from "@/lib/game-data.js";
 import SearchGame from "@/ui/overview/game/search-game";
-
 import Modal from "@/components/Modal";
 import NewGame from "@/ui/overview/game/new-game";
 import NewGameButton from "@/ui/overview/game/new-game-button";
 import GameList from "@/ui/overview/game/game-list";
 import JoinGame from "@/ui/overview/game/join-game";
 import PillButton from "@/ui/pill-button";
-import styled from "styled-components";
+import SearchBar from "@/ui/search-bar";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
@@ -26,25 +27,74 @@ export default function Page() {
   };
 
   return (
-    <GamePageStyled>
-      <TopSectionWrapperStyled>
-        <SearchGame placeholder="Search games" />
-        <NewGameButton toggleModal={toggleNewGameModal} />
-      </TopSectionWrapperStyled>
-      <GamePageContainerStyled>
-        <GameList games={games} openModal={toggleJoinGameModal} />
-        {selectedChat && (
-          <Modal onClose={() => setSelectedChat(null)}>
-            <JoinGame selectedChat={selectedChat} />
-          </Modal>
-        )}
-        {showModal && (
-          <Modal onClose={toggleNewGameModal}>
-            <NewGame onClose={toggleNewGameModal} />
-          </Modal>
-        )}
-      </GamePageContainerStyled>
-    </GamePageStyled>
+    <>
+      <GamePageStyled>
+        <TopSectionWrapperStyled>
+          <SearchBarWrapperStyled>
+            <SearchBarStyled
+              className="placeholder:text-stone-300"
+              placeholder="Search Games"
+              value={searchInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchInput(e.target.value)
+              }
+            />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
+          </SearchBarWrapperStyled>
+          <PillButton
+            onClick={toggleNewGameModal}
+            text="New"
+            width="100px"
+            height="35px"
+            fontWeight="800"
+            fontStyle="italic"
+            fontSize="1.5rem"
+            theme="purple"
+          />
+        </TopSectionWrapperStyled>
+        <GameChannelContainerStyled>
+          <GameList games={games} openModal={toggleJoinGameModal} />
+        </GameChannelContainerStyled>
+      </GamePageStyled>
+      {selectedChat && (
+        <Modal onClose={() => setSelectedChat(null)}>
+          <JoinGame selectedChat={selectedChat} />
+        </Modal>
+      )}
+      {showModal && (
+        <Modal onClose={toggleNewGameModal}>
+          <NewGame onClose={toggleNewGameModal} />
+        </Modal>
+      )}
+    </>
+    // <>
+    //   <GamePageStyled>
+    //     <TopSectionWrapperStyled>
+    //       <SearchBar
+    //         value={searchInput}
+    //         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+    //           setSearchInput(e.target.value)
+    //         }
+    //         placeholder="Search games"
+    //       />
+    //       <SearchGame placeholder="Search games" />
+    //       <NewGameButton toggleModal={toggleNewGameModal} />
+    //     </TopSectionWrapperStyled>
+    //     <GameChannelContainerStyled>
+    //       <GameList games={games} openModal={toggleJoinGameModal} />
+    //     </GameChannelContainerStyled>
+    //   </GamePageStyled>
+    //   {selectedChat && (
+    //     <Modal onClose={() => setSelectedChat(null)}>
+    //       <JoinGame selectedChat={selectedChat} />
+    //     </Modal>
+    //   )}
+    //   {showModal && (
+    //     <Modal onClose={toggleNewGameModal}>
+    //       <NewGame onClose={toggleNewGameModal} />
+    //     </Modal>
+    //   )}
+    // </>
   );
 }
 
@@ -58,20 +108,60 @@ const GamePageStyled = styled.div`
 `;
 
 const TopSectionWrapperStyled = styled.div`
-  width: calc(100% - 50px);
-  height: 100px;
+  width: calc(100% - 30px);
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0;
+  padding: 0 1.5rem;
 `;
 
-const GamePageContainerStyled = styled.div`
+const SearchBarWrapperStyled = styled.div`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(100% - 50px);
-  height: calc(100% - 50px);
+  position: relative;
+`;
+
+const SearchBarStyled = styled.input`
+  width: 260px;
+  height: 40px;
+  border-radius: 15px;
+  background-color: var(--search-bar-color);
+  font-size: 1.5rem;
+  font-weight: 100;
+  color: var(--white);
+  outline: none;
+  border: none;
+  padding-left: 2rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: 200;
+    width: 160px;
+  }
+`;
+
+const GameChannelContainerStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 30px);
+  height: calc(100% - 15px - 70px);
   border-radius: 20px;
   background-color: var(--gray);
+  margin-bottom: 15px;
+`;
+
+const GameChannelHeaderStyled = styled.div`
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: var(--gray); */
+  color: var(--white);
+  /* border-bottom: 2px solid var(--line-color-gray); */
 `;
