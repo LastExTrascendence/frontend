@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 export default function GameList({
   games,
   openModal,
@@ -6,27 +8,89 @@ export default function GameList({
   openModal: any;
 }) {
   return (
-    <div className="relative mt-3 h-full w-full items-center justify-center rounded-[20px] bg-zinc-800 p-6">
-      <div className="flex flex-row items-center justify-center border-b-2">
-        <p className="mr-4 flex-1">Game</p>
-        <p className="mr-4 flex-1">Creator</p>
-        <p className="mr-4 flex-1">Users</p>
-        <p className="mr-4 flex-1">Type</p>
-      </div>
-      <div>
-        {games.map((game) => (
-          <div
+    <GameListContainerStyled>
+      <TableHeader>
+        <CellHeaderStyled>Game</CellHeaderStyled>
+        <CellHeaderStyled>Creator</CellHeaderStyled>
+        <CellHeaderStyled>Users</CellHeaderStyled>
+        <CellHeaderStyled>Type</CellHeaderStyled>
+      </TableHeader>
+      <TableBody>
+        {games.map((game: any) => (
+          <RowStyled
             key={game.id}
-            className="flex min-h-[60px] cursor-pointer flex-row items-center justify-center border-b text-sm md:text-lg"
             onClick={() => openModal(game)}
+            className="game"
           >
-            <p className="mr-4 flex-1">{game.name}</p>
-            <p className="mr-4 flex-1">{game.join_users[0]}</p>
-            <p className="mr-4 flex-1">{[game.join_users].join(", ")}</p>
-            <p className="mr-4 flex-1">{game.status}</p>
-          </div>
+            <CellStyled>{game.name}</CellStyled>
+            <CellStyled>{game.join_users[0]}</CellStyled>
+            <CellStyled className="align-center">
+              {game.join_users.length + " / 2"}
+            </CellStyled>
+            <CellStyled className="align-center">{game.status}</CellStyled>
+          </RowStyled>
         ))}
-      </div>
-    </div>
+      </TableBody>
+    </GameListContainerStyled>
   );
 }
+
+const GameListContainerStyled = styled.div`
+  background-color: var(--zinc-800);
+  border-radius: 20px;
+  padding: 0 1.5rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--white);
+`;
+
+const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TableBody = styled.div`
+  overflow-y: auto;
+  max-height: calc(100% - 80px); // Adjust based on the height of your header
+`;
+
+const RowStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ccc; // Example border for rows
+  height: 60px;
+
+  &.game {
+    cursor: pointer;
+    &:hover {
+      background-color: var(--zinc-700);
+      opacity: 0.8;
+    }
+  }
+`;
+
+const CellHeaderStyled = styled.div`
+  flex: 1; // Adjust this value based on your column width preference
+  width: calc(100% / 4); // Adjust this value based on your column count
+  text-align: center;
+  padding: 10px; // Adjust padding for spacing
+  font-weight: bold;
+`;
+
+const CellStyled = styled.div`
+  flex: 1; // Adjust this value based on your column width preference
+  width: calc(100% / 4); // Adjust this value based on your column count
+  text-align: left;
+  padding: 10px; // Adjust padding for spacing
+
+  &.align-center {
+    text-align: center;
+  }
+`;
