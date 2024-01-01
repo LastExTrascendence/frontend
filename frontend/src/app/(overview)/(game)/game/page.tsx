@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import games from "@/lib/game-data.js";
 import SearchGame from "@/ui/overview/game/search-game";
-import Modal from "@/components/Modal";
+// import Modal from "@/components/Modal";
 import NewGame from "@/ui/overview/game/new-game";
 import NewGameButton from "@/ui/overview/game/new-game-button";
 import GameList from "@/ui/overview/game/game-list";
@@ -12,18 +12,25 @@ import JoinGame from "@/ui/overview/game/join-game";
 import PillButton from "@/ui/pill-button";
 import SearchBar from "@/ui/search-bar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import NewGameModal from "@/ui/Modals/NewGameModal/NewGameModal";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
 
+  const [showNewGameModal, setShowNewGameModal] = useState<boolean>(false);
+
   const toggleJoinGameModal = (chat: any) => {
     setSelectedChat(chat);
   };
 
   const toggleNewGameModal = () => {
-    setShowModal(!showModal);
+    setShowNewGameModal(!showModal);
+  };
+
+  const handleCloseNewGameModal = () => {
+    setShowNewGameModal(false);
   };
 
   return (
@@ -56,7 +63,10 @@ export default function Page() {
           <GameList games={games} openModal={toggleJoinGameModal} />
         </GameChannelContainerStyled>
       </GamePageStyled>
-      {selectedChat && (
+      {showNewGameModal && (
+        <NewGameModal closeModal={handleCloseNewGameModal} />
+      )}
+      {/* {selectedChat && (
         <Modal onClose={() => setSelectedChat(null)}>
           <JoinGame selectedChat={selectedChat} />
         </Modal>
@@ -65,36 +75,8 @@ export default function Page() {
         <Modal onClose={toggleNewGameModal}>
           <NewGame onClose={toggleNewGameModal} />
         </Modal>
-      )}
+      )} */}
     </>
-    // <>
-    //   <GamePageStyled>
-    //     <TopSectionWrapperStyled>
-    //       <SearchBar
-    //         value={searchInput}
-    //         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-    //           setSearchInput(e.target.value)
-    //         }
-    //         placeholder="Search games"
-    //       />
-    //       <SearchGame placeholder="Search games" />
-    //       <NewGameButton toggleModal={toggleNewGameModal} />
-    //     </TopSectionWrapperStyled>
-    //     <GameChannelContainerStyled>
-    //       <GameList games={games} openModal={toggleJoinGameModal} />
-    //     </GameChannelContainerStyled>
-    //   </GamePageStyled>
-    //   {selectedChat && (
-    //     <Modal onClose={() => setSelectedChat(null)}>
-    //       <JoinGame selectedChat={selectedChat} />
-    //     </Modal>
-    //   )}
-    //   {showModal && (
-    //     <Modal onClose={toggleNewGameModal}>
-    //       <NewGame onClose={toggleNewGameModal} />
-    //     </Modal>
-    //   )}
-    // </>
   );
 }
 

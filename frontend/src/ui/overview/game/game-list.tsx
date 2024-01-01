@@ -56,7 +56,7 @@ const TableHeader = styled.div`
 
 const TableBody = styled.div`
   overflow-y: auto;
-  max-height: calc(100% - 80px); // Adjust based on the height of your header
+  height: 100%; // Adjust based on the height of your header
 `;
 
 const RowStyled = styled.div`
