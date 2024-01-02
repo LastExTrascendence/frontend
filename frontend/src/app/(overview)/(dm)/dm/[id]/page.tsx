@@ -11,7 +11,7 @@ interface Message {
   content: string; //
 }
 
-export default function DM({ params }: { params: { id: string } }) {
+export default function DM({ params }: { params: { nickname: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -27,11 +27,9 @@ export default function DM({ params }: { params: { id: string } }) {
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 
-    socket.emit("getRedis", { sender: 1, receiver: params.id });
-
+    socket.emit("getRedis", { sender: myInfo.id, receiver: params.nickname });
     socket.on("msgToClient", messageListener);
 
-    // 클린업 함수
     return () => {
       socket.off("msgToClient", messageListener);
     };
@@ -42,7 +40,7 @@ export default function DM({ params }: { params: { id: string } }) {
 
     const messsage: Message = {
       sender: myInfo.id,
-      receiver: params.id,
+      receiver: params.nickname,
       content: currentMessage,
     };
 
@@ -51,7 +49,7 @@ export default function DM({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="bg-card text-card-foreground mx-auto w-[300px] rounded-xl border shadow">
+    <div className="bg-card text-card-foreground mx-auto w-[300px] overflow-y-auto rounded-xl border shadow ">
       <div className="p-6">
         <p>{isConnected ? "연결 완료" : "연결중"}</p>
       </div>
@@ -62,7 +60,7 @@ export default function DM({ params }: { params: { id: string } }) {
               key={index}
               className={
                 "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm " +
-                (message.receiver !== myInfo.nickname
+                (message.sender !== myInfo.nickname
                   ? "ml-auto bg-blue-400 text-white"
                   : "bg-zinc-100")
               }

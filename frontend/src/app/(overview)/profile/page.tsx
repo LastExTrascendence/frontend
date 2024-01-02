@@ -5,6 +5,8 @@ import InputContainer from "@/ui/input-container";
 import { ChangeEvent, useState } from "react";
 import PillButton from "@/ui/pill-button";
 import MultiToggleSwitch from "@/ui/multi-toggle-switch";
+import { useRecoilState } from "recoil";
+import { myState } from "@/utils/myState";
 
 export enum TwoFAType {
   ON = "ON",
@@ -20,6 +22,16 @@ export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<Blob>();
+  const [myInfo, setMyInfo] = useRecoilState(myState);
+
+  // 상태 업데이트
+  const updateMyInfo = (newNickname, newAvatar) => {
+    setMyInfo((prevInfo) => ({
+      ...prevInfo,
+      nickname: newNickname,
+      avatar: newAvatar,
+    }));
+  };
 
   return (
     <UserProfilePageStyled>
@@ -97,7 +109,8 @@ export default function Page() {
                 fontSize="1rem"
                 text="Save"
                 onClick={() => {
-                  console.log("click");
+                  updateMyInfo(nickname, avatar);
+                  console.log("myInfo: ", myInfo);
                 }}
               />
             </ButtonWrapperStyled>

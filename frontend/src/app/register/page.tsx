@@ -9,6 +9,9 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 import ProfileImage from "@/ui/profile-image";
+import { useRecoilState } from "recoil";
+import { myState } from "@/utils/myState";
+import { useRouter } from "next/router";
 
 const token = getCookie("access_token");
 
@@ -65,29 +68,50 @@ const encodeFileToBase64 = (image: File) => {
 
 export default function Page() {
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [nickname, setNickname] = useState<string>("");
+  const [avatar, setAvatar] = useState<Blob | string>();
   const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
+  const [myInfo, setMyInfo] = useRecoilState(myState);
+  const router = useRouter();
+
+  // 상태 업데이트
+  const updateMyInfo = (newNickname, newAvatar) => {
+    setMyInfo((prevInfo) => ({
+      ...prevInfo,
+      nickname: newNickname,
+      avatar: newAvatar,
+    }));
+  };
 
   const UserRegisterFinished = async () => {
     const data = {
       nickname,
       // avatar: base64Image?.url,
-      avatar: avatar,
+      avatar,
       // bio,
     };
-    const res = axiosCreateUser(data);
-    console.log("resonse: ", res);
-    console.log("data: ", data);
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 5000);
+
+    updateMyInfo(nickname, avatar);
+    // console.log("finished: ", nickname, avatar);
+    console.log("myInfo: ", myInfo);
+
+    try {
+      const response = await axiosCreateUser(data);
+      console.log("response: ", response);
+      setTimeout(() => {
+        // window.location.href = "/";
+        router.push("/");
+      }, 5000);
+    } catch (error) {
+      console.error("Error during user registration: ", error);
+    }
   };
 
   useEffect(() => {
     if (!token) {
-      window.location.href = "/login";
+      // window.location.href = "/login";
+      router.push("/login");
     } else {
     }
     // if (avatar) {
