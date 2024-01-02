@@ -9,6 +9,7 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 import ProfileImage from "@/ui/profile-image";
+import { useRouter } from "next/navigation";
 
 const token = getCookie("access_token");
 
@@ -69,6 +70,7 @@ export default function Page() {
   const [avatar, setAvatar] = useState("");
   const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
+  const router = useRouter();
 
   const UserRegisterFinished = async () => {
     const data = {
@@ -77,17 +79,22 @@ export default function Page() {
       avatar: avatar,
       // bio,
     };
-    const res = axiosCreateUser(data);
-    console.log("resonse: ", res);
-    console.log("data: ", data);
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 5000);
+    try {
+      const res = await axiosCreateUser(data);
+      console.log("resonse: ", res);
+      console.log("data: ", data);
+      setTimeout(() => {
+        router.replace("/login");
+      }, 4000);
+    } catch (error) {
+      console.log(error);
+      router.replace("/login");
+    }
   };
 
   useEffect(() => {
     if (!token) {
-      window.location.href = "/login";
+      router.replace("/login");
     } else {
     }
     // if (avatar) {
@@ -113,7 +120,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Nickname && (
           <Card title={UserRegisterCardTitle[currentStep]}>
             <>
-              <ProfileImage />
+              <ProfileImage width={100} height={100} />
               <InputContainerStyled $isValid={isValid}>
                 <input
                   type="text"
@@ -148,7 +155,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Avatar && (
           <Card title="아바타를 선택해주세요">
             <>
-              <ProfileImage />
+              <ProfileImage width={100} height={100} />
               <PillButton
                 text="돌아가기"
                 width="260px"
