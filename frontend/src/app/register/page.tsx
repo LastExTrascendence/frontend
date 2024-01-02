@@ -80,15 +80,13 @@ export default function Page() {
       // bio,
     };
     try {
-      const res = await axiosCreateUser(data);
-      console.log("resonse: ", res);
-      console.log("data: ", data);
+      await axiosCreateUser(data);
       setTimeout(() => {
-        router.replace("/login");
+        router.replace("/");
       }, 4000);
     } catch (error) {
-      console.log(error);
       router.replace("/login");
+      throw error;
     }
   };
 
