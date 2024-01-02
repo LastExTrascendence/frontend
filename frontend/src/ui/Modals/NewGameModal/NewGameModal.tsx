@@ -31,6 +31,7 @@ const NewGameModal = ({
     title: "Create New Game",
     renderAdditionalComponent: () => {
       return (
+        // title, creator_id, user_id, room_type, pw, mode(normal, ladder), type(normal, speed)
         <form
           onSubmit={handleSubmit}
           className="relative flex h-full w-full flex-col items-start rounded-lg text-[#827AAF]"
@@ -43,10 +44,7 @@ const NewGameModal = ({
               className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
             />
           </label>
-
-          <MaximumUser userCount={userCount} setUserCount={setUserCount} />
           <GameType gameType={gameType} setGameType={setGameType} />
-
           <button
             type="submit"
             className="hover:bg-modalColor w-full rounded  bg-violet-400 p-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2"
