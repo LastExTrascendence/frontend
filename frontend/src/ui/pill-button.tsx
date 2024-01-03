@@ -60,6 +60,7 @@ const PillButtonStyled = styled.button<{
   border: none;
   cursor: pointer;
   transition: 0.3s;
+  margin: 0 0.5rem;
 
   &:disabled {
     opacity: 0.5;
