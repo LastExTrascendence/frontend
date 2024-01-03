@@ -13,7 +13,7 @@ export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
 
-  const toggleJoinChannelModal = (chat) => {
+  const toggleJoinChannelModal = (chat: any) => {
     setSelectedChat(chat);
   };
 

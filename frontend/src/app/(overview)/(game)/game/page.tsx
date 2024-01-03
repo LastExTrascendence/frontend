@@ -82,7 +82,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
-          {/* { gameChannelList && <GameList games={gameChannelList} openModal={toggleJoinGameModal} />} */}
+          {/* { filteredGames && <GameList games={filteredGames} openModal={toggleJoinGameModal} />} */}
           <GameList games={games} openModal={toggleJoinGameModal} />
         </GameChannelContainerStyled>
       </GamePageStyled>
@@ -148,7 +148,7 @@ const SearchBarStyled = styled.input`
   }
 `;
 
-const GameChannelContainerStyled = styled.div`
+export const GameChannelContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;

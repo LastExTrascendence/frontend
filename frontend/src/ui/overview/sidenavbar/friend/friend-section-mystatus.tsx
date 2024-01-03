@@ -18,11 +18,11 @@ export default function FriendSectionMyStatus() {
   const token = getCookie("access_token");
 
   useEffect(() => {
-    if (!token) {
-      router.replace("/login");
-    } else {
-      getMyInfo();
-    }
+    // if (!token) {
+    //   router.replace("/login");
+    // } else {
+    //   getMyInfo();
+    // }
   }, []);
 
   const getMyInfo = async () => {

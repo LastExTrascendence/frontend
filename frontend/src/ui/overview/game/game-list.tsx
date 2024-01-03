@@ -8,7 +8,7 @@ export default function GameList({
   openModal: any;
 }) {
   return (
-    <GameListContainerStyled>
+    <ChannelListContainerStyled>
       <TableHeader>
         <CellHeaderStyled>Game</CellHeaderStyled>
         <CellHeaderStyled>Creator</CellHeaderStyled>
@@ -31,11 +31,11 @@ export default function GameList({
           </RowStyled>
         ))}
       </TableBody>
-    </GameListContainerStyled>
+    </ChannelListContainerStyled>
   );
 }
 
-const GameListContainerStyled = styled.div`
+export const ChannelListContainerStyled = styled.div`
   background-color: var(--zinc-800);
   border-radius: 20px;
   padding: 0 1.5rem;
@@ -47,19 +47,19 @@ const GameListContainerStyled = styled.div`
   color: var(--white);
 `;
 
-const TableHeader = styled.div`
+export const TableHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
-const TableBody = styled.div`
+export const TableBody = styled.div`
   overflow-y: auto;
   height: 100%; // Adjust based on the height of your header
 `;
 
-const RowStyled = styled.div`
+export const RowStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -76,7 +76,7 @@ const RowStyled = styled.div`
   }
 `;
 
-const CellHeaderStyled = styled.div`
+export const CellHeaderStyled = styled.div`
   flex: 1; // Adjust this value based on your column width preference
   width: calc(100% / 4); // Adjust this value based on your column count
   text-align: center;
@@ -84,7 +84,7 @@ const CellHeaderStyled = styled.div`
   font-weight: bold;
 `;
 
-const CellStyled = styled.div`
+export const CellStyled = styled.div`
   flex: 1; // Adjust this value based on your column width preference
   width: calc(100% / 4); // Adjust this value based on your column count
   text-align: left;

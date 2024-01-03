@@ -113,7 +113,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Nickname && (
           <Card title={UserRegisterCardTitle[currentStep]}>
             <>
-              <ProfileImage />
+              <ProfileImage showBorder={true} borderRadius={40} />
               <InputContainerStyled $isValid={isValid}>
                 <input
                   type="text"
