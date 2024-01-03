@@ -1,37 +1,56 @@
-import Button from "@/ui/button";
-import React, { ReactElement } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
+import PillButton from "../pill-button";
+import Button from "@/ui/button";
 
+/**
+ * @description Modal 타입 (확인 버튼 유무)
+ * @param hasProceedBtn 확인 버튼 있음 (취소 버튼으로 Modal 닫기)
+ * @param noBtn 확인 버튼 없음 (모달 내/외부 클릭으로 Modal 닫기)
+ */
 export enum ModalTypes {
   hasProceedBtn = "hasProceedBtn",
   noBtn = "noBtn",
 }
 
+/**
+ * @description Modal 컴포넌트의 props
+ * @param type Modal 타입 (확인 버튼 유무)
+ * @param icon Modal 상단에 띄울 아이콘
+ * @param iconScaleEffect Modal 상단에 띄울 아이콘에 scale 효과 적용 여부
+ * @param title Modal 제목
+ * @param detail Modal 본문
+ * @param children Modal 내부 content
+ * @param proceedBtnText 확인버튼 텍스트 (기본값: 확인)
+ * @param onClickProceed 확인버튼 클릭 시 동작 함수
+ * @param cancleBtnText 취소버튼 텍스트 (기본값: 취소)
+ * @param closeModal 모달 닫는 함수
+ */
 export interface IModalContents {
-  type: ModalTypes; // hasProceedBtn(모달 외부 클릭이나 취소 버튼으로 끔), noBtn(모달 내/외부 클릭으로 끔)
-  icon?: string; // checkIcon, errorIcon import 해서 넘기거나 다른 아이콘 사용 가능
-  iconScaleEffect?: boolean; // iconEffect 적용 여부
-  title?: string; // 모달 제목
-  detail?: string; // 모달 본문
-  renderAdditionalComponent?: () => ReactElement; // 모달에 추가로 띄울 UI를 렌더해주는 함수
-  proceedBtnText?: string; // 확인 버튼의 텍스트(기본값: 확인)
-  onClickProceed?: ((e: React.MouseEvent) => Promise<void>) | null; // 확인 버튼의 동작함수
-  cancleBtnText?: string; // 취소 버튼의 텍스트(기본값: 취소)
-  closeModal: React.MouseEventHandler; // 모달 닫는 함수
+  type: ModalTypes;
+  icon?: string;
+  iconScaleEffect?: boolean;
+  title?: string;
+  detail?: string;
+  children: React.ReactElement;
+  proceedBtnText?: string;
+  onClickProceed?: ((e: React.MouseEvent) => Promise<void>) | null;
+  cancleBtnText?: string;
+  closeModal: React.MouseEventHandler;
 }
-const Modal: React.FC<{ modalContents: IModalContents }> = (props) => {
-  const {
-    type,
-    icon,
-    iconScaleEffect,
-    title,
-    detail,
-    renderAdditionalComponent,
-    proceedBtnText,
-    onClickProceed,
-    cancleBtnText,
-    closeModal,
-  } = props.modalContents;
+
+export default function Modal({
+  type,
+  icon,
+  iconScaleEffect,
+  title,
+  detail,
+  children,
+  proceedBtnText,
+  onClickProceed,
+  cancleBtnText,
+  closeModal,
+}: IModalContents) {
   return (
     <>
       <BackgroundStyled
@@ -39,35 +58,42 @@ const Modal: React.FC<{ modalContents: IModalContents }> = (props) => {
           closeModal(e);
         }}
       />
-      <ModalStyled onClick={type === "noBtn" ? closeModal : undefined}>
-        {icon && (
-          <ModalIconImgStyled src={icon} iconScaleEffect={iconScaleEffect} />
-        )}
-        <H2Styled>{title}</H2Styled>
-        {detail && (
-          <DetailStyled dangerouslySetInnerHTML={{ __html: detail }} />
-        )}
-        {renderAdditionalComponent && renderAdditionalComponent()}
-        {type === "hasProceedBtn" && (
-          <ButtonWrapperStyled>
-            <Button
-              onClick={closeModal}
-              text={cancleBtnText || "취소"}
-              theme="line"
-            />
-            <Button
-              onClick={(e: React.MouseEvent) => {
-                onClickProceed!(e);
-              }}
-              text={proceedBtnText || "확인"}
-              theme="fill"
-            />
-          </ButtonWrapperStyled>
-        )}
+      <ModalStyled
+        onClick={type === "noBtn" ? closeModal : undefined}
+        $width={"350px"}
+        $height={"auto"}
+      >
+        <ModalContentWrapperStyled $width={"auto"} $height={"auto"}>
+          {/* {icon && (
+            <ModalIconImgStyled src={icon} iconScaleEffect={iconScaleEffect} />
+          )} */}
+          <H2Styled>{title}</H2Styled>
+          {children}
+          {type === "hasProceedBtn" && (
+            <ButtonWrapperStyled>
+              <PillButton
+                width="120px"
+                height="40px"
+                onClick={closeModal}
+                text={cancleBtnText || "취소"}
+                theme="white"
+              />
+              <PillButton
+                width="120px"
+                height="40px"
+                onClick={(e: React.MouseEvent) => {
+                  onClickProceed!(e);
+                }}
+                text={proceedBtnText || "확인"}
+                theme="purple"
+              />
+            </ButtonWrapperStyled>
+          )}
+        </ModalContentWrapperStyled>
       </ModalStyled>
     </>
   );
-};
+}
 
 const BackgroundStyled = styled.div`
   position: fixed;
@@ -86,17 +112,19 @@ const BackgroundStyled = styled.div`
       opacity: 0.4;
     }
   }
-  z-index: 1000;
+  z-index: 100;
 `;
 
-const ModalStyled = styled.div`
+const ModalStyled = styled.div<{
+  $width: string;
+  $height: string;
+}>`
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 360px;
-  background: white;
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
   z-index: 1000;
-  border-radius: 10px;
   transform: translate(-50%, -50%);
   animation: fadeInModal 0.5s;
   @keyframes fadeInModal {
@@ -111,7 +139,25 @@ const ModalStyled = styled.div`
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  padding: 40px 20px;
+  padding: 1.5rem;
+  border-radius: 4.5rem;
+  background: var(--light-gray);
+`;
+
+const ModalContentWrapperStyled = styled.div<{
+  $width: string;
+  $height: string;
+}>`
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
+  border-radius: 4rem;
+  background: var(--white);
+  box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem 0.5rem 2rem;
 `;
 
 const ModalIconImgStyled = styled.img<{ iconScaleEffect: boolean | undefined }>`
@@ -142,17 +188,17 @@ export const DetailStyled = styled.p`
 `;
 
 const H2Styled = styled.h2`
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1.25rem;
   line-height: 1.75rem;
   white-space: break-spaces;
+  margin-bottom: 1rem;
+  /* color: var(--main-purple); */
 `;
 
 const ButtonWrapperStyled = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
   margin-top: 30px;
 `;
-
-export default Modal;

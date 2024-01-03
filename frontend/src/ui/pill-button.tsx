@@ -33,6 +33,7 @@ export default function PillButton({
       $fontSize={fontSize}
       theme={theme}
       disabled={disabled}
+      type="button"
     >
       {text}
     </PillButtonStyled>

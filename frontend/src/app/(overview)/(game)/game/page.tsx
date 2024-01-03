@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import games from "@/lib/game-data.js";
 import SearchGame from "@/ui/overview/game/search-game";
@@ -13,13 +13,35 @@ import PillButton from "@/ui/pill-button";
 import SearchBar from "@/ui/search-bar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import NewGameModal from "@/ui/Modals/NewGameModal/NewGameModal";
+import { GameChannelListDto } from "@/types/interface/game.interface";
+import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-
   const [showNewGameModal, setShowNewGameModal] = useState<boolean>(false);
+  const [gameChannelList, setGameChannelList] =
+    useState<GameChannelListDto[]>();
+
+  // useEffect(() => {
+  //   getGameChannels();
+  // }, []);
+
+  const getGameChannels = async () => {
+    try {
+      const response = await axiosGetGameChannels()
+        .then((res) => {
+          setGameChannelList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   const toggleJoinGameModal = (chat: any) => {
     setSelectedChat(chat);
@@ -60,6 +82,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
+          {/* { gameChannelList && <GameList games={gameChannelList} openModal={toggleJoinGameModal} />} */}
           <GameList games={games} openModal={toggleJoinGameModal} />
         </GameChannelContainerStyled>
       </GamePageStyled>

@@ -9,14 +9,16 @@ interface toggleItem {
 
 interface MultiToggleSwitchProps<T> {
   initialState: T;
-  setState: React.Dispatch<React.SetStateAction<TwoFAType>>;
+  setState: React.Dispatch<React.SetStateAction<T>>;
   toggleList: toggleItem[];
+  width?: string;
 }
 
 const MultiToggleSwitch = <T,>({
   initialState,
   setState,
   toggleList,
+  width,
 }: MultiToggleSwitchProps<T>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -40,13 +42,26 @@ const MultiToggleSwitch = <T,>({
     });
     target.style.color = "white";
     target.style.backgroundColor = "var(--main-purple)";
-    setState(target.className as React.SetStateAction<TwoFAType>);
+    setState(target.className as React.SetStateAction<T>);
   }
 
   return (
-    <MultiToggleWrapperStyled ref={wrapperRef} onClick={switchToggle}>
+    <MultiToggleWrapperStyled
+      ref={wrapperRef}
+      onClick={switchToggle}
+      $width={width}
+    >
       {toggleList.map((item) => (
-        <button key={item.key} className={item.key}>
+        <button
+          key={item.key}
+          type="button"
+          className={item.key}
+          style={{
+            width: width
+              ? Number(width.replace("px", "")) / toggleList.length
+              : "fit-content",
+          }}
+        >
           {item.name}
         </button>
       ))}
@@ -54,12 +69,15 @@ const MultiToggleSwitch = <T,>({
   );
 };
 
-const MultiToggleWrapperStyled = styled.div`
-  width: fit-content;
+const MultiToggleWrapperStyled = styled.div<{
+  $width?: string;
+}>`
+  width: ${(props) => props.$width || "fit-content"};
   display: flex;
   align-items: center;
   background-color: var(--light-gray);
   border-radius: 10px;
+  margin: 0.5rem 0;
 
   button {
     display: flex;
@@ -73,6 +91,7 @@ const MultiToggleWrapperStyled = styled.div`
     font-weight: 500;
     background-color: transparent;
     color: white;
+    padding: 0 0.5rem;
   }
 `;
 
