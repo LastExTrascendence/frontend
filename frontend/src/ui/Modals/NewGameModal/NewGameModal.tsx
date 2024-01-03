@@ -6,7 +6,8 @@ import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { GameMode, GameType } from "@/types/enum/game.enum";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { axiosCreateGame } from "@/api/axios/axios.custom";
-import { userState } from "@/recoil/atom";
+import { myState } from "@/recoil/atom";
+import { useRouter } from "next/navigation";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -24,7 +25,8 @@ const GameTypeList = [
 ];
 
 const NewGameModal = ({ closeModal }: { closeModal: () => void }) => {
-  const [myInfo, setMyInfo] = useRecoilState(userState);
+  const router = useRouter();
+  const [myInfo, setMyInfo] = useRecoilState(myState);
   const [title, setTitle] = useState("");
   const [channelPolicy, setChannelPolicy] = useState(ChannelPolicy.PUBLIC);
   const [password, setPassword] = useState("");
@@ -43,6 +45,7 @@ const NewGameModal = ({ closeModal }: { closeModal: () => void }) => {
         gameType,
         gameMode,
       );
+      router.push(`/game/${channelId}`);
     } catch (error) {
       console.log(error);
       throw error;

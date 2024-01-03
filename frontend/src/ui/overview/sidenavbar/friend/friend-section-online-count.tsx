@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import { FollowlistProps } from "@/lib/definitions";
+import { UserInfoDto } from "@/types/interface/user.interface";
 
 function FriendSectionOnlineCount({
   friendList = [],
 }: {
-  friendList: FollowlistProps[];
+  friendList: UserInfoDto[];
 }) {
   const onlineCount = friendList.filter(
-    (person: FollowlistProps) => person.online,
+    (person: UserInfoDto) => person.status === "ONLINE",
   ).length;
 
   return (

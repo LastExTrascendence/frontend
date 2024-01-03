@@ -17,6 +17,7 @@ export interface ChannelDto {
 
 /**
  * @description 채팅 채널 (/channel) 리스트를 위한 interface
+ * @extends {ChannelDto} ChannelDto
  * @param {number} curUser - 현재 채널에 접속한 유저 수
  * @param {number} maxUser - 채널 최대 유저 수
  */
@@ -32,7 +33,7 @@ export interface ChatChannelListDto extends ChannelDto {
  * @param {ChatChannelUserRole} role - 유저 권한
  */
 export interface ChatChannelUserDto {
-  avatar: string; // base64
+  avatar: string; // base64? string?
   nickanme: string;
   role: ChatChannelUserRole;
 }

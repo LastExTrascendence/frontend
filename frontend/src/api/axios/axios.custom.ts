@@ -4,6 +4,17 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { GameMode, GameType } from "@/types/enum/game.enum";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 
+const axiosMyInfoURL = "/user/me";
+export const axiosMyInfo = async (): Promise<any> => {
+  try {
+    const response = await instance.get(axiosMyInfoURL);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosCreateUserURL = "/user/create";
 export const axiosCreateUser = async ({
   nickname,

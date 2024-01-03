@@ -2,12 +2,14 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function ProfileImage({
+  src = "/default_profile.svg",
   width = 100,
   height = 100,
   borderRadius = 20,
   showOutline = false,
   showBorder = false,
 }: {
+  src?: string;
   width: number;
   height: number;
   borderRadius?: number;
@@ -23,7 +25,7 @@ export default function ProfileImage({
       $showBorder={showBorder}
     >
       <Image
-        src="/default_profile.svg"
+        src={src}
         alt="Profile Image"
         width={width}
         height={height}

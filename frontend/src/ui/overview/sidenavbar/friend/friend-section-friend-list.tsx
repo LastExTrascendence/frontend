@@ -1,15 +1,12 @@
 import styled from "styled-components";
-import { FollowlistProps } from "@/lib/definitions";
 import FriendSectionCard from "./friend-section-card";
+import { UserInfoDto } from "@/types/interface/user.interface";
 
 export default function FriendSectionFriendList({
   friendList = [],
 }: {
-  friendList: FollowlistProps[];
+  friendList: UserInfoDto[];
 }) {
-  // nextjs에서 fetch를 사용해서 follow list를 가져온다.
-  // const followList = fetch();
-
   return (
     <FriendListContainerStyled>
       {friendList.map((friend) => (
@@ -20,6 +17,7 @@ export default function FriendSectionFriendList({
           height={50}
         />
       ))}
+      {/* NOTE: Below is a dummy data for longer followlist */}
       {friendList.map((friend) => (
         <FriendSectionCard
           key={friend.id + " " + friend.id}
