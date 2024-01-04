@@ -36,7 +36,6 @@ export default function GameList({
 }
 
 export const ChannelListContainerStyled = styled.div`
-  background-color: var(--zinc-800);
   border-radius: 20px;
   padding: 0 1.5rem;
   height: 100%;

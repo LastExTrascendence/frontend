@@ -17,22 +17,18 @@ export default function ChannelList({
   return (
     <ChannelListContainerStyled>
       <TableHeader>
-        <CellHeaderStyled className="mr-4 flex-1">Channel</CellHeaderStyled>
-        <CellHeaderStyled className="mr-4 flex-1">Creator</CellHeaderStyled>
-        <CellHeaderStyled className="mr-4 flex-1">Users</CellHeaderStyled>
-        <CellHeaderStyled className="mr-4 flex-1">Type</CellHeaderStyled>
+        <CellHeaderStyled>Channel</CellHeaderStyled>
+        <CellHeaderStyled>Creator</CellHeaderStyled>
+        <CellHeaderStyled>Users</CellHeaderStyled>
+        <CellHeaderStyled>Type</CellHeaderStyled>
       </TableHeader>
       <TableBody>
         {chats.map((chat: any) => (
-          <RowStyled
-            key={chat.id}
-            // className="flex min-h-[60px] cursor-pointer flex-row items-center justify-center border-b text-sm md:text-lg"
-            onClick={() => openModal(chat)}
-          >
-            <CellStyled className="mr-4 flex-1">{chat.channel}</CellStyled>
-            <CellStyled className="mr-4 flex-1">{chat.creator}</CellStyled>
-            <CellStyled className="mr-4 flex-1">{chat.users}</CellStyled>
-            <CellStyled className="mr-4 flex-1">{chat.type}</CellStyled>
+          <RowStyled key={chat.id} onClick={() => openModal(chat)}>
+            <CellStyled>{chat.channel}</CellStyled>
+            <CellStyled>{chat.creator}</CellStyled>
+            <CellStyled>{chat.users}</CellStyled>
+            <CellStyled>{chat.type}</CellStyled>
           </RowStyled>
         ))}
       </TableBody>

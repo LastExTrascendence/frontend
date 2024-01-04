@@ -8,6 +8,6 @@ import { ChannelDto } from "./channel.interface";
  * @param {GameMode} mode - 게임 모드 (노멀, 2배속)
  */
 export interface GameChannelListDto extends ChannelDto {
-  type: GameType;
-  mode: GameMode;
+  gameType: GameType;
+  gameMode: GameMode;
 }
