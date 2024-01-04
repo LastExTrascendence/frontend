@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import SideNavButtonList, {
-  SideNavButtonContainerStyled,
-} from "./sidenav-button-list";
+import { SideNavButtonContainerStyled } from "./sidenav-button-list";
+import SideNavButtonList from "./sidenav-button-list";
 import LogoutIcon from "@/ui/icon/logout-icon";
 
 const SideNav = () => {

@@ -1,6 +1,7 @@
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 const buttons: MainButtonItemProps[] = [
   {
@@ -26,6 +27,8 @@ const buttons: MainButtonItemProps[] = [
 ];
 
 function MainButtonList() {
+  const router = useRouter();
+
   return (
     <>
       {buttons.map((button) => (
@@ -34,7 +37,7 @@ function MainButtonList() {
             width="320px"
             height="80px"
             onClick={() => {
-              window.location.href = button.href;
+              router.push(button.href);
             }}
             fontWeight="800"
             fontStyle="italic"

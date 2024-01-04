@@ -1,7 +1,10 @@
+import { useRouter } from "next/navigation";
 import IconContainer from "@/ui/icon/icon-container";
 import { removeCookie } from "@/api/cookie/cookies";
 
 export default function LogoutIcon() {
+  const router = useRouter();
+
   const onClickLogout = (): void => {
     // if (process.env.IS_LOCAL) {
     removeCookie("access_token", {
@@ -9,7 +12,7 @@ export default function LogoutIcon() {
       domain: "localhost",
     });
     // }
-    window.location.href = "/login";
+    router.push("/login");
   };
   return (
     <IconContainer
