@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { myState } from "@/utils/myState";
 
 interface Message {
+  time: string;
   sender: number; // mystate id
   receiver: string; // receiver nickname
   content: string; //
