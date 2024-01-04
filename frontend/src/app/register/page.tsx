@@ -11,7 +11,7 @@ import { getCookie } from "@/api/cookie/cookies";
 import ProfileImage from "@/ui/profile-image";
 import { useRecoilState } from "recoil";
 import { myState } from "@/utils/myState";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const token = getCookie("access_token");
 
@@ -91,27 +91,21 @@ export default function Page() {
       avatar,
       // bio,
     };
-
     updateMyInfo(nickname, avatar);
-    // console.log("finished: ", nickname, avatar);
-    console.log("myInfo: ", myInfo);
-
     try {
-      const response = await axiosCreateUser(data);
-      console.log("response: ", response);
+      await axiosCreateUser(data);
       setTimeout(() => {
-        // window.location.href = "/";
-        router.push("/");
-      }, 5000);
+        router.replace("/");
+      }, 4000);
     } catch (error) {
-      console.error("Error during user registration: ", error);
+      router.replace("/login");
+      throw error;
     }
   };
 
   useEffect(() => {
     if (!token) {
-      // window.location.href = "/login";
-      router.push("/login");
+      router.replace("/login");
     } else {
     }
     // if (avatar) {
@@ -137,7 +131,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Nickname && (
           <Card title={UserRegisterCardTitle[currentStep]}>
             <>
-              <ProfileImage />
+              <ProfileImage width={100} height={100} />
               <InputContainerStyled $isValid={isValid}>
                 <input
                   type="text"
@@ -172,7 +166,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Avatar && (
           <Card title="아바타를 선택해주세요">
             <>
-              <ProfileImage />
+              <ProfileImage width={100} height={100} />
               <PillButton
                 text="돌아가기"
                 width="260px"
