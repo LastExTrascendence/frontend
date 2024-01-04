@@ -22,6 +22,8 @@ const config: Config = {
         lNavColor: "#1E1F22",
         myNavColor: "#232428",
         chatColor: "#2B2D31",
+        chatInputColor: "#383A3F",
+        channelInfoColor: "#232428",
         userInfoColor: "#232428",
       },
     },
