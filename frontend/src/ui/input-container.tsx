@@ -4,7 +4,6 @@ export default function InputContainer({
   width = "300px",
   height = "45px",
   icon,
-  title = "",
   placeholder,
   value = "",
   borderRadius = "10px",
@@ -13,7 +12,6 @@ export default function InputContainer({
   width: string;
   height: string;
   icon?: string;
-  title?: string;
   placeholder: string;
   value?: string;
   borderRadius: string;
@@ -25,7 +23,7 @@ export default function InputContainer({
         {icon && <InputIconStyled src={icon} />}
         <InputStyled
           placeholder={placeholder}
-          borderRadius={borderRadius}
+          $borderRadius={borderRadius}
           onChange={onChange}
           value={value}
         />
@@ -62,7 +60,7 @@ const InputIconStyled = styled.img`
 `;
 
 const InputStyled = styled.input<{
-  borderRadius: string;
+  $borderRadius: string;
 }>`
   width: 100%;
   height: 100%;
@@ -70,6 +68,6 @@ const InputStyled = styled.input<{
   outline: none;
   padding: 0.5rem;
   color: var(--white);
-  border-radius: ${(props) => props.borderRadius};
+  border-radius: ${(props) => props.$borderRadius};
   background-color: var(--input-container-color);
 `;

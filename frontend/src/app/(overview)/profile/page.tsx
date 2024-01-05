@@ -40,7 +40,6 @@ export default function Page() {
           <PropertyContainerWrapperStyled>
             <PropertyTitleStyled width={"300px"}>Nickname</PropertyTitleStyled>
             <InputContainer
-              title="Nickname"
               placeholder="Nickname"
               width={"300px"}
               height={"50px"}

@@ -1,16 +1,13 @@
 import styled from "styled-components";
-import { FollowlistProps } from "@/lib/definitions";
 import FriendSectionCard from "./friend-section-card";
 import Link from "next/link";
+import { UserInfoDto } from "@/types/interface/user.interface";
 
 export default function FriendSectionFriendList({
   friendList = [],
 }: {
-  friendList: FollowlistProps[];
+  friendList: UserInfoDto[];
 }) {
-  // nextjs에서 fetch를 사용해서 follow list를 가져온다.
-  // const followList = fetch();
-
   return (
     <FriendListContainerStyled>
       {friendList.map((friend) => (
@@ -23,14 +20,15 @@ export default function FriendSectionFriendList({
           />
         </Link>
       ))}
-      {/* {friendList.map((friend) => (
+      {/* NOTE: Below is a dummy data for longer followlist */}
+      {friendList.map((friend) => (
         <FriendSectionCard
           key={friend.id + " " + friend.id}
           friend={friend}
           width={50}
           height={50}
         />
-      ))} */}
+      ))}
     </FriendListContainerStyled>
   );
 }

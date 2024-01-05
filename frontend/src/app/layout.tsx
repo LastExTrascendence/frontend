@@ -29,6 +29,7 @@ export default function RootLayout({
             <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
           </RecoilRootProvider>
         </SocketProvider>
+        <div id="modal-portal"></div>
       </body>
     </html>
   );
