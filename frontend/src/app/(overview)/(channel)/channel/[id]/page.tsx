@@ -5,22 +5,27 @@ import { useSocket } from "@/components/SocketProvider";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/utils/myState";
 import Image from "next/image";
-import showTime from "@/utils/showTime";
 import { useSearchParams } from "next/navigation";
 
 // channel 입장시 받아야할 정보
 // 1. 채널 주인 / 관리자
 // 2. 채널 멤버
-// 3. 채널 메세지
 
 // TODO
 // 컴포넌트 분리
 
 interface Message {
-  time: string;
-  sender: number; // mystate id
-  receiver: string; // receiver nickname
-  content: string; //
+  time: string | Date;
+  sender: string;
+  content: string;
+}
+
+interface User {
+  id: number;
+  nickname: string;
+  avatar: string;
+  role: string;
+  mute: boolean;
 }
 
 const mockUser = [
@@ -28,149 +33,130 @@ const mockUser = [
     id: 1,
     nickname: "jusohn",
     avatar: "https://via.placeholder.com/36x36",
+    role: "USER",
+    mute: false,
   },
   {
     id: 2,
     nickname: "TestNickName",
     avatar: "https://via.placeholder.com/36x36",
+    role: "OPERATOR",
+    mute: false,
   },
   {
     id: 3,
     nickname: "chanheki",
     avatar: "https://via.placeholder.com/36x36",
+    role: "CREATOR",
+    mute: false,
   },
   {
     id: 4,
     nickname: "yeomin",
     avatar: "https://via.placeholder.com/36x36",
+    role: "USER",
+    mute: true,
   },
   {
     id: 5,
     nickname: "randomUser42",
     avatar: "https://via.placeholder.com/36x36",
+    role: "USER",
+    mute: true,
   },
 ];
 
-const initialMessages = [
-  {
-    time: "1:21 PM",
-    sender: "chanheki",
-    receiver: 2,
-    content: "안녕하세요",
-  },
-  {
-    time: "1:21 PM",
-    sender: "chanheki",
-    receiver: 2,
-    content: "반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content: "ㅇㅇㄴㅇㄹ",
-  },
-  {
-    time: "1:22 PM",
-    sender: "testNickName",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:21 PM",
-    sender: "chanheki",
-    receiver: 2,
-    content: "반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content: "ㅇㅇㄴㅇㄹ",
-  },
-  {
-    time: "1:22 PM",
-    sender: "testNickName",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:21 PM",
-    sender: "chanheki",
-    receiver: 2,
-    content: "반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content: "ㅇㅇㄴㅇㄹ",
-  },
-  {
-    time: "1:22 PM",
-    sender: "testNickName",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:21 PM",
-    sender: "chanheki",
-    receiver: 2,
-    content: "반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-  {
-    time: "1:22 PM",
-    sender: "yeomin",
-    receiver: 2,
-    content: "ㅇㅇㄴㅇㄹ",
-  },
-  {
-    time: "1:22 PM",
-    sender: "testNickName",
-    receiver: 2,
-    content:
-      "반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다반갑습니다",
-  },
-];
+const getRoleIcon = (role: string) => {
+  switch (role) {
+    case "CREATOR":
+      return <Image src="/creator.svg" alt="Creator" width={18} height={18} />;
+    case "OPERATOR":
+      return (
+        <Image src="/operator.svg" alt="Operator" width={18} height={18} />
+      );
+    default:
+      return <div style={{ width: "18px", height: "18px" }} />;
+  }
+};
+
+const getAdminIcon = (role: string) => {
+  switch (role) {
+    case "OPERATOR":
+      return (
+        <Image src="/operator.svg" alt="Operator" width={18} height={18} />
+      );
+    default:
+      return (
+        <div>
+          <button
+            className="p-1"
+            type="button"
+            onClick={() => handleApiRequest("user-slash")}
+          >
+            <Image
+              src="/user-slash.svg"
+              alt="User Slash"
+              width={18}
+              height={18}
+            />
+          </button>
+          <button
+            type="button"
+            className="p-1"
+            onClick={() => handleApiRequest("user-mute")}
+          >
+            <Image
+              src="/user-mute.svg"
+              alt="User Mute"
+              width={18}
+              height={18}
+            />
+          </button>
+          <button
+            type="button"
+            className="p-1"
+            onClick={() => handleApiRequest("user-kick")}
+          >
+            <Image
+              src="/user-kick.svg"
+              alt="User Kick"
+              width={18}
+              height={18}
+            />
+          </button>
+          <button
+            type="button"
+            className="p-1"
+            onClick={() => handleApiRequest("user-follow")}
+          >
+            <Image
+              src="/user-follow.svg"
+              alt="User Follow"
+              width={18}
+              height={18}
+            />
+          </button>
+          <button type="button" onClick={() => handleApiRequest("user-block")}>
+            <Image
+              src="/user-block.svg"
+              alt="User Block"
+              width={18}
+              height={18}
+            />
+          </button>
+        </div>
+      );
+  }
+};
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
+  const [userList, setUserList] = useState<User[]>(mockUser);
+  const [myRole, setMyRole] = useState<string>("USER");
   const messagesEndRef = useRef(null);
-  const [mockMessage, setMockMessage] = useState(initialMessages);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
 
@@ -179,23 +165,22 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   useEffect(() => {
+    const matchingUser = userList.find(
+      (user) => user.nickname === myInfo.nickname,
+    );
+
+    if (matchingUser) {
+      setMyRole(matchingUser.role);
+    }
+  }, [userList]);
+
+  useEffect(() => {
     scrollToBottom();
-  }, [mockMessage]);
+  }, [messages]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      if (currentMessage.trim()) {
-        setMockMessage([
-          ...mockMessage,
-          {
-            time: showTime(new Date()),
-            sender: myInfo.nickname,
-            content: currentMessage,
-          },
-        ]);
-        setCurrentMessage("");
-      }
+      sendMessage(e);
     }
   };
 
@@ -210,7 +195,11 @@ export default function Page({ params }: { params: { id: string } }) {
 
     socket.on("msgToClient", messageListener);
 
-    socket.emit("getChatRedis", { id: params.id });
+    socket.emit("enter", { userId: params.id, channelTitle: name });
+
+    socket.on("userList", (userListData) => {
+      setUserList(userListData);
+    });
 
     // 클린업 함수
     return () => {
@@ -218,30 +207,14 @@ export default function Page({ params }: { params: { id: string } }) {
     };
   }, [socket]);
 
-  // const sendMessage = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-
-  //   const messsage: Message = {
-  //     sender: myInfo.id,
-  //     receiver: params.id,
-  //     content: currentMessage,
-  //   };
-
-  //   socket.emit("msgToChat", messsage);
-  //   setCurrentMessage("");
-  // };
-
   const sendMessage = (e) => {
     e.preventDefault();
     if (currentMessage.trim()) {
-      setMockMessage([
-        ...mockMessage,
-        {
-          time: showTime(new Date()),
-          sender: myInfo.nickname,
-          content: currentMessage,
-        },
-      ]);
+      socket.emit("msgToClient", {
+        time: new Date(),
+        sender: myInfo.id,
+        content: currentMessage,
+      });
       setCurrentMessage("");
     }
   };
@@ -249,9 +222,8 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
       <div className="flex h-full flex-col bg-chatColor p-9">
-        {/* {messages.map((message, index) => ( */}
         <div className="content-start items-center overflow-y-auto">
-          {mockMessage.map((message, index) => (
+          {messages.map((message, index) => (
             <div
               key={index}
               className="grid grid-cols-[auto_auto_1fr] gap-4 rounded-lg px-2 pb-1 text-base text-white hover:bg-gray-700"
@@ -293,22 +265,29 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="font-['Noto Sans KR'] text-4xl font-normal text-white">
           #{name}
         </div>
-        <div className="font-['Noto Sans KR'] mt-4 text-base font-normal text-white">
-          Online (4/5)
-        </div>
         <div className="mt-10 flex flex-col space-y-4">
-          {mockUser.map((user, index) => (
+          {userList.map((user, index) => (
             <div key={user.id} className="flex items-center space-x-4">
-              <img
-                className="h-9 w-9 rounded-full border border-black"
-                src={user.avatar}
+              <Image
+                className={
+                  user.role === "CREATOR"
+                    ? "border-indigoColor h-[35.57px] w-[35.57px] rounded-[32px] border-4"
+                    : "rounded-full border border-black"
+                }
+                width={36}
+                height={36}
+                // src={user.avatar}
+                src="/default_profile.svg"
                 alt={user.nickname}
               />
+
+              {getRoleIcon(user.role)}
+
               <span className="font-['Noto Sans KR'] text-base font-normal text-white">
                 {user.nickname}
               </span>
-              <div className="h-3 w-3 rounded-full bg-green-500" />{" "}
-              {/* Green dot for online users */}
+
+              {myInfo.nickname !== user.nickname ? getAdminIcon(myRole) : null}
             </div>
           ))}
         </div>

@@ -12,7 +12,7 @@ import UserInfoCard from "@/ui/user-info-card";
 import { notFound } from "next/navigation";
 
 interface Message {
-  time: string;
+  time: string | Date;
   sender: number; // mystate id
   receiver: string; // receiver nickname
   content: string; //
@@ -27,11 +27,11 @@ export default function DM({ params }: { params: { nickname: string } }) {
 
   useEffect(() => {
     let timer: any;
-
-    if (!isConnected) {
+    // TODO : notFound
+    if (isConnected) {
       timer = setTimeout(() => {
         notFound();
-      }, 5000);
+      }, 3000);
     }
 
     return () => {
@@ -68,13 +68,15 @@ export default function DM({ params }: { params: { nickname: string } }) {
     e.preventDefault();
 
     const messsage: Message = {
-      time: showTime(new Date()),
+      time: new Date(),
       sender: myInfo.id,
       receiver: params.nickname,
       content: currentMessage,
     };
 
     socket.emit("msgToServer", messsage);
+    console.log("send message", messsage);
+
     setCurrentMessage("");
   };
 

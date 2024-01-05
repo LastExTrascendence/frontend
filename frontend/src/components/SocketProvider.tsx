@@ -1,6 +1,5 @@
 "use client";
 
-import path from "path";
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 
@@ -40,30 +39,19 @@ export default function SocketProvider({
   }, []);
 
   useEffect(() => {
-    // const socketInstance = io(`${process.env.NEXT_PUBLIC_SITE_URL}`);
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_PORT}/dm`,
-      {
-        // path: "/dm",
-        // transports: ["websocket"],
-      },
+      // `http://10.19.239.198:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
+      `http://10.19.239.198:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/chat`,
     );
-    // const socketInstance = io("http://localhost:3334");
 
     socketInstance.on("connect", async () => {
       setIsConnected(true);
-      const connectInfo: ConnectInfo = {
-        sender: 1,
-        receiver: "yeomin",
-      };
-
-      socketInstance.emit("join", connectInfo);
     });
 
     setSocket(socketInstance);
     return () => {
-      // console.log("disconnect");
-      // socketInstance.disconnect();
+      console.log("disconnect");
+      socketInstance.disconnect();
     };
   }, []);
 
