@@ -29,7 +29,7 @@ export default function ChannelList({
           <RowStyled
             key={chat.id}
             onClick={() => {
-              router.push(`/channel/${chat.id}`);
+              router.push(`/channel/${chat.id}?name=${chat.channel}`);
             }}
             className="channel"
           >
