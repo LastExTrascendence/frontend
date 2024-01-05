@@ -43,7 +43,7 @@ export const axiosGetGameChannels = async (): Promise<any> => {
   }
 };
 
-const axiosCreateGameURL = "/game/create";
+const axiosCreateGameChannelURL = "/game/create";
 export const axiosCreateGame = async (
   title: string,
   channelPolicy: ChannelPolicy,
@@ -53,13 +53,45 @@ export const axiosCreateGame = async (
   mode: GameMode,
 ): Promise<any> => {
   try {
-    const response = await instance.post(axiosCreateGameURL, {
+    const response = await instance.post(axiosCreateGameChannelURL, {
       title,
       channelPolicy,
       password,
       creator,
       type,
       mode,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosGetChatChannelsURL = "/channel/rooms";
+export const axiosGetChatChannels = async (): Promise<any> => {
+  try {
+    const response = await instance.get(axiosGetChatChannelsURL);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosCreateChatChannelURL = "/channel/create";
+export const axiosCreateChatChannel = async (
+  title: string,
+  channelPolicy: ChannelPolicy,
+  password: string | null,
+  creator: number,
+): Promise<any> => {
+  try {
+    const response = await instance.post(axiosCreateChatChannelURL, {
+      title,
+      channelPolicy,
+      password,
+      creator,
     });
     return response;
   } catch (error) {

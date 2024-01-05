@@ -12,7 +12,7 @@ import JoinGame from "@/ui/overview/game/join-game";
 import PillButton from "@/ui/pill-button";
 import SearchBar from "@/ui/search-bar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import NewGameModal from "@/ui/Modals/NewGameModal/NewGameModal";
+import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
 import { GameChannelListDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
@@ -20,7 +20,8 @@ export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  const [showNewGameModal, setShowNewGameModal] = useState<boolean>(false);
+  const [showNewGameChannelModal, setShowNewGameChannelModal] =
+    useState<boolean>(false);
   const [gameChannelList, setGameChannelList] =
     useState<GameChannelListDto[]>();
 
@@ -47,12 +48,12 @@ export default function Page() {
     setSelectedChat(chat);
   };
 
-  const toggleNewGameModal = () => {
-    setShowNewGameModal(!showModal);
+  const toggleNewGameChannelModal = () => {
+    setShowNewGameChannelModal(!showModal);
   };
 
-  const handleCloseNewGameModal = () => {
-    setShowNewGameModal(false);
+  const handleCloseNewGameChannelModal = () => {
+    setShowNewGameChannelModal(false);
   };
 
   return (
@@ -71,7 +72,7 @@ export default function Page() {
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
           </SearchBarWrapperStyled>
           <PillButton
-            onClick={toggleNewGameModal}
+            onClick={toggleNewGameChannelModal}
             text="New"
             width="100px"
             height="35px"
@@ -86,8 +87,8 @@ export default function Page() {
           <GameList games={games} openModal={toggleJoinGameModal} />
         </GameChannelContainerStyled>
       </GamePageStyled>
-      {showNewGameModal && (
-        <NewGameModal closeModal={handleCloseNewGameModal} />
+      {showNewGameChannelModal && (
+        <NewGameChannelModal closeModal={handleCloseNewGameChannelModal} />
       )}
       {/* {selectedChat && (
         <Modal onClose={() => setSelectedChat(null)}>
@@ -95,8 +96,8 @@ export default function Page() {
         </Modal>
       )}
       {showModal && (
-        <Modal onClose={toggleNewGameModal}>
-          <NewGame onClose={toggleNewGameModal} />
+        <Modal onClose={toggleNewGameChannelModal}>
+          <NewGame onClose={toggleNewGameChannelModal} />
         </Modal>
       )} */}
     </>

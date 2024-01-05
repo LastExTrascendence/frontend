@@ -55,7 +55,7 @@ export const TableHeader = styled.div`
 
 export const TableBody = styled.div`
   overflow-y: auto;
-  height: 100%; // Adjust based on the height of your header
+  height: 100%;
 `;
 
 export const RowStyled = styled.div`
@@ -63,7 +63,7 @@ export const RowStyled = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #ccc; // Example border for rows
+  border-bottom: 1px solid #ccc;
   height: 60px;
 
   &.game {
@@ -73,21 +73,24 @@ export const RowStyled = styled.div`
       opacity: 0.8;
     }
   }
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export const CellHeaderStyled = styled.div`
-  flex: 1; // Adjust this value based on your column width preference
-  width: calc(100% / 4); // Adjust this value based on your column count
+  flex: 1;
+  width: calc(100% / 4);
   text-align: center;
-  padding: 10px; // Adjust padding for spacing
+  padding: 10px;
   font-weight: bold;
 `;
 
 export const CellStyled = styled.div`
-  flex: 1; // Adjust this value based on your column width preference
-  width: calc(100% / 4); // Adjust this value based on your column count
-  text-align: left;
-  padding: 10px; // Adjust padding for spacing
+  flex: 1;
+  width: calc(100% / 4);
+  padding: 10px;
 
   &.align-center {
     text-align: center;

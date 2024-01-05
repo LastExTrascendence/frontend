@@ -26,9 +26,9 @@ export default function ChannelList({
         {chats.map((chat: any) => (
           <RowStyled key={chat.id} onClick={() => openModal(chat)}>
             <CellStyled>{chat.channel}</CellStyled>
-            <CellStyled>{chat.creator}</CellStyled>
-            <CellStyled>{chat.users}</CellStyled>
-            <CellStyled>{chat.type}</CellStyled>
+            <CellStyled className="align-center">{chat.creator}</CellStyled>
+            <CellStyled className="align-center">{chat.users}</CellStyled>
+            <CellStyled className="align-center">{chat.type}</CellStyled>
           </RowStyled>
         ))}
       </TableBody>

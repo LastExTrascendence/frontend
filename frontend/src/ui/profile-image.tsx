@@ -10,8 +10,8 @@ export default function ProfileImage({
   showBorder = false,
 }: {
   src?: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   borderRadius?: number;
   showOutline?: boolean;
   showBorder?: boolean;
@@ -27,8 +27,14 @@ export default function ProfileImage({
       <Image
         src={src}
         alt="Profile Image"
-        width={width}
-        height={height}
+        width={0}
+        height={0}
+        sizes="100vw"
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          borderRadius: `${borderRadius}px`,
+        }}
         priority
       />
     </ProfileImageStyled>

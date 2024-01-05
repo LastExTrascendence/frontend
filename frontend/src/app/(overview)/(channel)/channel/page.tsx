@@ -12,12 +12,13 @@ import styled from "styled-components";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import PillButton from "@/ui/pill-button";
 import { ChannelListContainerStyled } from "@/ui/overview/game/game-list";
+import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  const [showNewChannelModal, setShowNewChannelModal] =
+  const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
 
   const toggleJoinChannelModal = (chat: any) => {
@@ -62,18 +63,9 @@ export default function Page() {
           <ChannelList chats={chats} openModal={toggleJoinChannelModal} />
         </ChatChannelContainerStyled>
       </ChannelPageStyled>
-
-      {/* {selectedChat && (
-        <Modal onClose={() => setSelectedChat(null)}>
-          <JoinChannel selectedChat={selectedChat} />
-        </Modal>
+      {showNewChatChannelModal && (
+        <NewChatChannelModal closeModal={handleCloseNewChannelModal} />
       )}
-
-      {showModal && (
-        <Modal onClose={toggleNewChannelModal}>
-          <NewChannel onClose={toggleNewChannelModal} />
-        </Modal>
-      )} */}
     </>
   );
 }

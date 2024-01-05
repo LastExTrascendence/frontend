@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import PillButton from "../pill-button";
-import Button from "@/ui/button";
+import PillButton from "../../ui/pill-button";
 
 /**
  * @description Modal 타입 (확인 버튼 유무)
@@ -31,8 +30,7 @@ export interface IModalContents {
   icon?: string;
   iconScaleEffect?: boolean;
   title?: string;
-  detail?: string;
-  children: React.ReactElement;
+  children?: React.ReactElement;
   proceedBtnText?: string;
   onClickProceed?: ((e: React.MouseEvent) => Promise<void>) | null;
   cancleBtnText?: string;
@@ -44,7 +42,6 @@ export default function Modal({
   icon,
   iconScaleEffect,
   title,
-  detail,
   children,
   proceedBtnText,
   onClickProceed,
@@ -64,9 +61,9 @@ export default function Modal({
         $height={"auto"}
       >
         <ModalContentWrapperStyled $width={"auto"} $height={"auto"}>
-          {/* {icon && (
+          {icon && (
             <ModalIconImgStyled src={icon} iconScaleEffect={iconScaleEffect} />
-          )} */}
+          )}
           <H2Styled>{title}</H2Styled>
           {children}
           {type === "hasProceedBtn" && (

@@ -21,7 +21,7 @@ export default function FriendSectionMyStatus() {
     // if (!token) {
     //   router.replace("/login");
     // } else {
-    getMyInfo();
+    // getMyInfo();
     // }
   }, []);
 
