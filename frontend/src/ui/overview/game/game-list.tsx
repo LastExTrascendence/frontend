@@ -1,12 +1,8 @@
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
-export default function GameList({
-  games,
-  openModal,
-}: {
-  games: any;
-  openModal: any;
-}) {
+export default function GameList({ games }: { games: any }) {
+  const router = useRouter();
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -19,8 +15,10 @@ export default function GameList({
         {games.map((game: any) => (
           <RowStyled
             key={game.id}
-            onClick={() => openModal(game)}
-            className="game"
+            onClick={() => {
+              router.push(`/game/${game.id}`);
+            }}
+            className="channel"
           >
             <CellStyled>{game.name}</CellStyled>
             <CellStyled>{game.join_users[0]}</CellStyled>
@@ -66,7 +64,7 @@ export const RowStyled = styled.div`
   border-bottom: 1px solid #ccc;
   height: 60px;
 
-  &.game {
+  &.channel {
     cursor: pointer;
     &:hover {
       background-color: var(--zinc-700);

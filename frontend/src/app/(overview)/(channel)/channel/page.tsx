@@ -1,25 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
-import SearchChannel from "@/ui/overview/channel/search-channel";
+import React, { useEffect, useState } from "react";
 import chats from "@/lib/chat-data";
-import Modal from "@/components/Modal";
-import NewChannel from "@/ui/overview/channel/new-channel";
-import NewChannelButton from "@/ui/overview/channel/new-channel-button";
 import ChannelList from "@/ui/overview/channel/channel-list";
-import JoinChannel from "@/ui/overview/channel/join-channel";
 import styled from "styled-components";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import PillButton from "@/ui/pill-button";
-import { ChannelListContainerStyled } from "@/ui/overview/game/game-list";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
+import { axiosGetChatChannels } from "@/api/axios/axios.custom";
+import { ChatChannelListDto } from "@/types/interface/channel.interface";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
+  const [chatChannelList, setChatChannelList] =
+    useState<ChatChannelListDto[]>();
   const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    getChatChannels();
+  }, []);
+
+  const getChatChannels = async () => {
+    try {
+      const response = await axiosGetChatChannels()
+        .then((res) => {
+          setChatChannelList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   const toggleJoinChannelModal = (chat: any) => {
     setSelectedChat(chat);
@@ -60,6 +77,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <ChatChannelContainerStyled>
+          {/* { chatChannelList && <ChannelList chats={chatChannelList} openModal={toggleJoinChannelModal} /> } */}
           <ChannelList chats={chats} openModal={toggleJoinChannelModal} />
         </ChatChannelContainerStyled>
       </ChannelPageStyled>

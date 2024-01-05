@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import {
   CellHeaderStyled,
   CellStyled,
@@ -14,6 +15,7 @@ export default function ChannelList({
   chats: any;
   openModal: any;
 }) {
+  const router = useRouter();
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -24,7 +26,13 @@ export default function ChannelList({
       </TableHeader>
       <TableBody>
         {chats.map((chat: any) => (
-          <RowStyled key={chat.id} onClick={() => openModal(chat)}>
+          <RowStyled
+            key={chat.id}
+            onClick={() => {
+              router.push(`/channel/${chat.id}`);
+            }}
+            className="channel"
+          >
             <CellStyled>{chat.channel}</CellStyled>
             <CellStyled className="align-center">{chat.creator}</CellStyled>
             <CellStyled className="align-center">{chat.users}</CellStyled>
