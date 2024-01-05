@@ -25,6 +25,7 @@ const config: Config = {
         chatInputColor: "#383A3F",
         channelInfoColor: "#232428",
         userInfoColor: "#232428",
+        indigoColor: "#5749AB",
       },
     },
   },
