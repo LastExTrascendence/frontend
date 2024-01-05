@@ -55,6 +55,55 @@ const chats = [
     users: "1/2",
     type: "public",
   },
+  {
+    id: 9,
+    channel: "파이썬1:1초보만-2",
+    creator: "chanheki",
+    users: "1/2",
+    type: "public",
+  },
+  {
+    id: 10,
+    channel: "7인입구막기너만오면고-2",
+    creator: "jaeyojun",
+    users: "1/2",
+    type: "public",
+  },
+  {
+    id: 11,
+    channel: "무료바카라게임➍➎➊➒➍➋›해외배팅사이트-2",
+    creator: "yeomin",
+    users: "1/2",
+    type: "private",
+  },
+  {
+    id: 12,
+    channel: "42seoul_global_random-2",
+    creator: "jusohn",
+    users: "1/2",
+    type: "private",
+  },
+  {
+    id: 13,
+    channel: "박보영너만보영-2",
+    creator: "chanheki",
+    users: "1/2",
+    type: "public",
+  },
+  {
+    id: 14,
+    channel: "test1-2",
+    creator: "jaeyojun",
+    users: "1/2",
+    type: "public",
+  },
+  {
+    id: 15,
+    channel: "test2-2",
+    creator: "yeomin",
+    users: "1/2",
+    type: "public",
+  },
 ];
 
 export default chats;

@@ -44,16 +44,6 @@ const CardStyled = styled.div<{
   opacity: ${(props) => (props.$isTransparent ? 0 : 1)};
 `;
 
-const CardHeaderStyled = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--main-dark-purple);
-`;
-
 const CardContentWrapperStyled = styled.div<{
   $width: string;
   $height: string;
@@ -68,4 +58,14 @@ const CardContentWrapperStyled = styled.div<{
   align-items: center;
   flex-direction: column;
   padding: 40px 0;
+`;
+
+const CardHeaderStyled = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--main-dark-purple);
 `;

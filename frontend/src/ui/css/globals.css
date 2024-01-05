@@ -33,6 +33,8 @@
   --button-hover-dark-gray: #3e3e3e;
 
   --input-container-color: #1e1f22;
+
+  --search-bar-color: #27272a;
 }
 
 @media (prefers-color-scheme: dark) {

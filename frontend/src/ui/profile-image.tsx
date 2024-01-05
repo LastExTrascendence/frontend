@@ -2,14 +2,16 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function ProfileImage({
+  src = "/default_profile.svg",
   width = 100,
   height = 100,
   borderRadius = 20,
   showOutline = false,
   showBorder = false,
 }: {
-  width: number;
-  height: number;
+  src?: string;
+  width?: number;
+  height?: number;
   borderRadius?: number;
   showOutline?: boolean;
   showBorder?: boolean;
@@ -23,10 +25,16 @@ export default function ProfileImage({
       $showBorder={showBorder}
     >
       <Image
-        src="/default_profile.svg"
+        src={src}
         alt="Profile Image"
-        width={width}
-        height={height}
+        width={0}
+        height={0}
+        sizes="100vw"
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          borderRadius: `${borderRadius}px`,
+        }}
         priority
       />
     </ProfileImageStyled>

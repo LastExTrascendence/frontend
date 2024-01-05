@@ -1,25 +1,29 @@
-import { FollowlistProps } from "@/lib/definitions";
-import ProfileImage from "@/ui/profile-image";
 import styled from "styled-components";
+import { UserInfoDto } from "@/types/interface/user.interface";
+import ProfileImage from "@/ui/profile-image";
+import { UserStatus } from "@/types/enum/user.enum";
 
 export default function FriendSectionCard({
   friend,
   width,
   height,
 }: {
-  friend: FollowlistProps;
+  friend: UserInfoDto;
   width: number;
   height: number;
 }) {
   return (
     <FriendContainerStyled>
-      <FriendInfoWrapperStyled $status={friend.online ? "online" : "offline"}>
-        <ProfileImage width={width} height={height} showOutline={true} />
-        <UserStatusStyled
-          $status={friend.online ? "online" : "offline"}
-        ></UserStatusStyled>
+      <FriendInfoWrapperStyled $status={friend.status}>
+        <ProfileImage
+          src={friend.avatar}
+          width={width}
+          height={height}
+          showOutline={true}
+        />
+        <UserStatusStyled $status={friend.status}></UserStatusStyled>
         <UserNicknameWrapperStyled $width={width}>
-          <UserNickNameStyled>{friend.id}</UserNickNameStyled>
+          <UserNickNameStyled>{friend.nickname}</UserNickNameStyled>
         </UserNicknameWrapperStyled>
       </FriendInfoWrapperStyled>
     </FriendContainerStyled>
@@ -45,16 +49,16 @@ const FriendContainerStyled = styled.div`
   }
 `;
 
-const FriendInfoWrapperStyled = styled.div<{ $status: string }>`
+const FriendInfoWrapperStyled = styled.div<{ $status: UserStatus }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding-left: 1.5rem;
-  opacity: ${({ $status }) => ($status === "online" ? "1" : "0.5")};
+  opacity: ${({ $status }) => ($status === UserStatus.ONLINE ? "1" : "0.5")};
 `;
 
-export const UserStatusStyled = styled.div<{ $status: string }>`
+export const UserStatusStyled = styled.div<{ $status: UserStatus }>`
   height: 18px;
   width: 18px;
   position: absolute;
@@ -64,9 +68,9 @@ export const UserStatusStyled = styled.div<{ $status: string }>`
   border: 1px solid var(--light-gray);
   z-index: 1;
   background-color: ${({ $status }) =>
-    $status === "online"
+    $status === UserStatus.ONLINE
       ? "var(--green)"
-      : $status === "offline"
+      : $status === UserStatus.OFFLINE
         ? "var(--light-gray)"
         : "var(--yellow)"};
 `;
