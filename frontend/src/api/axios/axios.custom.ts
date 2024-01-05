@@ -1,4 +1,3 @@
-import axios from "axios";
 import instance from "@/api/axios/axios.instance";
 import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { GameMode, GameType } from "@/types/enum/game.enum";
