@@ -9,6 +9,7 @@ import Image from "next/image";
 import { myState } from "@/utils/myState";
 import showTime from "@/utils/showTime";
 import UserInfoCard from "@/ui/user-info-card";
+import { notFound } from "next/navigation";
 
 interface Message {
   time: string;
@@ -22,8 +23,21 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
-  const [userId, setUserId] = useState(+new Date());
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    let timer: any;
+
+    if (!isConnected) {
+      timer = setTimeout(() => {
+        notFound();
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isConnected]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -111,6 +125,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
           </button>
         </div>
       </div>
+      {/* isConnected */}
       <UserInfoCard />
     </div>
   );
