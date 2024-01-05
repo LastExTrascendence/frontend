@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/api/cookie/cookies";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
+import Link from "next/link";
 
 export default function FriendSectionMyStatus() {
   const router = useRouter();
@@ -21,13 +22,14 @@ export default function FriendSectionMyStatus() {
     // if (!token) {
     //   router.replace("/login");
     // } else {
-    // getMyInfo();
+    //   getMyInfo();
     // }
   }, []);
 
   const getMyInfo = async () => {
     try {
       const { data: userInfo } = await axiosMyInfo();
+      console.log(userInfo);
       setMyInfo(userInfo);
     } catch (error) {
       console.log(error);
@@ -36,20 +38,22 @@ export default function FriendSectionMyStatus() {
   };
 
   return (
-    <MyStatusContainerStyled>
-      <MyStatusWrapperStyled>
-        <ProfileImage
-          src={myInfo.avatar}
-          width={50}
-          height={50}
-          showOutline={true}
-        />
-        <UserStatusStyled $status={myInfo.status}></UserStatusStyled>
-        <UserNicknameWrapperStyled $width={50}>
-          <UserNickNameStyled>{myInfo.nickname}</UserNickNameStyled>
-        </UserNicknameWrapperStyled>
-      </MyStatusWrapperStyled>
-    </MyStatusContainerStyled>
+    <Link href="/profile">
+      <MyStatusContainerStyled>
+        <MyStatusWrapperStyled>
+          <ProfileImage
+            src={myInfo.avatar}
+            width={50}
+            height={50}
+            showOutline={true}
+          />
+          <UserStatusStyled $status={myInfo.status}></UserStatusStyled>
+          <UserNicknameWrapperStyled $width={50}>
+            <UserNickNameStyled>{myInfo.nickname}</UserNickNameStyled>
+          </UserNicknameWrapperStyled>
+        </MyStatusWrapperStyled>
+      </MyStatusContainerStyled>
+    </Link>
   );
 }
 
