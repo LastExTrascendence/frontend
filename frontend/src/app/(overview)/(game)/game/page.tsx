@@ -24,9 +24,9 @@ export default function Page() {
   const [gameChannelList, setGameChannelList] =
     useState<GameChannelListDto[]>();
 
-  // useEffect(() => {
-  //   getGameChannels();
-  // }, []);
+  useEffect(() => {
+    getGameChannels();
+  }, []);
 
   const getGameChannels = async () => {
     try {
