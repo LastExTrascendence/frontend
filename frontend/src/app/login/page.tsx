@@ -7,6 +7,7 @@ import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
 
 export default function Page() {
+  const url = `${process.env.BE_SERVER}/auth/login`;
   return (
     <LoginPageStyled>
       <LeftSideStyled>
@@ -41,10 +42,7 @@ export default function Page() {
             <CardDescriptionStyled>
               A minimalistic pong service
             </CardDescriptionStyled>
-            <Link
-              href={`https://api.intra.42.fr/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code`}
-              passHref={true}
-            >
+            <Link href={url} passHref={true}>
               <PillButton
                 width="240px"
                 height="55px"

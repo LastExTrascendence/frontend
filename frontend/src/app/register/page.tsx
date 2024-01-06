@@ -166,7 +166,7 @@ export default function Page() {
         {currentStep === UserRegisterCard.Avatar && (
           <Card title="아바타를 선택해주세요">
             <>
-              <ProfileImage width={100} height={100} />
+              <ProfileImage showBorder={true} borderRadius={40} />
               <PillButton
                 text="돌아가기"
                 width="260px"

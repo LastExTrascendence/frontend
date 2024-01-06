@@ -24,14 +24,13 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === STATUS_403_FORBIDDEN) {
-      window.location.href = "/login";
-    }
     if (error.response?.status === STATUS_401_UNAUTHORIZED) {
       removeCookie("access_token", {
         path: "/",
         domain: `${process.env.FE_DOMAIN}`,
       });
+      window.location.href = "/login";
+      alert(error.response.data.message);
     }
     return Promise.reject(error);
   },
