@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
+  --foreground-rgb: 0, 0, 0;
   --background-white-rgb: 255, 255, 255;
   --background-purple-rgb: 82, 30, 130;
   --background-black-rgb: 4, 19, 43;
@@ -35,14 +35,6 @@
   --input-container-color: #1e1f22;
 
   --search-bar-color: #27272a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-black-rgb: 0, 0, 0;
-    --background-magenta-rgb: 0, 0, 0;
-  }
 }
 
 @media only screen and (max-width: 1000px) {

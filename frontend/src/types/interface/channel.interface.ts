@@ -10,7 +10,7 @@ import { UserDto } from "./user.interface";
  */
 export interface ChannelDto {
   title: string;
-  ChannelPolicy: ChannelPolicy;
+  channelPolicy: ChannelPolicy;
   password: string | null;
   creator: UserDto;
 }
@@ -48,4 +48,16 @@ export interface ChatChannelInfoDto {
   title: string;
   ChannelPolicy: ChannelPolicy;
   users: ChatChannelUserDto[];
+}
+
+/**
+ * @description 채팅 채널 내 (/channel/id) 유저 리스트를 위한 interface
+ * @param {string} title - 채널 제목
+ * @param {password} password - 채널 비밀번호
+ * @param {nickname} nickname - 유저 닉네임
+ */
+export interface UserVerify {
+  title: string;
+  password: string | null;
+  nickname: string;
 }

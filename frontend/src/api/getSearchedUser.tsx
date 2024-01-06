@@ -1,5 +1,5 @@
 import { UserlistProps } from "@/lib/definitions";
-import customFetch from "@/utils/fetch";
+import customFetch from "@/api/fetch/fetch";
 
 export async function getSearchedUser(
   searchedUser: string,

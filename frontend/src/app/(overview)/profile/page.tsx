@@ -25,6 +25,16 @@ export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<Blob>();
+  const [myInfo, setMyInfo] = useRecoilState(myState);
+
+  // 상태 업데이트
+  const updateMyInfo = (newNickname, newAvatar) => {
+    setMyInfo((prevInfo) => ({
+      ...prevInfo,
+      nickname: newNickname,
+      avatar: newAvatar,
+    }));
+  };
 
   const [userInfo, setUserInfo] = useState<UserProfileInfoDto>({
     id: 0,
@@ -128,7 +138,8 @@ export default function Page() {
                 fontSize="1rem"
                 text="Save"
                 onClick={() => {
-                  console.log("click");
+                  updateMyInfo(nickname, avatar);
+                  console.log("myInfo: ", myInfo);
                 }}
               />
             </ButtonWrapperStyled>
