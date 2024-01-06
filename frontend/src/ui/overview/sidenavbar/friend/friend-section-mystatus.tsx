@@ -18,20 +18,20 @@ export default function FriendSectionMyStatus() {
   const token = getCookie("access_token");
 
   useEffect(() => {
-    // if (!token) {
-    //   router.replace("/login");
-    // } else {
-    // getMyInfo();
-    // }
+    if (!token) {
+      router.replace("/login");
+    } else {
+      getMyInfo();
+    }
   }, []);
 
   const getMyInfo = async () => {
     try {
       const { data: userInfo } = await axiosMyInfo();
       setMyInfo(userInfo);
+      console.log(userInfo);
     } catch (error) {
       console.log(error);
-      router.replace("/login");
     }
   };
 
@@ -39,7 +39,7 @@ export default function FriendSectionMyStatus() {
     <MyStatusContainerStyled>
       <MyStatusWrapperStyled>
         <ProfileImage
-          src={myInfo.avatar}
+          src={myInfo.avatar || "/default_profile.svg"}
           width={50}
           height={50}
           showOutline={true}
