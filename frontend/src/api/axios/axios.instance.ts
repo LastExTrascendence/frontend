@@ -1,9 +1,6 @@
 import axios from "axios";
 import { getCookie, removeCookie } from "@/api/cookie/cookies";
-import {
-  STATUS_401_UNAUTHORIZED,
-  STATUS_403_FORBIDDEN,
-} from "@/types/constants/status-code";
+import { STATUS_401_UNAUTHORIZED } from "@/types/constants/status-code";
 
 const instance = axios.create({
   baseURL: process.env.BE_SERVER,

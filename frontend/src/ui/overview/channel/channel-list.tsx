@@ -8,13 +8,7 @@ import {
   TableHeader,
 } from "../game/game-list";
 
-export default function ChannelList({
-  chats,
-  openModal,
-}: {
-  chats: any;
-  openModal: any;
-}) {
+export default function ChannelList({ chats }: { chats: any }) {
   const router = useRouter();
   return (
     <ChannelListContainerStyled>

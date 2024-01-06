@@ -42,6 +42,21 @@ export const axiosCreateUser = async ({
   }
 };
 
+const axiosGetUserProfileByNicknameURL = "/user/profile";
+export const axiosGetUserProfileByNickname = async (
+  nickname: string,
+): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetUserProfileByNicknameURL}/${nickname}`,
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosGetGameChannelsURL = "/game/rooms";
 export const axiosGetGameChannels = async (): Promise<any> => {
   try {

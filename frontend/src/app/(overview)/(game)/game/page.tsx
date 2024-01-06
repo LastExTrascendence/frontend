@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import games from "@/lib/game-data.js";
-import Modal from "@/components/Modal";
 import GameList from "@/ui/overview/game/game-list";
-import JoinGame from "@/ui/overview/game/join-game";
 import PillButton from "@/ui/pill-button";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
@@ -74,7 +71,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
-          <GameList games={games} />
+          <GameList games={gameChannelList} />
         </GameChannelContainerStyled>
       </GamePageStyled>
       {showNewGameChannelModal && (

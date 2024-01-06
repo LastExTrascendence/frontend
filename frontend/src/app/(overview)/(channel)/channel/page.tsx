@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import chats from "@/lib/chat-data";
 import ChannelList from "@/ui/overview/channel/channel-list";
 import styled from "styled-components";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -12,7 +11,6 @@ import { ChatChannelListDto } from "@/types/interface/channel.interface";
 
 export default function Page() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedChat, setSelectedChat] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [chatChannelList, setChatChannelList] =
     useState<ChatChannelListDto[]>();
@@ -36,10 +34,6 @@ export default function Page() {
       console.log(error);
       throw error;
     }
-  };
-
-  const toggleJoinChannelModal = (chat: any) => {
-    setSelectedChat(chat);
   };
 
   const toggleNewChannelModal = () => {
@@ -77,11 +71,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <ChatChannelContainerStyled>
-          <ChannelList
-            chats={chatChannelList}
-            openModal={toggleJoinChannelModal}
-          />
-          {/* <ChannelList chats={chats} openModal={toggleJoinChannelModal} /> */}
+          <ChannelList chats={chatChannelList} />
         </ChatChannelContainerStyled>
       </ChannelPageStyled>
       {showNewChatChannelModal && (
