@@ -6,7 +6,7 @@ import { ChangeEvent, useState } from "react";
 import PillButton from "@/ui/pill-button";
 import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { useRecoilState } from "recoil";
-import { myState } from "@/utils/myState";
+import { myState } from "@/recoil/atom";
 
 export enum TwoFAType {
   ON = "ON",

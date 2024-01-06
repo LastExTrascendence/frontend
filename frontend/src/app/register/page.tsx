@@ -10,7 +10,7 @@ import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 import ProfileImage from "@/ui/profile-image";
 import { useRecoilState } from "recoil";
-import { myState } from "@/utils/myState";
+import { myState } from "@/recoil/atom";
 import { useRouter } from "next/navigation";
 
 const token = getCookie("access_token");

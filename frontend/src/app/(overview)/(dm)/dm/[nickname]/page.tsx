@@ -6,8 +6,7 @@ import { useRecoilValue } from "recoil";
 
 import Image from "next/image";
 
-import { myState } from "@/utils/myState";
-import showTime from "@/utils/showTime";
+import { myState } from "@/recoil/atom";
 import UserInfoCard from "@/ui/user-info-card";
 import { notFound } from "next/navigation";
 
@@ -96,7 +95,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
               className="grid grid-cols-[auto_auto_1fr] gap-4 rounded-lg px-2 pb-1 text-base text-white hover:bg-gray-700"
             >
               <span className="max-w-[100px] overflow-hidden">
-                {message.time ? message.time : showTime(new Date())}
+                {message.time ? message.time : new Date()}
               </span>
               <span className="max-w-[100px] overflow-hidden">
                 {message.sender ? message.sender : myInfo.id}
