@@ -77,12 +77,10 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <ChatChannelContainerStyled>
-          {chatChannelList && (
-            <ChannelList
-              chats={chatChannelList}
-              openModal={toggleJoinChannelModal}
-            />
-          )}
+          <ChannelList
+            chats={chatChannelList}
+            openModal={toggleJoinChannelModal}
+          />
           {/* <ChannelList chats={chats} openModal={toggleJoinChannelModal} /> */}
         </ChatChannelContainerStyled>
       </ChannelPageStyled>
