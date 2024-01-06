@@ -47,6 +47,7 @@ const UserInfoAreaStyled = styled.div`
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   background-color: var(--background-dark-gray);
+  padding: 1rem;
 `;
 
 const ProfileImageWrapperStyled = styled.div`

@@ -9,6 +9,8 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 import ProfileImage from "@/ui/profile-image";
+import { useRecoilState } from "recoil";
+import { myState } from "@/recoil/atom";
 import { useRouter } from "next/navigation";
 
 const token = getCookie("access_token");
@@ -66,19 +68,30 @@ const encodeFileToBase64 = (image: File) => {
 
 export default function Page() {
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [nickname, setNickname] = useState<string>("");
+  const [avatar, setAvatar] = useState<Blob | string>();
   const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
+  const [myInfo, setMyInfo] = useRecoilState(myState);
   const router = useRouter();
+
+  // 상태 업데이트
+  const updateMyInfo = (newNickname, newAvatar) => {
+    setMyInfo((prevInfo) => ({
+      ...prevInfo,
+      nickname: newNickname,
+      avatar: newAvatar,
+    }));
+  };
 
   const UserRegisterFinished = async () => {
     const data = {
       nickname,
       // avatar: base64Image?.url,
-      avatar: avatar,
+      avatar,
       // bio,
     };
+    updateMyInfo(nickname, avatar);
     try {
       await axiosCreateUser(data);
       setTimeout(() => {

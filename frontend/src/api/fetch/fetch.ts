@@ -5,7 +5,7 @@ export default async function customFetch(
   method: HttpMethod = "GET",
   options: RequestInit = {},
 ) {
-  const baseUrl = process.env.SERVER_API_BASE_URI;
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_BASE_URI;
   if (!baseUrl) {
     throw new Error("SERVER_API_BASE_URI is not defined");
   }
