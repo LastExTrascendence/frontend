@@ -42,7 +42,7 @@ export default function Page() {
 
   useEffect(() => {
     getMyProfileInfo();
-  }, [userInfo]);
+  }, []);
 
   const getMyProfileInfo = async () => {
     try {
