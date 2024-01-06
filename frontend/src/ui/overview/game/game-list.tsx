@@ -16,7 +16,7 @@ export default function GameList({ games }: { games: any }) {
           <RowStyled
             key={game.id}
             onClick={() => {
-              router.push(`/game/${game.id}`);
+              router.push(`/game/${game.id}?name=${game.name}`);
             }}
             className="channel"
           >
