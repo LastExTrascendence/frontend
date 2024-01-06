@@ -63,7 +63,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
     };
   }, [socket]);
 
-  const sendMessage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
 
     const messsage: Message = {
@@ -79,7 +79,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
     setCurrentMessage("");
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       sendMessage(e);
     }
@@ -87,7 +87,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
 
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
-      <div className="flex h-full w-full flex-col bg-chatColor p-9">
+      <div className="bg-chatColor flex h-full w-full flex-col p-9">
         <div className="content-start items-center overflow-y-auto">
           {messages.map((message, index) => (
             <div
