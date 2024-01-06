@@ -29,14 +29,20 @@ export default function ChannelList({
           <RowStyled
             key={chat.id}
             onClick={() => {
-              router.push(`/channel/${chat.id}?name=${chat.channel}`);
+              router.push(`/channel/${chat.id}?name=${chat.title}`);
             }}
             className="channel"
           >
-            <CellStyled>{chat.channel}</CellStyled>
-            <CellStyled className="align-center">{chat.creator}</CellStyled>
-            <CellStyled className="align-center">{chat.users}</CellStyled>
-            <CellStyled className="align-center">{chat.type}</CellStyled>
+            <CellStyled>{chat.title}</CellStyled>
+            <CellStyled className="align-center">
+              {chat.creator.nickname}
+            </CellStyled>
+            <CellStyled className="align-center">
+              {chat.curUser}/{chat.maxUser}
+            </CellStyled>
+            <CellStyled className="align-center">
+              {chat.channelPolicy.toLowerCase()}
+            </CellStyled>
           </RowStyled>
         ))}
       </TableBody>
