@@ -213,7 +213,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
-      <div className="flex h-full flex-col bg-chatColor p-9">
+      <div className="flex h-full w-full flex-col bg-chatColor p-9">
         <div className="content-start items-center overflow-y-auto">
           {messages.map((message, index) => (
             <div

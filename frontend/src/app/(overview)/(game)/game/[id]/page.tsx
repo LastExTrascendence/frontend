@@ -188,7 +188,42 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
-      <div className="flex h-full flex-col bg-chatColor p-9">
+      <div className="flex h-full w-full flex-col bg-chatColor p-9">
+        <div class="relative h-[200px] w-full max-w-[950px]">
+          <div class="absolute left-0 top-0 h-full w-full rounded-[20px] bg-gray-800"></div>
+
+          {/* <!-- 타이틀들 --> */}
+          <div class="font-['Noto Sans KR'] absolute left-1/4 top-[37px] text-[28px] font-normal text-white md:left-[267px]">
+            Type
+          </div>
+          <div class="font-['Noto Sans KR'] absolute left-1/2 top-[37px] text-[28px] font-normal text-white md:left-[462px]">
+            Speed
+          </div>
+          <div class="font-['Noto Sans KR'] absolute left-[10%] top-[37px] text-[28px] font-normal text-white md:left-[65px]">
+            Mode
+          </div>
+
+          {/* <!-- 하단 텍스트들 --> */}
+          <div class="font-['Noto Sans KR'] absolute left-[10%] top-[98px] text-[28px] font-normal text-white md:left-[48px]">
+            LADDER
+          </div>
+          <div class="font-['Noto Sans KR'] absolute left-1/4 top-[99px] text-[28px] font-normal text-white md:left-[247px]">
+            Original
+          </div>
+          <div class="font-['Noto Sans KR'] absolute left-1/2 top-[100px] text-[28px] font-normal text-white md:left-[467px]">
+            150%
+          </div>
+
+          {/* <!-- 오른쪽 요소들 --> */}
+          <div class="absolute left-[75%] top-[18px] inline-flex h-40 w-60 items-center justify-center md:left-[663px]">
+            <div class="relative flex h-full w-full flex-col items-start justify-start rounded-[5px] bg-white bg-opacity-0">
+              <div class="h-full w-px bg-zinc-300"></div>
+              <div class="h-[81px] w-[85px] rounded-full bg-zinc-300"></div>
+              <div class="h-[81px] w-[85px] rounded-full bg-zinc-300"></div>
+            </div>
+          </div>
+        </div>
+
         <div className="content-start items-center overflow-y-auto">
           {messages.map((message, index) => (
             <div
