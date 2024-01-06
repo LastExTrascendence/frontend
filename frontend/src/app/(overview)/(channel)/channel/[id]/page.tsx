@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useSocket } from "@/components/SocketProvider";
+import { useChannelSocket } from "@/components/ChannelSocketProvider";
 import { useRecoilValue } from "recoil";
-import { myState } from "@/utils/myState";
+import { myState } from "@/recoil/atom";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
@@ -81,25 +81,9 @@ const getRoleIcon = (role: string) => {
 
 const getAdminIcon = (role: string) => {
   switch (role) {
-    case "OPERATOR":
+    case "CREATOR":
       return (
-        <Image src="/operator.svg" alt="Operator" width={18} height={18} />
-      );
-    default:
-      return (
-        <div>
-          <button
-            className="p-1"
-            type="button"
-            onClick={() => handleApiRequest("user-slash")}
-          >
-            <Image
-              src="/user-slash.svg"
-              alt="User Slash"
-              width={18}
-              height={18}
-            />
-          </button>
+        <div className="ml-auto flex bg-red-800">
           <button
             type="button"
             className="p-1"
@@ -124,18 +108,6 @@ const getAdminIcon = (role: string) => {
               height={18}
             />
           </button>
-          <button
-            type="button"
-            className="p-1"
-            onClick={() => handleApiRequest("user-follow")}
-          >
-            <Image
-              src="/user-follow.svg"
-              alt="User Follow"
-              width={18}
-              height={18}
-            />
-          </button>
           <button type="button" onClick={() => handleApiRequest("user-block")}>
             <Image
               src="/user-block.svg"
@@ -146,6 +118,17 @@ const getAdminIcon = (role: string) => {
           </button>
         </div>
       );
+
+    case "OPERATOR":
+      return (
+        <div className="ml-auto">
+          <Image src="/operator.svg" alt="Operator" width={18} height={18} />
+        </div>
+      );
+
+    case "USER":
+    default:
+      return null;
   }
 };
 
@@ -153,8 +136,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
-  const { socket, isConnected } = useSocket();
-  const [userList, setUserList] = useState<User[]>(mockUser);
+  const { channelSocket, isConnected } = useChannelSocket();
+  const [userList, setUserList] = useState<User[]>();
   const [myRole, setMyRole] = useState<string>("USER");
   const messagesEndRef = useRef(null);
   const searchParams = useSearchParams();
@@ -165,12 +148,21 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   useEffect(() => {
+    console.log("user", userList);
+
+    if (!userList) {
+      setMyRole("USER");
+      return;
+    }
+
     const matchingUser = userList.find(
       (user) => user.nickname === myInfo.nickname,
     );
 
     if (matchingUser) {
       setMyRole(matchingUser.role);
+    } else {
+      setMyRole("USER");
     }
   }, [userList]);
 
@@ -185,7 +177,7 @@ export default function Page({ params }: { params: { id: string } }) {
   };
 
   useEffect(() => {
-    if (!socket) {
+    if (!channelSocket) {
       return;
     }
 
@@ -193,24 +185,24 @@ export default function Page({ params }: { params: { id: string } }) {
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 
-    socket.on("msgToClient", messageListener);
+    channelSocket.on("msgToClient", messageListener);
 
-    socket.emit("enter", { userId: params.id, channelTitle: name });
+    channelSocket.emit("enter", myInfo);
 
-    socket.on("userList", (userListData) => {
+    channelSocket.on("userList", (userListData) => {
       setUserList(userListData);
     });
 
     // 클린업 함수
     return () => {
-      socket.off("msgToClient", messageListener);
+      channelSocket.off("msgToClient", messageListener);
     };
-  }, [socket]);
+  }, [channelSocket]);
 
   const sendMessage = (e) => {
     e.preventDefault();
     if (currentMessage.trim()) {
-      socket.emit("msgToClient", {
+      channelSocket.emit("msgToServer", {
         time: new Date(),
         sender: myInfo.id,
         content: currentMessage,
@@ -266,30 +258,33 @@ export default function Page({ params }: { params: { id: string } }) {
           #{name}
         </div>
         <div className="mt-10 flex flex-col space-y-4">
-          {userList.map((user, index) => (
-            <div key={user.id} className="flex items-center space-x-4">
-              <Image
-                className={
-                  user.role === "CREATOR"
-                    ? "border-indigoColor h-[35.57px] w-[35.57px] rounded-[32px] border-4"
-                    : "rounded-full border border-black"
-                }
-                width={36}
-                height={36}
-                // src={user.avatar}
-                src="/default_profile.svg"
-                alt={user.nickname}
-              />
+          {userList &&
+            userList.map((user) => (
+              <div key={user.id} className="flex items-center space-x-4">
+                <Image
+                  className={
+                    user.role === "CREATOR"
+                      ? "border-indigoColor h-[35.57px] w-[35.57px] rounded-[32px] border-4"
+                      : "rounded-full border border-black"
+                  }
+                  width={36}
+                  height={36}
+                  // src={user.avatar}
+                  src="/default_profile.svg"
+                  alt={user.nickname}
+                />
 
-              {getRoleIcon(user.role)}
+                {getRoleIcon(user.role)}
 
-              <span className="font-['Noto Sans KR'] text-base font-normal text-white">
-                {user.nickname}
-              </span>
+                <span className="font-['Noto Sans KR'] text-base font-normal text-white">
+                  {user.nickname}
+                </span>
 
-              {myInfo.nickname !== user.nickname ? getAdminIcon(myRole) : null}
-            </div>
-          ))}
+                {myInfo.nickname !== user.nickname
+                  ? getAdminIcon(myRole)
+                  : null}
+              </div>
+            ))}
         </div>
       </div>
     </div>
