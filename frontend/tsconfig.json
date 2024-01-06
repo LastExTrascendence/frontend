@@ -27,8 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/placeholder-data.js",
-    "src/app/api/socket/io/page.ts"
+    "lib/placeholder-data.js"
   ],
   "exclude": ["node_modules"]
 }
