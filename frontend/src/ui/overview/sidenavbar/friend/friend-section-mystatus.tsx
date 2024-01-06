@@ -29,7 +29,6 @@ export default function FriendSectionMyStatus() {
     try {
       const { data: userInfo } = await axiosMyInfo();
       setMyInfo(userInfo);
-      console.log(userInfo);
     } catch (error) {
       console.log(error);
     }
