@@ -14,6 +14,17 @@ export const axiosMyInfo = async (): Promise<any> => {
   }
 };
 
+const axiosMyProfileURL = "/user/me/profile";
+export const axiosMyProfileInfo = async (): Promise<any> => {
+  try {
+    const response = await instance.get(axiosMyProfileURL);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosCreateUserURL = "/user/create";
 export const axiosCreateUser = async ({
   nickname,

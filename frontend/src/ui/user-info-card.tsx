@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import ProfileImage from "./profile-image";
+import { UserProfileInfoDto } from "@/types/interface/user.interface";
 
-export default function UserInfoCard() {
+export default function UserInfoCard(userInfo: UserProfileInfoDto) {
   return (
     <UserInfoAreaStyled>
       <ProfileImageWrapperStyled>
         <ProfileImage
+          src={userInfo.avatar || "/default_profile.svg"}
           width={100}
           height={100}
           borderRadius={40}
@@ -14,22 +16,22 @@ export default function UserInfoCard() {
       </ProfileImageWrapperStyled>
       <UserInfoCardStyled>
         <UserInfoDetailWrapperStyled>
-          <NicknameStyled>Nickname</NicknameStyled>
-          <IntraNameStyled>Intra Name</IntraNameStyled>
-          <EmailStyled>email@student.42seoul.kr</EmailStyled>
+          <NicknameStyled>{userInfo.nickname}</NicknameStyled>
+          <IntraNameStyled>{userInfo.intra_name}</IntraNameStyled>
+          <EmailStyled>{userInfo.email}</EmailStyled>
         </UserInfoDetailWrapperStyled>
         <UserGameRecordCardStyled>
           <RecordWrapperStyled>
             <RecordTextStyled>Total Games</RecordTextStyled>
-            <RecordTextStyled>0</RecordTextStyled>
+            <RecordTextStyled>{userInfo.games}</RecordTextStyled>
           </RecordWrapperStyled>
           <RecordWrapperStyled>
             <RecordTextStyled>Wins</RecordTextStyled>
-            <RecordTextStyled>0</RecordTextStyled>
+            <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
           </RecordWrapperStyled>
           <RecordWrapperStyled>
             <RecordTextStyled>Loses</RecordTextStyled>
-            <RecordTextStyled>0</RecordTextStyled>
+            <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
           </RecordWrapperStyled>
         </UserGameRecordCardStyled>
       </UserInfoCardStyled>

@@ -20,3 +20,19 @@ export interface UserDto {
 export interface UserInfoDto extends UserDto {
   status: UserStatus;
 }
+
+export interface UserProfileInfoDto extends UserDto {
+  id: number;
+  intra_name: string;
+  nickname: string;
+  avatar: string;
+  email: string;
+  status: UserStatus;
+
+  is_friend: boolean;
+  at_friend: Date;
+
+  games: number;
+  wins: number;
+  loses: number;
+}

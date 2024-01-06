@@ -5,7 +5,7 @@ import MainButtonList from "@/ui/mainpage/main-buttons";
 import LogoutIcon from "@/ui/icon/logout-icon";
 import InfoIcon from "@/ui/icon/info-icon";
 import { getCookie } from "@/api/cookie/cookies";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { myState } from "@/recoil/atom";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { axiosMyInfo } from "@/api/axios/axios.custom";
 
 export default function Home() {
   const router = useRouter();
-  const [myInfo, setMyInfo] = useRecoilState(myState);
+  const setMyInfo = useSetRecoilState(myState);
   const token = getCookie("access_token");
 
   useEffect(() => {
