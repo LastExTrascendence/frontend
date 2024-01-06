@@ -214,13 +214,8 @@ export default function Page({ params }: { params: { id: string } }) {
             150%
           </div>
 
-          {/* <!-- 오른쪽 요소들 --> */}
           <div class="absolute left-[75%] top-[18px] inline-flex h-40 w-60 items-center justify-center md:left-[663px]">
-            <div class="relative flex h-full w-full flex-col items-start justify-start rounded-[5px] bg-white bg-opacity-0">
-              <div class="h-full w-px bg-zinc-300"></div>
-              <div class="h-[81px] w-[85px] rounded-full bg-zinc-300"></div>
-              <div class="h-[81px] w-[85px] rounded-full bg-zinc-300"></div>
-            </div>
+            <Image src="/map.svg" alt="basic map" width={240} height={160} />
           </div>
         </div>
 
