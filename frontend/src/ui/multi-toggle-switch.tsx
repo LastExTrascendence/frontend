@@ -2,7 +2,7 @@ import { TwoFAType } from "@/app/(overview)/profile/page";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-interface toggleItem {
+export interface toggleItem {
   name: string;
   key: string;
 }
