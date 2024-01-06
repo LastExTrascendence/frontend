@@ -67,7 +67,7 @@ export const axiosCreateGame = async (
   }
 };
 
-const axiosGetChatChannelsURL = "/channel/rooms";
+const axiosGetChatChannelsURL = "/channel";
 export const axiosGetChatChannels = async (): Promise<any> => {
   try {
     const response = await instance.get(axiosGetChatChannelsURL);

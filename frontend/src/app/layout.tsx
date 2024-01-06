@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/ui/css/globals.css";
-import RecoilRootProvider from "@/utils/recoilRootProvider";
+import RecoilRootProvider from "@/recoil/recoilRootProvider";
 import SocketProvider from "@/components/SocketProvider";
 import StyledComponentsRegistry from "@/lib/registry";
 
