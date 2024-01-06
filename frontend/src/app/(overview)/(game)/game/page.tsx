@@ -74,7 +74,6 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
-          {/* { filteredGames && <GameList games={filteredGames} />} */}
           <GameList games={games} />
         </GameChannelContainerStyled>
       </GamePageStyled>
