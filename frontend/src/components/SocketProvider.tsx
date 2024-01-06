@@ -40,8 +40,7 @@ export default function SocketProvider({
 
   useEffect(() => {
     const socketInstance = io(
-      // `http://10.19.239.198:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/chat`,
+      `http://10.19.239.198:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
     );
 
     socketInstance.on("connect", async () => {
