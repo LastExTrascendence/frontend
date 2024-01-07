@@ -1,4 +1,5 @@
 import axios from "axios";
+import Router from "next/router";
 import { getCookie, removeCookie } from "@/api/cookie/cookies";
 import {
   STATUS_401_UNAUTHORIZED,
@@ -24,13 +25,13 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("error", error);
     if (error.response?.status === STATUS_401_UNAUTHORIZED) {
       removeCookie("access_token", {
         path: "/",
         domain: `${process.env.FE_DOMAIN}`,
       });
-      window.location.href = "/login";
-      alert(error.response.data.message);
+      Router.push("/login"); // SPA 방식 리디렉션
     }
     return Promise.reject(error);
   },
