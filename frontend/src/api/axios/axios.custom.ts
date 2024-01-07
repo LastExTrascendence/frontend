@@ -109,14 +109,22 @@ export const axiosCreateChatChannel = async (
   title: string,
   channelPolicy: ChannelPolicy,
   password: string | null,
-  creator: number,
+  creatorNickname: string,
+  creatorAvatar: string,
+  curUser: number,
+  maxUser: number,
 ): Promise<any> => {
   try {
     const response = await instance.post(axiosCreateChatChannelURL, {
       title,
       channelPolicy,
       password,
-      creator,
+      creator: {
+        nickname: creatorNickname,
+        avatar: creatorAvatar,
+      },
+      curUser,
+      maxUser,
     });
     return response;
   } catch (error) {

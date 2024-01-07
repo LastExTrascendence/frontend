@@ -14,7 +14,11 @@ const ChannelPolicyList = [
   { name: "Private", key: ChannelPolicy.PRIVATE },
 ];
 
-const NewChatChannelModal = ({ closeModal }: { closeModal: () => void }) => {
+export default function NewChatChannelModal({
+  closeModal,
+}: {
+  closeModal: () => void;
+}) {
   const router = useRouter();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const [title, setTitle] = useState("");
@@ -27,13 +31,21 @@ const NewChatChannelModal = ({ closeModal }: { closeModal: () => void }) => {
     if (!title) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
-      const channelId = await axiosCreateChatChannel(
-        title,
-        channelPolicy,
-        channelPolicy === ChannelPolicy.PRIVATE ? password : null,
-        myInfo.id,
-      );
-      router.push(`/channel/${channelId}`);
+      const channelData = {
+        title: title,
+        channelPolicy: channelPolicy,
+        password: channelPolicy === ChannelPolicy.PRIVATE ? password : null,
+        creator: {
+          nickname: myInfo.nickname,
+          avatar: myInfo.avatar,
+        },
+        curUser: 0,
+        maxUser: 42,
+      };
+
+      const channelId = await axiosCreateChatChannel(channelData);
+
+      router.push(`/channel/${channelId}?name=${title}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
@@ -107,6 +119,4 @@ const NewChatChannelModal = ({ closeModal }: { closeModal: () => void }) => {
       )}
     </ModalPortal>
   );
-};
-
-export default NewChatChannelModal;
+}
