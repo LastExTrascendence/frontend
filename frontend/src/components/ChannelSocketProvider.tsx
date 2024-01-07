@@ -38,11 +38,15 @@ export default function ChannelSocketProvider({
   }, []);
 
   useEffect(() => {
+    const token = getCookie("access_token") ?? null;
+
+    console.log(token);
+
     const socketInstance = io(
       `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/chat`,
       {
         auth: {
-          token: `Bearer ${getCookie("access_token")}`,
+          token: `Bearer ${token}`,
         },
       },
     );

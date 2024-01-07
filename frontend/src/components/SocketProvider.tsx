@@ -3,6 +3,7 @@
 import { getCookie } from "@/api/cookie/cookies";
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
+import { getCookie } from "@/api/cookie/cookies";
 
 interface ConnectInfo {
   sender: number; // mystate id
@@ -40,11 +41,15 @@ export default function SocketProvider({
   }, []);
 
   useEffect(() => {
+    const token = getCookie("access_token") ?? null;
+
+    console.log(token);
+
     const socketInstance = io(
       `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
       {
         auth: {
-          token: `Bearer ${getCookie("access_token")}`,
+          token: `Bearer ${token}`,
         },
       },
     );
