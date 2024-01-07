@@ -1,6 +1,8 @@
 "use client";
-import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+
+import { useEffect } from "react";
+
 import { getCookie } from "@/api/cookie/cookies";
 
 export default function ProtectedRoute({ children }) {
@@ -12,10 +14,10 @@ export default function ProtectedRoute({ children }) {
     if (pathname !== "/login" && !token) {
       router.replace("/login");
     }
-  }, [router, token]);
+  }, [pathname, router, token]);
 
   if (!token && pathname !== "/login") {
-    return <div></div>;
+    return <div />;
   }
 
   return children;

@@ -1,6 +1,5 @@
 "use client";
 
-import { getCookie } from "@/api/cookie/cookies";
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { getCookie } from "@/api/cookie/cookies";
