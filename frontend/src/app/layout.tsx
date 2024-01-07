@@ -4,6 +4,7 @@ import "@/ui/css/globals.css";
 import RecoilRootProvider from "@/recoil/recoilRootProvider";
 import SocketProvider from "@/components/SocketProvider";
 import StyledComponentsRegistry from "@/lib/registry";
+import ProtectedRouted from "@/components/ProtectedRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <RecoilRootProvider>
-          <StyledComponentsRegistry>
-            <SocketProvider>{children}</SocketProvider>
-          </StyledComponentsRegistry>
-        </RecoilRootProvider>
+          <RecoilRootProvider>
+            <StyledComponentsRegistry>
+              <SocketProvider>
+                <ProtectedRouted>{children}</ProtectedRouted>
+              </SocketProvider>
+            </StyledComponentsRegistry>
+          </RecoilRootProvider>
         <div id="modal-portal"></div>
       </body>
     </html>
