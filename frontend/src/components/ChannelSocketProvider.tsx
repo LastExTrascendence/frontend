@@ -43,17 +43,10 @@ export default function ChannelSocketProvider({
     console.log(token);
 
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/chat?token=${token}`,
+      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/chat`,
       {
         auth: {
-          token: `Bearer ${token}`, // 인증 토큰을 auth 객체에 추가
-        },
-        transportOptions: {
-          polling: {
-            extraHeaders: {
-              Authorization: `Bearer ${token}`, // 헤더에 인증 토큰 추가
-            },
-          },
+          token: `Bearer ${token}`,
         },
       },
     );

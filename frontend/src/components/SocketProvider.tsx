@@ -1,5 +1,6 @@
 "use client";
 
+import { getCookie } from "@/api/cookie/cookies";
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { getCookie } from "@/api/cookie/cookies";
@@ -45,7 +46,7 @@ export default function SocketProvider({
     console.log(token);
 
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
+      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
       {
         auth: {
           token: `Bearer ${token}`,
