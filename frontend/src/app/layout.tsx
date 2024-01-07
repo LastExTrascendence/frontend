@@ -25,13 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <SocketProvider>
           <RecoilRootProvider>
             <StyledComponentsRegistry>
-              <ProtectedRouted>{children}</ProtectedRouted>
+              <SocketProvider>
+                <ProtectedRouted>{children}</ProtectedRouted>
+              </SocketProvider>
             </StyledComponentsRegistry>
           </RecoilRootProvider>
-        </SocketProvider>
         <div id="modal-portal"></div>
       </body>
     </html>
