@@ -43,7 +43,7 @@ export default function GameSocketProvider({
     console.log(token);
 
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_CHANNEL_PORT}/game?token=${token}`,
+      `http://10.19.239.198:${process.env.NEXT_PUBLIC_GAME_PORT}/game?token=${token}`,
       {
         auth: {
           token: `Bearer ${token}`, // 인증 토큰을 auth 객체에 추가
