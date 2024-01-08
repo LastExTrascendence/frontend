@@ -15,6 +15,51 @@ import getRoleIcon from "@/ui/overview/channel/get-role-icon";
 import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
+import { UserDto } from "@/types/interface/user.interface";
+
+export function changeRole(
+  socket: any,
+  title: string,
+  myInfo: UserDto,
+  user: string,
+) {
+  console.log("change role");
+  socket.emit("changeRole", { title, userId: myInfo.id, channelId: user });
+}
+
+export function kickUser(
+  socket: any,
+  title: string,
+  myInfo: UserDto,
+  user: string,
+) {
+  console.log("kick user");
+  socket.emit("kickUser", { title, userId: myInfo.id, kickId: user });
+}
+
+export function banUser(
+  socket: any,
+  title: string,
+  myInfo: UserDto,
+  user: string,
+) {
+  console.log("ban user");
+  socket.emit("banUser", { title, userId: myInfo.id, banId: user });
+}
+
+export function muteUser(
+  socket: any,
+  title: string,
+  myInfo: UserDto,
+  user: string,
+) {
+  console.log("mute user");
+  socket.emit("muteUser", {
+    title,
+    userId: myInfo.id,
+    muteId: user,
+  });
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
@@ -67,6 +112,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (currentMessage.trim()) {
       channelSocket.emit("msgToServer", {
         time: new Date(),
+        title: name,
         sender: myInfo.id,
         content: currentMessage,
       });
@@ -78,8 +124,8 @@ export default function Page({ params }: { params: { id: string } }) {
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
       <div className="flex h-full w-full flex-col bg-chatColor p-9">
         <div className="content-start items-center overflow-y-scroll">
-          {messages.map((message) => (
-            <MessageItem message={message} />
+          {messages.map((message, index) => (
+            <MessageItem key={index} message={message} />
           ))}
           <div ref={messagesEndRef} />
         </div>
@@ -93,7 +139,7 @@ export default function Page({ params }: { params: { id: string } }) {
         />
       </div>
 
-      <div className="hidden h-full flex-col overflow-y-scroll bg-userInfoColor p-9 md:block">
+      <div className="hidden h-full min-w-[300px] max-w-[350px] flex-col overflow-y-scroll bg-userInfoColor p-9 md:block">
         <div className="font-['Noto Sans KR'] text-4xl font-normal text-white">
           #{name}
         </div>
@@ -121,7 +167,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 </span>
 
                 {myInfo.nickname !== user.nickname
-                  ? getAdminIcon(myRole)
+                  ? getAdminIcon(myRole, channelSocket, myInfo, user.nickname)
                   : null}
               </div>
             ))}

@@ -1,6 +1,16 @@
 import Image from "next/image";
+import {
+  kickUser,
+  muteUser,
+  banUser,
+} from "@/app/(overview)/(channel)/channel/[id]/page";
 
-export default function getAdminIcon(role: string) {
+export default function getAdminIcon(
+  role: string,
+  socket: any,
+  myInfo: any,
+  user: any,
+) {
   switch (role) {
     case "CREATOR":
       return (
@@ -8,7 +18,7 @@ export default function getAdminIcon(role: string) {
           <button
             type="button"
             className="p-1"
-            onClick={() => handleApiRequest("user-mute")}
+            onClick={() => muteUser(socket, myInfo, user)}
           >
             <Image
               src="/user-mute.svg"
@@ -20,7 +30,7 @@ export default function getAdminIcon(role: string) {
           <button
             type="button"
             className="p-1"
-            onClick={() => handleApiRequest("user-kick")}
+            onClick={() => kickUser(socket, myInfo, user)}
           >
             <Image
               src="/user-kick.svg"
@@ -29,7 +39,7 @@ export default function getAdminIcon(role: string) {
               height={18}
             />
           </button>
-          <button type="button" onClick={() => handleApiRequest("user-block")}>
+          <button type="button" onClick={() => banUser(socket, myInfo, user)}>
             <Image
               src="/user-block.svg"
               alt="User Block"
