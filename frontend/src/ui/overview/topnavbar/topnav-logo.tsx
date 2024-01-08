@@ -2,7 +2,6 @@ import Image from "next/image";
 
 export default function TopNavLogo() {
   const toggleSideNav = () => {
-    console.log("toggleSideNav");
     if (
       document.getElementById("sideNavWrap")?.classList.contains("on") === true
     ) {
