@@ -1,4 +1,4 @@
-import { UserStatus } from "../enum/user.enum";
+import { UserStatus } from "@/types/enum/user.enum";
 
 /**
  * @description UserDto 최소한의 유저 정보를 표시하기 위한 인터페이스
@@ -14,24 +14,30 @@ export interface UserDto {
 
 /**
  * @description UserInfoDto 유저의 현재 상태를 표시하기 위한 인터페이스
- * @extends {UserDto} UserDto
  * @param {UserStatus} status - 유저 온라인 상태
+ * @extends {UserDto} UserDto
  */
 export interface UserInfoDto extends UserDto {
   status: UserStatus;
 }
 
-export interface UserProfileInfoDto extends UserDto {
-  id: number;
+/**
+ * @description UserCardInfoDto 유저의 프로필 정보를 표시하기 위한 인터페이스
+ * @param {string} intra_name - 42 intra name
+ * @param {string} email - 이메일
+ * @param {UserStatus} status - 온라인 상태
+ * @param {boolean} is_friend - 친구 여부
+ * @param {Date} at_friend - 친구 추가 날짜 (친구가 아닐 경우 null)
+ * @param {number} games - 총 게임 횟수
+ * @param {number} wins - 총 승리 횟수
+ * @param {number} loses - 총 패배 횟수
+ * @extends {UserDto} UserDto
+ */
+export interface UserCardInfoDto extends UserDto {
   intra_name: string;
-  nickname: string;
-  avatar: string;
   email: string;
-  status: UserStatus;
-
   is_friend: boolean;
-  at_friend: Date;
-
+  at_friend: Date | null;
   games: number;
   wins: number;
   loses: number;
