@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import ProfileImage from "./profile-image";
-import { UserProfileInfoDto } from "@/types/interface/user.interface";
+import { UserCardInfoDto } from "@/types/interface/user.interface";
 
-export default function UserInfoCard(userInfo: UserProfileInfoDto) {
+export default function UserInfoCard({
+  userInfo,
+}: {
+  userInfo: UserCardInfoDto;
+}) {
   return (
     <UserInfoAreaStyled>
       <ProfileImageWrapperStyled>

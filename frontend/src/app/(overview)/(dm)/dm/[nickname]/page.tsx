@@ -3,14 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSocket } from "@/components/SocketProvider";
 import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { myState } from "@/recoil/atom";
 import UserInfoCard from "@/ui/user-info-card";
-import { notFound } from "next/navigation";
-import { UserStatus } from "@/types/enum/user.enum";
-import { UserProfileInfoDto } from "@/types/interface/user.interface";
+import { UserCardInfoDto } from "@/types/interface/user.interface";
 import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
-import styled from "styled-components";
 
 interface Message {
   time: string | Date;
@@ -19,25 +18,26 @@ interface Message {
   content: string; //
 }
 
+export const defaultUserInfo: UserCardInfoDto = {
+  id: 0,
+  nickname: "",
+  intra_name: "",
+  email: "",
+  is_friend: false,
+  at_friend: null,
+  avatar: "",
+  games: 0,
+  wins: 0,
+  loses: 0,
+};
+
 export default function DM({ params }: { params: { nickname: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
   const messagesEndRef = useRef(null);
-  const [userInfo, setUserInfo] = useState<UserProfileInfoDto>({
-    id: 0,
-    nickname: "",
-    intra_name: "",
-    email: "",
-    status: UserStatus.OFFLINE,
-    is_friend: false,
-    at_friend: new Date(),
-    avatar: "",
-    games: 0,
-    wins: 0,
-    loses: 0,
-  });
+  const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
 
   useEffect(() => {
     let timer: any;
@@ -47,7 +47,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
         notFound();
       }, 3000);
     }
-
     return () => {
       clearTimeout(timer);
     };
@@ -69,10 +68,8 @@ export default function DM({ params }: { params: { nickname: string } }) {
     const messageListener = (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     };
-
     socket.emit("getRedis", { sender: myInfo.id, receiver: params.nickname });
     socket.on("msgToClient", messageListener);
-
     return () => {
       socket.off("msgToClient", messageListener);
     };
@@ -80,17 +77,13 @@ export default function DM({ params }: { params: { nickname: string } }) {
 
   const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
-
     const messsage: Message = {
       time: new Date(),
       sender: myInfo.id,
       receiver: params.nickname,
       content: currentMessage,
     };
-
     socket.emit("msgToServer", messsage);
-    console.log("send message", messsage);
-
     setCurrentMessage("");
   };
 
@@ -158,19 +151,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
           </div>
         </div>
         {/* isConnected */}
-        <UserInfoCard
-          id={userInfo.id}
-          nickname={userInfo.nickname}
-          intra_name={userInfo.intra_name}
-          email={userInfo.email}
-          status={userInfo.status}
-          is_friend={userInfo.is_friend}
-          at_friend={userInfo.at_friend}
-          avatar={userInfo.avatar}
-          games={userInfo.games}
-          wins={userInfo.wins}
-          loses={userInfo.loses}
-        />
+        <UserInfoCard userInfo={userInfo} />
       </DMContainerStyled>
     </DMPageStyled>
   );

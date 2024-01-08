@@ -7,9 +7,9 @@ import PillButton from "@/ui/pill-button";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import { useRecoilState } from "recoil";
 import { myState } from "@/recoil/atom";
-import { UserProfileInfoDto } from "@/types/interface/user.interface";
+import { UserCardInfoDto } from "@/types/interface/user.interface";
 import { axiosMyProfileInfo } from "@/api/axios/axios.custom";
-import { UserStatus } from "@/types/enum/user.enum";
+import { defaultUserInfo } from "@/app/(overview)/(dm)/dm/[nickname]/page";
 
 export enum TwoFAType {
   ON = "ON",
@@ -36,19 +36,7 @@ export default function Page() {
     }));
   };
 
-  const [userInfo, setUserInfo] = useState<UserProfileInfoDto>({
-    id: 0,
-    nickname: "",
-    intra_name: "",
-    email: "",
-    status: UserStatus.OFFLINE,
-    is_friend: false,
-    at_friend: new Date(),
-    avatar: "",
-    games: 0,
-    wins: 0,
-    loses: 0,
-  });
+  const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
 
   useEffect(() => {
     getMyProfileInfo();
@@ -126,7 +114,8 @@ export default function Page() {
                 fontSize="1rem"
                 text="Reset"
                 onClick={() => {
-                  console.log("click");
+                  setNickname(myInfo.nickname);
+                  setAvatar(undefined);
                 }}
               />
             </ButtonWrapperStyled>
@@ -139,25 +128,12 @@ export default function Page() {
                 text="Save"
                 onClick={() => {
                   updateMyInfo(nickname, avatar);
-                  console.log("myInfo: ", myInfo);
                 }}
               />
             </ButtonWrapperStyled>
           </ButtonGroupStyled>
         </UserConfigAreaStyled>
-        <UserInfoCard
-          id={userInfo.id}
-          nickname={userInfo.nickname}
-          intra_name={userInfo.intra_name}
-          email={userInfo.email}
-          status={userInfo.status}
-          is_friend={userInfo.is_friend}
-          at_friend={userInfo.at_friend}
-          avatar={userInfo.avatar}
-          games={userInfo.games}
-          wins={userInfo.wins}
-          loses={userInfo.loses}
-        />
+        <UserInfoCard userInfo={userInfo} />
       </UserProfileContainerStyled>
     </UserProfilePageStyled>
   );
