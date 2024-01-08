@@ -10,6 +10,7 @@ export interface Message {
   time: string | Date;
   sender: string;
   content: string;
+  title: string;
 }
 
 /**
@@ -39,4 +40,24 @@ export interface MessageInputProps {
   handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   sendMessage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   name: string;
+}
+
+/**
+ * @description 채팅방 생성을 위한 인터페이스
+ * @param {number} id - req: 0 res: 채팅방 고유 id
+ * @param {string} title - 채팅방 이름
+ * @param {string} channelPolicy - 채팅방 공개 여부
+ * @param {string} password - 채팅방 비밀번호
+ * @param {string} creatorId - 채팅방 생성자 id
+ * @param {string} curUser - 현재 접속한 유저 id
+ * @param {string} maxUser - 채팅방 최대 인원
+ */
+export interface ChatCreateProps {
+  id: number;
+  title: string;
+  channelPolicy: string;
+  password: string;
+  creatorId: string;
+  curUser: string;
+  maxUser: string;
 }

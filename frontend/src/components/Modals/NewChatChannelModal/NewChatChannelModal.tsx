@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
+
 import ModalPortal from "../ModalPortal";
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
 import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
 import { myState } from "@/recoil/atom";
-import { useRouter } from "next/navigation";
+
 import { FailResponseModal } from "../ResponseModal/ResponseModal";
+import { ChatCreateProps } from "@/types/interface/chat.interface";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -31,21 +34,22 @@ export default function NewChatChannelModal({
     if (!title) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
-      const channelData = {
+      const channelData: ChatCreateProps = {
+        id: 0,
         title: title,
         channelPolicy: channelPolicy,
         password: channelPolicy === ChannelPolicy.PRIVATE ? password : null,
-        creator: {
-          nickname: myInfo.nickname,
-          avatar: myInfo.avatar,
-        },
+        creatorId: myInfo.id,
         curUser: 0,
         maxUser: 42,
       };
 
-      const channelId = await axiosCreateChatChannel(channelData);
+      const responseChannelData: ChatCreateProps =
+        await axiosCreateChatChannel(channelData);
 
-      router.push(`/channel/${channelId}?name=${title}`);
+      console.log("response =============>", responseChannelData);
+
+      router.push(`/channel/${responseChannelData.id}?name=${title}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
@@ -62,7 +66,7 @@ export default function NewChatChannelModal({
       {!showResponseModal && (
         <Modal
           type={ModalTypes.hasProceedBtn}
-          title={"New Game"}
+          title={"New Channel"}
           proceedBtnText={"Create"}
           cancleBtnText={"Cancel"}
           closeModal={closeModal}
