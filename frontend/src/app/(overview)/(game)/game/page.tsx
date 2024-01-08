@@ -1,16 +1,15 @@
 "use client";
 
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
 import GameList from "@/ui/overview/game/game-list";
 import PillButton from "@/ui/pill-button";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
 import { GameChannelListDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
 export default function Page() {
-  const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [showNewGameChannelModal, setShowNewGameChannelModal] =
     useState<boolean>(false);
@@ -37,7 +36,7 @@ export default function Page() {
   };
 
   const toggleNewGameChannelModal = () => {
-    setShowNewGameChannelModal(!showModal);
+    setShowNewGameChannelModal(!showNewGameChannelModal);
   };
 
   const handleCloseNewGameChannelModal = () => {
