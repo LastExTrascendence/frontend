@@ -6,7 +6,8 @@ import styled from "styled-components";
 import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
 import GameList from "@/ui/overview/game/game-list";
 import PillButton from "@/ui/pill-button";
-import { GameChannelListDto } from "@/types/interface/game.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { GameChannelListResponseDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
 export default function Page() {
@@ -14,7 +15,7 @@ export default function Page() {
   const [showNewGameChannelModal, setShowNewGameChannelModal] =
     useState<boolean>(false);
   const [gameChannelList, setGameChannelList] =
-    useState<GameChannelListDto[]>();
+    useState<GameChannelListResponseDto>(undefined);
 
   useEffect(() => {
     getGameChannels();
@@ -24,10 +25,14 @@ export default function Page() {
     try {
       const response = await axiosGetGameChannels()
         .then((res) => {
-          setGameChannelList(res.data);
+          setTimeout(() => {
+            setGameChannelList(res.data);
+          }, 500);
         })
         .catch((err) => {
-          console.log(err);
+          setTimeout(() => {
+            setGameChannelList(STATUS_400_BAD_REQUEST);
+          }, 500);
         });
     } catch (error) {
       console.log(error);

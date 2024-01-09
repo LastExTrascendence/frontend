@@ -4,13 +4,34 @@ export default function Stats() {
   return (
     <>
       <StatsContainerStyled>
-        <StatContainerStyled>Longest Game</StatContainerStyled>
-        <StatContainerStyled>Shortest Game</StatContainerStyled>
-        <StatContainerStyled>Avg. Game Time</StatContainerStyled>
-        <StatContainerStyled>Total Point Scored</StatContainerStyled>
-        <StatContainerStyled>Avg. Score</StatContainerStyled>
-        <StatContainerStyled>Avg. Score / Win</StatContainerStyled>
-        <StatContainerStyled>Win Streaks</StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Longest Game</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Shortest Game</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Avg. Game Time</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Total Point Scored</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Avg. Score</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Avg. Score / Win</div>
+        </StatContainerStyled>
+        <StatContainerStyled>
+          <div>0</div>
+          <div>Win Streaks</div>
+        </StatContainerStyled>
       </StatsContainerStyled>
     </>
   );

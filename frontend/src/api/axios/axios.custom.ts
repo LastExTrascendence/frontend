@@ -57,6 +57,19 @@ export const axiosGetUserProfileByNickname = async (
   }
 };
 
+const axiosGetSearchResultURL = "/user/search";
+export const axiosGetSearchResult = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetSearchResultURL}/${nickname}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosGetUserGameRecordURL = "/game/record";
 export const axiosGetUserGameRecord = async (
   nickname: string,

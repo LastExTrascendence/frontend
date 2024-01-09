@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useSocket } from "@/components/SocketProvider";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import { myState } from "@/recoil/atom";
+import { useSocket } from "@/components/SocketProvider";
 import UserInfoCard from "@/ui/user-info-card";
 import { UserCardInfoDto } from "@/types/interface/user.interface";
 import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
@@ -36,7 +36,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
 
   useEffect(() => {
@@ -119,12 +119,13 @@ export default function DM({ params }: { params: { nickname: string } }) {
                 className="grid grid-cols-[auto_auto_1fr] gap-4 rounded-lg px-2 pb-1 text-base text-white hover:bg-gray-700"
               >
                 <span className="max-w-[100px] overflow-hidden">
-                  <>{message.time ? message.time : new Date()}</>
+                  {/* print in HH:MM AM/PM format */}
+                  <>{message.time ? message.time : ""} </>
                 </span>
                 <span className="max-w-[100px] overflow-hidden">
-                  {message.sender ? message.sender : myInfo.id}
+                  {message.sender ? message.sender : ""}
                 </span>
-                <span>{message.content ? message.content : "noncon"}</span>
+                <span>{message.content ? message.content : ""}</span>
               </div>
             ))}
             <div ref={messagesEndRef} />

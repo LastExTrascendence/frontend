@@ -6,13 +6,17 @@ import styled from "styled-components";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
 import ChannelList from "@/ui/overview/channel/channel-list";
 import PillButton from "@/ui/pill-button";
-import { ChatChannelListDto } from "@/types/interface/channel.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import {
+  ChannelListResponseDto,
+  ChatChannelListDto,
+} from "@/types/interface/channel.interface";
 import { axiosGetChatChannels } from "@/api/axios/axios.custom";
 
 export default function Page() {
   const [searchInput, setSearchInput] = useState("");
   const [chatChannelList, setChatChannelList] =
-    useState<ChatChannelListDto[]>();
+    useState<ChannelListResponseDto>(undefined);
   const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
 
@@ -24,10 +28,14 @@ export default function Page() {
     try {
       const response = await axiosGetChatChannels()
         .then((res) => {
-          setChatChannelList(res.data);
+          setTimeout(() => {
+            setChatChannelList(res.data);
+          }, 500);
         })
         .catch((err) => {
-          console.log(err);
+          setTimeout(() => {
+            setChatChannelList(STATUS_400_BAD_REQUEST);
+          }, 500);
         });
     } catch (error) {
       console.log(error);

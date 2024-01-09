@@ -1,5 +1,11 @@
-import { ChannelPolicy, ChatChannelUserRole } from "../enum/channel.enum";
-import { UserDto } from "./user.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { ChannelPolicy, ChatChannelUserRole } from "@/types/enum/channel.enum";
+import { UserDto } from "@/types/interface/user.interface";
+
+export type ChannelListResponseDto =
+  | ChatChannelListDto[]
+  | undefined
+  | typeof STATUS_400_BAD_REQUEST;
 
 /**
  * @description 채널 (게임, 채팅) 정보를 위한 공통 interface

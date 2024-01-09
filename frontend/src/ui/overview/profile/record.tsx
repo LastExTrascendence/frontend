@@ -7,8 +7,9 @@ import {
   TableBody,
   TableHeader,
 } from "@/ui/overview/game/game-list";
+import { GameRecordListDto } from "@/types/interface/game.interface";
 
-export default function Record({ games }: { games: any }) {
+export default function Record({ games }: { games: GameRecordListDto[] }) {
   return (
     <ChannelListContainerStyled>
       <TableHeader>

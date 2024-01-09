@@ -1,4 +1,6 @@
 import { useRouter } from "next/navigation";
+import LoadingAnimation from "@/ui/loading-animation";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import {
   CellHeaderStyled,
   CellStyled,
@@ -9,7 +11,10 @@ import {
 } from "../game/game-list";
 
 export default function ChannelList({ chats }: { chats: any }) {
+  if (chats === undefined) return <LoadingAnimation />;
+
   const router = useRouter();
+
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -19,7 +24,7 @@ export default function ChannelList({ chats }: { chats: any }) {
         <CellHeaderStyled>Type</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {chats &&
+        {chats !== STATUS_400_BAD_REQUEST ? (
           chats.map((chat: any) => (
             <RowStyled
               key={chat.id}
@@ -39,7 +44,12 @@ export default function ChannelList({ chats }: { chats: any }) {
                 {chat.channelPolicy.toLowerCase()}
               </CellStyled>
             </RowStyled>
-          ))}
+          ))
+        ) : (
+          <RowStyled className="channel">
+            <div>채널을 생성해주세요!</div>
+          </RowStyled>
+        )}
       </TableBody>
     </ChannelListContainerStyled>
   );

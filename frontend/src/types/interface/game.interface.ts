@@ -1,5 +1,11 @@
-import { GameMode, GameResult, GameType } from "../enum/game.enum";
-import { ChannelDto } from "./channel.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { GameMode, GameResult, GameType } from "@/types/enum/game.enum";
+import { ChannelDto } from "@/types/interface/channel.interface";
+
+export type GameChannelListResponseDto =
+  | GameChannelListDto[]
+  | undefined
+  | typeof STATUS_400_BAD_REQUEST;
 
 /**
  * @description 게임 채널 리스트
