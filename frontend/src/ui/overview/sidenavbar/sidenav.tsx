@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import LogoutIcon from "@/ui/icon/logout-icon";
+import TopNavLogo from "../topnavbar/topnav-logo";
 import { SideNavButtonContainerStyled } from "./sidenav-button-list";
 import SideNavButtonList from "./sidenav-button-list";
-import LogoutIcon from "@/ui/icon/logout-icon";
 
 const SideNav = () => {
   return (
     <SideNavWrapperStyled>
+      <LogoSectionStyled id="topNavLogo">
+        <TopNavLogo />
+      </LogoSectionStyled>
       <SideNavStyled>
         <TopSectionStyled>
           <TopButtonGroupStyled>
@@ -25,6 +29,29 @@ const SideNav = () => {
 const SideNavWrapperStyled = styled.div`
   display: flex;
   background-color: var(--dark-gray);
+`;
+
+const LogoSectionStyled = styled.div`
+  width: 90px;
+  height: 90px;
+  display: flex;
+  position: fixed;
+  top: -90px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--dark-gray);
+  transition: background-color 0.3s ease-in-out;
+  z-index: 10;
+
+  &::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--line-color-dark-gray);
+  }
 `;
 
 const SideNavStyled = styled.div`

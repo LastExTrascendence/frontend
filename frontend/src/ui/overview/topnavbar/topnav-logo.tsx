@@ -1,31 +1,8 @@
 import Image from "next/image";
+import { useMenu } from "@/hooks/useMenu";
 
 export default function TopNavLogo() {
-  const toggleSideNav = () => {
-    if (
-      document.getElementById("sideNavWrap")?.classList.contains("on") === true
-    ) {
-      closeSideNav();
-    } else {
-      openSideNav();
-    }
-  };
-
-  const openSideNav = () => {
-    document.getElementById("sideNavWrap")?.classList.add("on");
-    document.getElementById("topNavLogo")?.classList.add("on");
-    document.getElementById("topNavTextLogo")?.classList.add("on");
-  };
-
-  const closeSideNav = () => {
-    if (
-      document.getElementById("sideNavWrap")?.classList.contains("on") === true
-    ) {
-      document.getElementById("sideNavWrap")?.classList.remove("on");
-      document.getElementById("topNavLogo")?.classList.remove("on");
-      document.getElementById("topNavTextLogo")?.classList.remove("on");
-    }
-  };
+  const { toggleSideNav } = useMenu();
 
   return (
     <div

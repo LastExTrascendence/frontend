@@ -63,7 +63,7 @@ const LogoSectionStyled = styled.div`
   justify-content: center;
   align-items: center;
   background-color: var(--dark-gray);
-  transition: background-color 0.3s ease-in-out;
+  /* transition: background-color 0.3s ease-in-out; */
 
   &::after {
     content: "";

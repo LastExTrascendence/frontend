@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import LoadingAnimation from "@/ui/loading-animation";
 import {
   CellHeaderStyled,
   CellStyled,
@@ -7,9 +8,16 @@ import {
   TableBody,
   TableHeader,
 } from "@/ui/overview/game/game-list";
-import { GameRecordListDto } from "@/types/interface/game.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { GameRecordListResponseDto } from "@/types/interface/game.interface";
 
-export default function Record({ games }: { games: GameRecordListDto[] }) {
+export default function Record({
+  games,
+}: {
+  games: GameRecordListResponseDto;
+}) {
+  if (games === undefined) return <LoadingAnimation />;
+
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -20,7 +28,7 @@ export default function Record({ games }: { games: GameRecordListDto[] }) {
         <CellHeaderStyled>Date</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games &&
+        {games !== STATUS_400_BAD_REQUEST ? (
           games.map((game: any, idx: number) => (
             <RowStyled key={idx} onClick={() => {}} className="channel">
               <CellStyled className="align-center">{game.player}</CellStyled>
@@ -29,7 +37,10 @@ export default function Record({ games }: { games: GameRecordListDto[] }) {
               <CellStyled className="align-center">{game.mode}</CellStyled>
               <CellStyled className="align-center">{game.date}</CellStyled>
             </RowStyled>
-          ))}
+          ))
+        ) : (
+          <div>전적이 없어요!</div>
+        )}
       </TableBody>
     </ChannelListContainerStyled>
   );
