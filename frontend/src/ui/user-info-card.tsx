@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import ProfileImage from "./profile-image";
 import { UserCardInfoDto } from "@/types/interface/user.interface";
+import ProfileImage from "./profile-image";
 
 export default function UserInfoCard({
   userInfo,
@@ -54,6 +54,10 @@ const UserInfoAreaStyled = styled.div`
   border-bottom-right-radius: 20px;
   background-color: var(--background-dark-gray);
   padding: 1rem;
+
+  @media (max-width: 610px) {
+    display: none;
+  }
 `;
 
 const ProfileImageWrapperStyled = styled.div`
