@@ -18,6 +18,11 @@ export interface GameChannelListDto extends ChannelDto {
   gameMode: GameMode;
 }
 
+export type GameRecordListResponseDto =
+  | GameRecordListDto[]
+  | undefined
+  | typeof STATUS_400_BAD_REQUEST;
+
 /**
  * @description 프로필에서 표시될 게임 Record 리스트
  * @param {string} player - 플레이어 닉네임

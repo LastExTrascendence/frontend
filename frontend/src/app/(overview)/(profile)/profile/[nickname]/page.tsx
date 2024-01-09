@@ -7,7 +7,11 @@ import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import Record from "@/ui/overview/profile/record";
 import Stats from "@/ui/overview/profile/stats";
 import UserInfoCard from "@/ui/user-info-card";
-import { GameRecordListDto } from "@/types/interface/game.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import {
+  GameRecordListDto,
+  GameRecordListResponseDto,
+} from "@/types/interface/game.interface";
 import { UserCardInfoDto } from "@/types/interface/user.interface";
 import {
   axiosGetUserGameRecord,
@@ -29,7 +33,8 @@ export default function Page({ params }: { params: { nickname: string } }) {
     ProfileViewType.RECORD,
   );
   const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
-  const [gameRecordList, setGameRecordList] = useState<GameRecordListDto[]>([]);
+  const [gameRecordList, setGameRecordList] =
+    useState<GameRecordListResponseDto>(undefined);
 
   useEffect(() => {
     getUserProfileInfo();
@@ -51,10 +56,14 @@ export default function Page({ params }: { params: { nickname: string } }) {
     try {
       const response = await axiosGetUserGameRecord(params.nickname)
         .then((res) => {
-          setGameRecordList(res.data);
+          setTimeout(() => {
+            setGameRecordList(res.data);
+          }, 500);
         })
         .catch((err) => {
-          console.log(err);
+          setTimeout(() => {
+            setGameRecordList(STATUS_400_BAD_REQUEST);
+          }, 500);
         });
     } catch (error) {
       console.log(error);
