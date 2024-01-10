@@ -20,7 +20,7 @@ import { UserDto } from "@/types/interface/user.interface";
 export function changeRole(
   socket: any,
   title: string,
-  myInfo: UserDto,
+  mnfo: UserDto,
   user: string,
 ) {
   console.log("change role");
@@ -64,14 +64,14 @@ export function muteUser(
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [currentMessage, setCurrentMessage] = useState("");
+  // const [currentMessage, setCurrentMessage] = useState("");
   const { channelSocket, isConnected } = useChannelSocket();
   const [userList, setUserList] = useState<ChatAttendees[]>();
   const [myRole, setMyRole] = useState<string>("USER");
   const messagesEndRef = useRef(null);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
-
+  const messageRef = useRef("")
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -131,8 +131,9 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <GrowBlank />
         <MessageInput
-          currentMessage={currentMessage}
-          setCurrentMessage={setCurrentMessage}
+          // currentMessage={currentMessage}
+          // setCurrentMessage={setCurrentMessage}
+          messageRef={messageRef}
           handleKeyDown={handleKeyDown}
           sendMessage={sendMessage}
           name={name}

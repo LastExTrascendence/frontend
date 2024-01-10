@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { MessageInputProps } from "@/types/interface/chat.interface";
+import { useState } from "react";
 
 const MessageInputContainer = styled.div`
   display: flex;
@@ -57,12 +58,15 @@ const SendButton = styled.button`
 `;
 
 export default function MessageInput({
-  currentMessage,
-  setCurrentMessage,
+  // currentMessage,
+  // setCurrentMessage,
+  messageRef,
   handleKeyDown,
   sendMessage,
   name,
 }: MessageInputProps) {
+  const [currentMessage, setCurrentMessage] = useState("");
+
   return (
     <MessageInputContainer>
       <StyledInput
