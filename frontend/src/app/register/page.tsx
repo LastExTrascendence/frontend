@@ -1,19 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import styled, { keyframes } from "styled-components";
+import { myState } from "@/recoil/atom";
 import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
+import ProfileImage from "@/ui/profile-image";
 import { UserRegisterDataDto } from "@/types/dto/user.dto";
+import { UserStatus } from "@/types/enum/user.enum";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
-import ProfileImage from "@/ui/profile-image";
-import { useRecoilState } from "recoil";
-import { myState } from "@/recoil/atom";
-import { useRouter } from "next/navigation";
 
 const token = getCookie("access_token");
+
+interface IToken {
+  nickname: string | null;
+  avatar: string;
+  email: string;
+  two_fa: boolean;
+  status: UserStatus;
+  intra_name: string;
+  iat: number;
+  exp: number;
+}
 
 export enum UserRegisterCard {
   Nickname = "Nickname",
@@ -31,7 +44,6 @@ export const useRegistrationSteps = () => {
   const [currentStep, setCurrentStep] = useState<UserRegisterCard>(
     UserRegisterCard.Nickname,
   );
-
   const steps = Object.values(UserRegisterCard);
 
   const nextStep = () => {
@@ -69,14 +81,14 @@ const encodeFileToBase64 = (image: File) => {
 export default function Page() {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [nickname, setNickname] = useState<string>("");
-  const [avatar, setAvatar] = useState<Blob | string>();
+  const [avatar, setAvatar] = useState<string>("");
   const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const router = useRouter();
 
   // 상태 업데이트
-  const updateMyInfo = (newNickname, newAvatar) => {
+  const updateMyInfo = (newNickname: string, newAvatar: string) => {
     setMyInfo((prevInfo) => ({
       ...prevInfo,
       nickname: newNickname,
@@ -85,11 +97,9 @@ export default function Page() {
   };
 
   const UserRegisterFinished = async () => {
-    const data = {
+    const data: UserRegisterDataDto = {
       nickname,
-      // avatar: base64Image?.url,
       avatar,
-      // bio,
     };
     updateMyInfo(nickname, avatar);
     try {
@@ -103,17 +113,43 @@ export default function Page() {
     }
   };
 
-  useEffect(() => {
-    if (!token) {
-      router.replace("/login");
+  // check nickname is valid
+  // must be 3 ~ 16 characters, only alphabet, number, underscore, hyphen
+  const checkNickname = (nickname: string) => {
+    const regExp = /^[a-zA-Z0-9_-]{3,16}$/;
+    return regExp.test(nickname);
+  };
+
+  const submitNickname = () => {
+    if (checkNickname(nickname)) {
+      nextStep();
     } else {
+      setIsValid(false);
+      setTimeout(() => {
+        setIsValid(true);
+      }, 500);
     }
-    // if (avatar) {
-    //   encodeFileToBase64(avatar).then((base64Image) => {
-    //     setBase64Image({ image: avatar, url: base64Image });
-    //   });
+  };
+
+  useEffect(() => {
+    // if (!token) {
+    //   router.replace("/login");
+    // } else {
+    //   try {
+    //     const decodedToken: IToken = jwtDecode(token);
+    //     if (decodedToken.nickname != null) {
+    //       router.replace("/");
+    //     }
+    //   } catch (error) {
+    //     router.replace("/");
+    //   }
     // }
-  }, [avatar, nickname]);
+  }, []);
+  // if (avatar) {
+  //   encodeFileToBase64(avatar).then((base64Image) => {
+  //     setBase64Image({ image: avatar, url: base64Image });
+  //   });
+  // }
 
   return (
     <RegisterPageStyled>
@@ -138,16 +174,10 @@ export default function Page() {
                   placeholder="..."
                   value={nickname}
                   minLength={3}
-                  maxLength={16}
+                  maxLength={12}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      if (nickname.length < 3 || nickname.length > 16) {
-                        setIsValid(false);
-                      } else {
-                        setIsValid(true);
-                        nextStep();
-                        console.log(currentStep);
-                      }
+                      submitNickname();
                     }
                   }}
                   onChange={(e) => setNickname(e.target.value)}
@@ -158,7 +188,7 @@ export default function Page() {
                 width="260px"
                 fontWeight="400"
                 theme="purple"
-                onClick={nextStep}
+                onClick={submitNickname}
               />
             </>
           </Card>
@@ -187,11 +217,24 @@ export default function Page() {
             </>
           </Card>
         )}
-        {currentStep === UserRegisterCard.Welcome && <h1>Welcome!</h1>}
+        {currentStep === UserRegisterCard.Welcome && (
+          <Card title="Welcome!">
+            <h1></h1>
+          </Card>
+        )}
       </RegisterCardsWrapperStyled>
     </RegisterPageStyled>
   );
 }
+
+const shakeAnimation = keyframes`
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+`;
 
 const RegisterPageStyled = styled.div`
   display: flex;
@@ -199,7 +242,6 @@ const RegisterPageStyled = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
   flex-direction: column;
 `;
 
@@ -226,11 +268,11 @@ const InputContainerStyled = styled.div<{ $isValid: boolean }>`
 
   input {
     width: 300px;
-    height: 60px;
+    height: 70px;
     outline: none;
     border: 3px solid var(--main-purple);
     color: var(--main-purple);
-    animation: ${(props) => (props.$isValid ? "none" : "shake 0.5s")};
+    animation: ${(props) => (props.$isValid ? "none" : shakeAnimation)} 0.4s;
     font-size: 1.75rem;
     padding: 0 1rem;
     border-radius: 20px;

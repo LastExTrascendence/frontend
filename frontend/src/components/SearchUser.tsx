@@ -59,9 +59,9 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
 
   const getDropdownPosition = () => {
     if (searchBarRef.current) {
-      const searchBarRect = searchBarRef.current.getBoundingClientRect();
-      const dropdownTop = searchBarRect.top + searchBarRect.height + 5;
-      const dropdownLeft = searchBarRect.left;
+      // const searchBarRect = searchBarRef.current.getBoundingClientRect();
+      // const dropdownTop = searchBarRect.top + searchBarRect.height + 5;
+      // const dropdownLeft = searchBarRect.left;
       setDropdownPosition({
         top: searchBarRef.current.offsetTop + 40,
         left: searchBarRef.current.offsetLeft,
