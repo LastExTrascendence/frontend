@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { defaultUserInfo } from "@/app/(overview)/(dm)/dm/[nickname]/page";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import Record from "@/ui/overview/profile/record";
 import Stats from "@/ui/overview/profile/stats";
 import UserInfoCard from "@/ui/user-info-card";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import {
-  GameRecordListDto,
   GameRecordListResponseDto,
+  GameStatsResponseDto,
 } from "@/types/interface/game.interface";
-import { UserCardInfoDto } from "@/types/interface/user.interface";
+import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
   axiosGetUserGameRecord,
   axiosGetUserProfileByNickname,
@@ -32,13 +31,15 @@ export default function Page({ params }: { params: { nickname: string } }) {
   const [profileView, setProfileView] = useState<ProfileViewType>(
     ProfileViewType.RECORD,
   );
-  const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
+  const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const [gameRecordList, setGameRecordList] =
     useState<GameRecordListResponseDto>(undefined);
+  const [gameStats, setGameStats] = useState<GameStatsResponseDto>(undefined);
 
   useEffect(() => {
     getUserProfileInfo();
     getGameRecord();
+    getGameStats();
   }, []);
 
   const getUserProfileInfo = async () => {
@@ -47,6 +48,9 @@ export default function Page({ params }: { params: { nickname: string } }) {
         params.nickname,
       );
       setUserInfo(userProfileInfo);
+      setTimeout(() => {
+        setUserInfo(userProfileInfo);
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +75,25 @@ export default function Page({ params }: { params: { nickname: string } }) {
     }
   };
 
+  const getGameStats = async () => {
+    try {
+      const response = await axiosGetUserGameRecord(params.nickname)
+        .then((res) => {
+          setTimeout(() => {
+            setGameStats(res.data);
+          }, 500);
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            setGameStats(STATUS_400_BAD_REQUEST);
+          }, 500);
+        });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return (
     <>
       <UserConfigAreaStyled>
@@ -85,7 +108,7 @@ export default function Page({ params }: { params: { nickname: string } }) {
         {profileView === ProfileViewType.RECORD ? (
           <Record games={gameRecordList} />
         ) : (
-          <Stats />
+          <Stats stats={gameStats} />
         )}
       </UserConfigAreaStyled>
       <UserInfoCard userInfo={userInfo} />

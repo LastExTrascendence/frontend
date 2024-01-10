@@ -113,7 +113,12 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
             {searchResults.map((user: any) => (
               <DropdownItemStyled
                 key={user.id}
-                onClick={() => router.push(`/profile/${user.nickname}`)}
+                onClick={() => {
+                  router.push(`/profile/${user.nickname}`);
+                  setShowDropdown(false);
+                  setSearchInput("");
+                  setSearchResults([]);
+                }}
               >
                 <UserImageContainerStyled>
                   <ProfileImage

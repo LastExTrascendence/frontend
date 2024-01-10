@@ -8,8 +8,12 @@ import styled from "styled-components";
 import { myState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
 import UserInfoCard from "@/ui/user-info-card";
-import { UserCardInfoDto } from "@/types/interface/user.interface";
+import {
+  UserCardInfoDto,
+  UserCardInfoResponseDto,
+} from "@/types/interface/user.interface";
 import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
+import { useMenu } from "@/hooks/useMenu";
 
 interface Message {
   time: string | Date;
@@ -18,26 +22,14 @@ interface Message {
   content: string; //
 }
 
-export const defaultUserInfo: UserCardInfoDto = {
-  id: 0,
-  nickname: "",
-  intra_name: "",
-  email: "",
-  is_friend: false,
-  at_friend: null,
-  avatar: "",
-  games: 0,
-  wins: 0,
-  loses: 0,
-};
-
 export default function DM({ params }: { params: { nickname: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
-  const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
+  const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
+  const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
     let timer: any;
@@ -102,7 +94,9 @@ export default function DM({ params }: { params: { nickname: string } }) {
       const { data: userProfileInfo } = await axiosGetUserProfileByNickname(
         params.nickname,
       );
-      setUserInfo(userProfileInfo);
+      setTimeout(() => {
+        setUserInfo(userProfileInfo);
+      }, 300);
     } catch (error) {
       console.log(error);
     }
@@ -111,8 +105,20 @@ export default function DM({ params }: { params: { nickname: string } }) {
   return (
     <DMPageStyled>
       <DMContainerStyled>
-        <div className="flex h-full w-full flex-col rounded-[20px] bg-chatColor p-9">
+        <DMConentContainerStyled className="bg-chatColor">
           <div className="content-start items-center overflow-y-auto">
+            <UserInfoButtonStyled
+              onClick={() => {
+                openUserInfoCard();
+              }}
+            >
+              <Image
+                src="/arrow_left.svg"
+                alt="UserInfoToggler"
+                width={30}
+                height={30}
+              />
+            </UserInfoButtonStyled>
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -150,7 +156,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
               <Image src="/send.svg" alt="SendButton" width={30} height={30} />
             </button>
           </div>
-        </div>
+        </DMConentContainerStyled>
         {/* isConnected */}
         <UserInfoCard userInfo={userInfo} />
       </DMContainerStyled>
@@ -173,7 +179,46 @@ export const DMContainerStyled = styled.div`
   align-items: center;
   width: calc(100% - 30px);
   height: calc(100%);
-  border-radius: 20px;
   background-color: var(--gray);
   margin: 15px 0;
+  border-radius: 20px;
+
+  @media (max-width: 610px) {
+    width: calc(100%);
+    margin: 0;
+    border-radius: 0;
+    justify-content: flex-end;
+  }
 `;
+
+export const DMConentContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  padding: 2.25rem;
+
+  @media (max-width: 610px) {
+    width: calc(100% - 15px);
+    border-radius: 0;
+  }
+`;
+
+export const UserInfoButtonStyled = styled.button`
+  display: none;
+
+  @media (max-width: 610px) {
+    display: flex;
+    position: absolute;
+    top: calc(50%);
+    right: 0;
+    margin: 10px;
+    cursor: pointer;
+    /* z-index: 100; */
+  }
+`;
+
+export const UserInfoCardWrapperStyled = styled.div``;

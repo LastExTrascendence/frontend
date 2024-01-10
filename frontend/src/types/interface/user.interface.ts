@@ -1,4 +1,5 @@
 import { UserStatus } from "@/types/enum/user.enum";
+import { STATUS_400_BAD_REQUEST } from "../constants/status-code";
 
 /**
  * @description UserDto 최소한의 유저 정보를 표시하기 위한 인터페이스
@@ -20,6 +21,11 @@ export interface UserDto {
 export interface UserInfoDto extends UserDto {
   status: UserStatus;
 }
+
+export type UserCardInfoResponseDto =
+  | UserCardInfoDto
+  | undefined
+  | typeof STATUS_400_BAD_REQUEST;
 
 /**
  * @description UserCardInfoDto 유저의 프로필 정보를 표시하기 위한 인터페이스

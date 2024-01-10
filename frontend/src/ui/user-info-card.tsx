@@ -1,44 +1,55 @@
 import styled from "styled-components";
-import { UserCardInfoDto } from "@/types/interface/user.interface";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import {
+  UserCardInfoDto,
+  UserCardInfoResponseDto,
+} from "@/types/interface/user.interface";
+import LoadingAnimation from "./loading-animation";
 import ProfileImage from "./profile-image";
 
 export default function UserInfoCard({
   userInfo,
 }: {
-  userInfo: UserCardInfoDto;
+  userInfo: UserCardInfoResponseDto;
 }) {
   return (
-    <UserInfoAreaStyled>
-      <ProfileImageWrapperStyled>
-        <ProfileImage
-          src={userInfo.avatar || "/default_profile.svg"}
-          width={100}
-          height={100}
-          borderRadius={40}
-          showBorder={true}
-        />
-      </ProfileImageWrapperStyled>
-      <UserInfoCardStyled>
-        <UserInfoDetailWrapperStyled>
-          <NicknameStyled>{userInfo.nickname}</NicknameStyled>
-          <IntraNameStyled>{userInfo.intra_name}</IntraNameStyled>
-          <EmailStyled>{userInfo.email}</EmailStyled>
-        </UserInfoDetailWrapperStyled>
-        <UserGameRecordCardStyled>
-          <RecordWrapperStyled>
-            <RecordTextStyled>Total Games</RecordTextStyled>
-            <RecordTextStyled>{userInfo.games}</RecordTextStyled>
-          </RecordWrapperStyled>
-          <RecordWrapperStyled>
-            <RecordTextStyled>Wins</RecordTextStyled>
-            <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
-          </RecordWrapperStyled>
-          <RecordWrapperStyled>
-            <RecordTextStyled>Loses</RecordTextStyled>
-            <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
-          </RecordWrapperStyled>
-        </UserGameRecordCardStyled>
-      </UserInfoCardStyled>
+    <UserInfoAreaStyled id="userInfoCard">
+      {userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST ? (
+        <LoadingAnimation />
+      ) : (
+        <>
+          <ProfileImageWrapperStyled>
+            <ProfileImage
+              src={userInfo.avatar || "/default_profile.svg"}
+              width={100}
+              height={100}
+              borderRadius={40}
+              showBorder={true}
+            />
+          </ProfileImageWrapperStyled>
+          <UserInfoCardStyled>
+            <UserInfoDetailWrapperStyled>
+              <NicknameStyled>{userInfo.nickname}</NicknameStyled>
+              <IntraNameStyled>{userInfo.intra_name}</IntraNameStyled>
+              <EmailStyled>{userInfo.email}</EmailStyled>
+            </UserInfoDetailWrapperStyled>
+            <UserGameRecordCardStyled>
+              <RecordWrapperStyled>
+                <RecordTextStyled>Total Games</RecordTextStyled>
+                <RecordTextStyled>{userInfo.games}</RecordTextStyled>
+              </RecordWrapperStyled>
+              <RecordWrapperStyled>
+                <RecordTextStyled>Wins</RecordTextStyled>
+                <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
+              </RecordWrapperStyled>
+              <RecordWrapperStyled>
+                <RecordTextStyled>Loses</RecordTextStyled>
+                <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
+              </RecordWrapperStyled>
+            </UserGameRecordCardStyled>
+          </UserInfoCardStyled>
+        </>
+      )}
     </UserInfoAreaStyled>
   );
 }
@@ -56,7 +67,9 @@ const UserInfoAreaStyled = styled.div`
   padding: 1rem;
 
   @media (max-width: 610px) {
-    display: none;
+    border-radius: 20px 0 0 20px;
+    height: calc(100% - 90px);
+    /* width: 100%; */
   }
 `;
 

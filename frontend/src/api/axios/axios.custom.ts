@@ -85,6 +85,19 @@ export const axiosGetUserGameRecord = async (
   }
 };
 
+const axiosGetUesrGameStatsURL = "/game/stats";
+export const axiosGetUserGameStats = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetUesrGameStatsURL}/${nickname}`,
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosGetGameChannelsURL = "/game/rooms";
 export const axiosGetGameChannels = async (): Promise<any> => {
   try {

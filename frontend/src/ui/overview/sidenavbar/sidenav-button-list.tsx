@@ -1,7 +1,8 @@
-import styled from "styled-components";
-import { SideButtonProps } from "@/types/interface/button.interface";
-import IconContainer from "@/ui/icon/icon-container";
 import { useRouter } from "next/navigation";
+import styled from "styled-components";
+import IconContainer from "@/ui/icon/icon-container";
+import { SideButtonProps } from "@/types/interface/button.interface";
+import { useMenu } from "@/hooks/useMenu";
 
 const buttons: SideButtonProps[] = [
   {
@@ -23,6 +24,8 @@ const buttons: SideButtonProps[] = [
 
 const SideNavButtonList = () => {
   const router = useRouter();
+  const { closeAll } = useMenu();
+
   return (
     <>
       {buttons.map((button) => (
@@ -36,6 +39,7 @@ const SideNavButtonList = () => {
             fontColor="var(--light-gray)"
             text={button.text}
             onClick={() => {
+              closeAll();
               router.push(button.href);
             }}
           />

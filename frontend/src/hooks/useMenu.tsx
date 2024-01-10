@@ -1,6 +1,7 @@
 export const useMenu = () => {
   const closeAll = () => {
     closeSideNav();
+    closeUserInfoCard();
   };
 
   const toggleSideNav = () => {
@@ -31,5 +32,26 @@ export const useMenu = () => {
     }
   };
 
-  return { closeAll, toggleSideNav, openSideNav, closeSideNav };
+  const openUserInfoCard = () => {
+    document.getElementById("userInfoCard")?.classList.add("on");
+    document.getElementById("menuBackground")?.classList.add("on");
+  };
+
+  const closeUserInfoCard = () => {
+    if (
+      document.getElementById("userInfoCard")?.classList.contains("on") === true
+    ) {
+      document.getElementById("userInfoCard")?.classList.remove("on");
+      document.getElementById("menuBackground")?.classList.remove("on");
+    }
+  };
+
+  return {
+    closeAll,
+    toggleSideNav,
+    openSideNav,
+    closeSideNav,
+    openUserInfoCard,
+    closeUserInfoCard,
+  };
 };

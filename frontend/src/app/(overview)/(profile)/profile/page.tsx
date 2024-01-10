@@ -4,12 +4,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
-import { defaultUserInfo } from "@/app/(overview)/(dm)/dm/[nickname]/page";
 import InputContainer from "@/ui/input-container";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import PillButton from "@/ui/pill-button";
 import UserInfoCard from "@/ui/user-info-card";
-import { UserCardInfoDto } from "@/types/interface/user.interface";
+import {
+  UserCardInfoDto,
+  UserCardInfoResponseDto,
+} from "@/types/interface/user.interface";
 import { axiosMyProfileInfo } from "@/api/axios/axios.custom";
 
 export enum TwoFAType {
@@ -27,7 +29,7 @@ export default function Page() {
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<Blob>();
   const [myInfo, setMyInfo] = useRecoilState(myState);
-  const [userInfo, setUserInfo] = useState<UserCardInfoDto>(defaultUserInfo);
+  const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
 
   // 상태 업데이트
   const updateMyInfo = (newNickname: any, newAvatar: any) => {
@@ -45,7 +47,10 @@ export default function Page() {
   const getMyProfileInfo = async () => {
     try {
       const { data: userProfileInfo } = await axiosMyProfileInfo();
-      setUserInfo(userProfileInfo);
+
+      setTimeout(() => {
+        setUserInfo(userProfileInfo);
+      }, 500);
     } catch (error) {
       console.log(error);
     }

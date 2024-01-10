@@ -38,3 +38,15 @@ export interface GameRecordListDto {
   mode: GameMode;
   date: Date;
 }
+
+export type GameStatsResponseDto =
+  | GameStatsDto
+  | undefined
+  | typeof STATUS_400_BAD_REQUEST;
+
+export interface GameStatsDto {
+  win: number;
+  lose: number;
+  winRate: number;
+  total: number;
+}

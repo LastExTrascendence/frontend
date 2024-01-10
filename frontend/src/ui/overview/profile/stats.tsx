@@ -1,6 +1,9 @@
 import styled from "styled-components";
+import LoadingAnimation from "@/ui/loading-animation";
+import { GameStatsResponseDto } from "@/types/interface/game.interface";
 
-export default function Stats() {
+export default function Stats({ stats }: { stats: GameStatsResponseDto }) {
+  if (stats === undefined) return <LoadingAnimation />;
   return (
     <>
       <StatsContainerStyled>

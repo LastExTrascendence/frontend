@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Search from "@/components/SearchUser";
+import SearchUser from "@/components/SearchUser";
 import TopNavLogo from "./topnav-logo";
 import TopNavTextLogo from "./topnav-textlogo";
 
@@ -16,7 +16,7 @@ export default function Topnav() {
       </SideBarSectionStyled>
       <MainSectionStyled>
         <SearchBarWrapperStyled>
-          <Search placeholder="Search User" />
+          <SearchUser placeholder="Search User" />
         </SearchBarWrapperStyled>
       </MainSectionStyled>
     </TopNavStyled>
@@ -63,7 +63,6 @@ const LogoSectionStyled = styled.div`
   justify-content: center;
   align-items: center;
   background-color: var(--dark-gray);
-  /* transition: background-color 0.3s ease-in-out; */
 
   &::after {
     content: "";
