@@ -1,22 +1,25 @@
 "use client";
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getCookie } from "@/api/cookie/cookies";
 
 export default function ProtectedRoute({ children }) {
   const token = getCookie("access_token");
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (pathname !== "/login" && !token) {
+    setIsClient(true);
+    if (!token && pathname !== "/login") {
       router.replace("/login");
     }
-  }, [router, token]);
+  }, [token, pathname, router]);
 
-  if (!token && pathname !== "/login") {
-    return <div></div>;
+  if (isClient) {
+    return children;
   }
 
-  return children;
+  return <div />;
 }
