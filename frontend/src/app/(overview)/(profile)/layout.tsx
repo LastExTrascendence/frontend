@@ -26,4 +26,10 @@ const UserProfileContainerStyled = styled.div`
   height: calc(100% - 50px);
   border-radius: 20px;
   background-color: var(--gray);
+
+  @media (max-width: 610px) {
+    width: calc(100%);
+    height: calc(100%);
+    border-radius: 0;
+  }
 `;

@@ -1,18 +1,11 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useDebouncedCallback } from "use-debounce";
 import LoadingAnimation from "@/ui/loading-animation";
-import userSearchList from "@/ui/overview/topnavbar/topnav-mock";
 import ProfileImage from "@/ui/profile-image";
-import { UserSearchResultDto } from "@/types/dto/user.dto";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
-import getSearchedUser from "@/api/getSearchedUser";
 import useDebounce from "@/hooks/useDebounce";
-import { UserlistProps } from "@/lib/definitions";
 
 export default function SearchUser({ placeholder }: { placeholder: string }) {
   const router = useRouter();
@@ -90,6 +83,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
         onChange={handleOnChange}
         maxLength={12}
         ref={searchBarRef}
+        value={searchInput}
       />
       <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
       {showDropdown && isLoading ? (
@@ -114,10 +108,10 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
               <DropdownItemStyled
                 key={user.id}
                 onClick={() => {
-                  router.push(`/profile/${user.nickname}`);
                   setShowDropdown(false);
                   setSearchInput("");
                   setSearchResults([]);
+                  router.push(`/profile/${user.nickname}`);
                 }}
               >
                 <UserImageContainerStyled>
@@ -171,7 +165,7 @@ const DropdownStyled = styled.div<{ top?: number; left?: number }>`
   /* width: 50%; */
   min-width: 260px;
   height: 160px;
-  background-color: var(--input-container-color);
+  background-color: var(--search-bar-color);
   border-radius: 20px;
   padding: 10px 0 10px 0;
   overflow-y: scroll;
@@ -199,7 +193,7 @@ const DropdownItemStyled = styled.div`
   margin: 5px 0px 5px 0px;
   /* padding-bottom: 5px; */
   border-radius: 15px;
-  background: var(--line-color-light-gray);
+  background: var(--gray);
   transition: all 0.3s ease;
   &:hover {
     transform: scale(1.05);

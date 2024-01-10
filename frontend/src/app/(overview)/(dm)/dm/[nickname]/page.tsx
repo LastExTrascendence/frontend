@@ -7,7 +7,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
-import UserInfoCard from "@/ui/user-info-card";
+import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
 import {
   UserCardInfoDto,
   UserCardInfoResponseDto,
@@ -204,20 +204,6 @@ export const DMConentContainerStyled = styled.div`
   @media (max-width: 610px) {
     width: calc(100% - 15px);
     border-radius: 0;
-  }
-`;
-
-export const UserInfoButtonStyled = styled.button`
-  display: none;
-
-  @media (max-width: 610px) {
-    display: flex;
-    position: absolute;
-    top: calc(50%);
-    right: 0;
-    margin: 10px;
-    cursor: pointer;
-    /* z-index: 100; */
   }
 `;
 

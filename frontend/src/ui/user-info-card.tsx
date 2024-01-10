@@ -138,3 +138,17 @@ const RecordTextStyled = styled.div`
   font-size: 1rem;
   font-weight: 400;
 `;
+
+export const UserInfoButtonStyled = styled.button`
+  display: none;
+
+  @media (max-width: 610px) {
+    display: flex;
+    position: absolute;
+    top: calc(50%);
+    right: 0;
+    margin: 10px;
+    cursor: pointer;
+    /* z-index: 100; */
+  }
+`;

@@ -1,11 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { ChatChannelContainerStyled } from "@/app/(overview)/(channel)/channel/page";
+import {
+  ProfileContainerStyled,
+  ProfilePageStyled,
+} from "@/app/(overview)/(profile)/profile/page";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import Record from "@/ui/overview/profile/record";
 import Stats from "@/ui/overview/profile/stats";
-import UserInfoCard from "@/ui/user-info-card";
+import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import {
   GameRecordListResponseDto,
@@ -16,6 +22,7 @@ import {
   axiosGetUserGameRecord,
   axiosGetUserProfileByNickname,
 } from "@/api/axios/axios.custom";
+import { useMenu } from "@/hooks/useMenu";
 
 export enum ProfileViewType {
   RECORD = "RECORD",
@@ -35,6 +42,7 @@ export default function Page({ params }: { params: { nickname: string } }) {
   const [gameRecordList, setGameRecordList] =
     useState<GameRecordListResponseDto>(undefined);
   const [gameStats, setGameStats] = useState<GameStatsResponseDto>(undefined);
+  const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
     getUserProfileInfo();
@@ -95,39 +103,56 @@ export default function Page({ params }: { params: { nickname: string } }) {
   };
 
   return (
-    <>
-      <UserConfigAreaStyled>
-        <ToggleSwitchWrapperStyled>
-          <MultiToggleSwitch
-            toggleList={toggleList}
-            initialState={profileView}
-            setState={setProfileView}
-            width="130px"
-          />
-        </ToggleSwitchWrapperStyled>
-        {profileView === ProfileViewType.RECORD ? (
-          <Record games={gameRecordList} />
-        ) : (
-          <Stats stats={gameStats} />
-        )}
-      </UserConfigAreaStyled>
-      <UserInfoCard userInfo={userInfo} />
-    </>
+    <ProfilePageStyled>
+      <ProfileContainerStyled>
+        <UserConfigAreaStyled>
+          <div className="w-full h-full content-start items-center">
+            <UserInfoButtonStyled
+              onClick={() => {
+                openUserInfoCard();
+              }}
+            >
+              <Image
+                src="/arrow_left.svg"
+                alt="UserInfoToggler"
+                width={30}
+                height={30}
+              />
+            </UserInfoButtonStyled>
+            <ToggleSwitchWrapperStyled>
+              <MultiToggleSwitch
+                toggleList={toggleList}
+                initialState={profileView}
+                setState={setProfileView}
+                width="130px"
+              />
+            </ToggleSwitchWrapperStyled>
+            <ChatChannelContainerStyled>
+              {profileView === ProfileViewType.RECORD ? (
+                <Record games={gameRecordList} />
+              ) : (
+                <Stats stats={gameStats} />
+              )}
+            </ChatChannelContainerStyled>
+          </div>
+        </UserConfigAreaStyled>
+        <UserInfoCard userInfo={userInfo} />
+      </ProfileContainerStyled>
+    </ProfilePageStyled>
   );
 }
 
 const UserConfigAreaStyled = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: calc(100% - 300px);
+  justify-content: center;
+  width: 100%;
   height: 100%;
   border-radius: 20px;
-  color: var(--white);
 
   @media (max-width: 610px) {
-    width: 100%;
+    border-radius: 0;
   }
 `;
 
