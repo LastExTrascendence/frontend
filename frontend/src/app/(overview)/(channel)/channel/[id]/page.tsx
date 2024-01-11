@@ -3,97 +3,42 @@
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
 
-import useChannelListener from "@/hooks/useChannelListener";
-import { useChannelSocket } from "@/components/ChannelSocketProvider";
 import { Message, ChatAttendees } from "@/types/interface/chat.interface";
+import { useChannelSocket } from "@/components/ChannelSocketProvider";
+import useChannelListener from "@/hooks/useChannelListener";
+import useUserListListener from "@/hooks/useUserListListener";
+import useUserListComposer from "@/hooks/useUserListComposer";
+import useChannelHandler from "@/hooks/useChannelHandler";
+import useChannelEnter from "@/hooks/useChannelEnter";
+
 import getAdminIcon from "@/ui/overview/channel/get-admin-icon";
-import getRoleIcon from "@/ui/overview/channel/get-role-icon";
+import GetRoleIcon from "@/ui/overview/channel/get-role-icon";
 import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
-import { UserDto } from "@/types/interface/user.interface";
-
-export function changeRole(
-  socket: any,
-  title: string,
-  mnfo: UserDto,
-  user: string,
-) {
-  console.log("change role");
-  socket.emit("changeRole", { title, userId: myInfo.id, channelId: user });
-}
-
-export function kickUser(
-  socket: any,
-  title: string,
-  myInfo: UserDto,
-  user: string,
-) {
-  console.log("kick user");
-  socket.emit("kickUser", { title, userId: myInfo.id, kickId: user });
-}
-
-export function banUser(
-  socket: any,
-  title: string,
-  myInfo: UserDto,
-  user: string,
-) {
-  console.log("ban user");
-  socket.emit("banUser", { title, userId: myInfo.id, banId: user });
-}
-
-export function muteUser(
-  socket: any,
-  title: string,
-  myInfo: UserDto,
-  user: string,
-) {
-  console.log("mute user");
-  socket.emit("muteUser", {
-    title,
-    userId: myInfo.id,
-    muteId: user,
-  });
-}
+import changeRole from "@/api/socket/chat/changeRole";
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
-  // const [currentMessage, setCurrentMessage] = useState("");
-  const { channelSocket, isConnected } = useChannelSocket();
+  const { channelSocket, isChannelConnected, setChannelId, setUserId } =
+    useChannelSocket();
+
+  const [currentMessage, setCurrentMessage] = useState("");
   const [userList, setUserList] = useState<ChatAttendees[]>();
   const [myRole, setMyRole] = useState<string>("USER");
   const messagesEndRef = useRef(null);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
-  const messageRef = useRef("")
+  const messageRef = useRef("");
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  useEffect(() => {
-    console.log("user", userList);
-
-    if (!userList) {
-      setMyRole("USER");
-      return;
-    }
-
-    const matchingUser = userList.find(
-      (user) => user.nickname === myInfo.nickname,
-    );
-
-    if (matchingUser) {
-      setMyRole(matchingUser.role);
-    } else {
-      setMyRole("USER");
-    }
-  }, [userList, myInfo.nickname]);
 
   useEffect(() => {
     scrollToBottom();
@@ -105,7 +50,13 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   };
 
-  useChannelListener(channelSocket, setMessages, setUserList, myInfo, name);
+  useChannelHandler(myInfo.id, params.id, setUserId, setChannelId);
+  useChannelEnter(channelSocket, isChannelConnected, myInfo.id, name);
+  useChannelListener(channelSocket, setMessages);
+  useUserListListener(channelSocket, setUserList);
+  useUserListComposer(userList, myInfo.nickname, setMyRole);
+
+  // useChannelListener(channelSocket, setMessages, setUserList, myInfo, name);
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -131,9 +82,9 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <GrowBlank />
         <MessageInput
-          // currentMessage={currentMessage}
-          // setCurrentMessage={setCurrentMessage}
-          messageRef={messageRef}
+          currentMessage={currentMessage}
+          setCurrentMessage={setCurrentMessage}
+          // messageRef={messageRef}
           handleKeyDown={handleKeyDown}
           sendMessage={sendMessage}
           name={name}
@@ -158,18 +109,32 @@ export default function Page({ params }: { params: { id: string } }) {
                   height={36}
                   // src={user.avatar}
                   src="/default_profile.svg"
-                  alt={user.nickname}
+                  alt={user.nickname || ""}
                 />
 
-                {getRoleIcon(user.role)}
+                {/* <button
+                  type="button"
+                  onClick={() =>
+                    changeRole(channelSocket, name, user.id, user.nickname)
+                  }
+                ></button> */}
+                <GetRoleIcon myRole={myRole} userRole={user.role} />
 
                 <span className="font-['Noto Sans KR'] text-base font-normal text-white">
                   {user.nickname}
                 </span>
 
-                {myInfo.nickname !== user.nickname
+                {myInfo.nickname !== user.nickname &&
+                  getAdminIcon({
+                    role: myRole,
+                    socket: channelSocket,
+                    title: name,
+                    myId: myInfo.id,
+                    userNickname: user.nickname,
+                  })}
+                {/* {myInfo.nickname !== user.nickname
                   ? getAdminIcon(myRole, channelSocket, myInfo, user.nickname)
-                  : null}
+                  : null} */}
               </div>
             ))}
         </div>
