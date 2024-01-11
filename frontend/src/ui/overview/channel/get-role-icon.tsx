@@ -3,8 +3,6 @@ import Image from "next/image";
 export default function GetRoleIcon({ myRole, userRole, changeRole }) {
   console.log(">>>>>>>>>>>>>getRoleIcon", myRole, userRole);
 
-  // 관리자
-  // CREATOR가 OPERATOR를 USER로 변경
   if (myRole === "CREATOR" && userRole === "OPERATOR") {
     return (
       <button type="button" onClick={changeRole}>
@@ -19,7 +17,6 @@ export default function GetRoleIcon({ myRole, userRole, changeRole }) {
     );
   }
 
-  // CREATOR가 USER를 OPERATOR로 변경
   if (
     myRole === "CREATOR" &&
     userRole !== "CREATOR" &&
@@ -38,7 +35,6 @@ export default function GetRoleIcon({ myRole, userRole, changeRole }) {
     );
   }
 
-  // 다른 역할
   switch (userRole) {
     case "CREATOR":
       return <Image src="/creator.svg" alt="Creator" width={18} height={18} />;

@@ -1,5 +1,6 @@
 import { ChannelPolicy, ChatChannelUserRole } from "../enum/channel.enum";
 import { UserDto } from "./user.interface";
+import { ChatAttendees } from "./chat.interface";
 
 /**
  * @description 채널 (게임, 채팅) 정보를 위한 공통 interface
@@ -67,5 +68,5 @@ export interface GetAdminIconProps {
   socket: any;
   title: string;
   myId: number;
-  userNickname: string;
+  user: ChatAttendees;
 }

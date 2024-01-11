@@ -130,11 +130,8 @@ export default function Page({ params }: { params: { id: string } }) {
                     socket: channelSocket,
                     title: name,
                     myId: myInfo.id,
-                    userNickname: user.nickname,
+                    user: user,
                   })}
-                {/* {myInfo.nickname !== user.nickname
-                  ? getAdminIcon(myRole, channelSocket, myInfo, user.nickname)
-                  : null} */}
               </div>
             ))}
         </div>
