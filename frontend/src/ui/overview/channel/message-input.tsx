@@ -57,15 +57,15 @@ const SendButton = styled.button`
   }
 `;
 
+// messageRef,
 export default function MessageInput({
-  // currentMessage,
-  // setCurrentMessage,
-  messageRef,
+  currentMessage,
+  setCurrentMessage,
   handleKeyDown,
   sendMessage,
   name,
 }: MessageInputProps) {
-  const [currentMessage, setCurrentMessage] = useState("");
+  // const [currentMessage, setCurrentMessage] = useState("");
 
   return (
     <MessageInputContainer>
