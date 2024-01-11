@@ -61,3 +61,11 @@ export interface UserVerify {
   password: string | null;
   nickname: string;
 }
+
+export interface GetAdminIconProps {
+  role: string;
+  socket: any;
+  title: string;
+  myId: number;
+  userNickname: string;
+}
