@@ -112,13 +112,13 @@ export default function Page({ params }: { params: { id: string } }) {
                   alt={user.nickname || ""}
                 />
 
-                {/* <button
-                  type="button"
-                  onClick={() =>
-                    changeRole(channelSocket, name, user.id, user.nickname)
+                <GetRoleIcon
+                  myRole={myRole}
+                  userRole={user.role}
+                  changeRole={() =>
+                    changeRole(channelSocket, name, myInfo.id, user.nickname)
                   }
-                ></button> */}
-                <GetRoleIcon myRole={myRole} userRole={user.role} />
+                />
 
                 <span className="font-['Noto Sans KR'] text-base font-normal text-white">
                   {user.nickname}
