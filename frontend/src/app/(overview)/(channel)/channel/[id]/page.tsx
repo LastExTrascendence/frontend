@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
 
@@ -130,7 +130,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     socket: channelSocket,
                     title: name,
                     myId: myInfo.id,
-                    user: user,
+                    user,
                   })}
               </div>
             ))}
