@@ -4,7 +4,7 @@ import UserInfoCard from "@/ui/user-info-card";
 import InputContainer from "@/ui/input-container";
 import { ChangeEvent, useEffect, useState } from "react";
 import PillButton from "@/ui/pill-button";
-import MultiToggleSwitch from "@/ui/multi-toggle-switch";
+import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import { useRecoilState } from "recoil";
 import { myState } from "@/recoil/atom";
 import { UserProfileInfoDto } from "@/types/interface/user.interface";
@@ -16,7 +16,7 @@ export enum TwoFAType {
   OFF = "OFF",
 }
 
-const toggleList = [
+const toggleList: toggleItem[] = [
   { name: "On", key: TwoFAType.ON },
   { name: "Off", key: TwoFAType.OFF },
 ];
@@ -28,7 +28,7 @@ export default function Page() {
   const [myInfo, setMyInfo] = useRecoilState(myState);
 
   // 상태 업데이트
-  const updateMyInfo = (newNickname, newAvatar) => {
+  const updateMyInfo = (newNickname: any, newAvatar: any) => {
     setMyInfo((prevInfo) => ({
       ...prevInfo,
       nickname: newNickname,

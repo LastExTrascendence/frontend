@@ -12,22 +12,23 @@ export default function GameList({ games }: { games: any }) {
         <CellHeaderStyled>Type</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games.map((game: any) => (
-          <RowStyled
-            key={game.id}
-            onClick={() => {
-              router.push(`/game/${game.id}?name=${game.name}`);
-            }}
-            className="channel"
-          >
-            <CellStyled>{game.name}</CellStyled>
-            <CellStyled>{game.join_users[0]}</CellStyled>
-            <CellStyled className="align-center">
-              {game.join_users.length + " / 2"}
-            </CellStyled>
-            <CellStyled className="align-center">{game.status}</CellStyled>
-          </RowStyled>
-        ))}
+        {games &&
+          games.map((game: any) => (
+            <RowStyled
+              key={game.id}
+              onClick={() => {
+                router.push(`/game/${game.id}`);
+              }}
+              className="channel"
+            >
+              <CellStyled>{game.name}</CellStyled>
+              <CellStyled>{game.join_users[0]}</CellStyled>
+              <CellStyled className="align-center">
+                {game.join_users.length + " / 2"}
+              </CellStyled>
+              <CellStyled className="align-center">{game.status}</CellStyled>
+            </RowStyled>
+          ))}
       </TableBody>
     </ChannelListContainerStyled>
   );

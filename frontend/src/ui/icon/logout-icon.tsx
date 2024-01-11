@@ -9,7 +9,7 @@ export default function LogoutIcon() {
     // if (process.env.IS_LOCAL) {
     removeCookie("access_token", {
       path: "/",
-      domain: "localhost",
+      domain: `${process.env.FE_DOMAIN}`,
     });
     // }
     router.push("/login");

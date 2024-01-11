@@ -2,6 +2,7 @@ import instance from "@/api/axios/axios.instance";
 import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { GameMode, GameType } from "@/types/enum/game.enum";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
+import { ChatCreateProps } from "@/types/interface/chat.interface";
 
 const axiosMyInfoURL = "/user/me";
 export const axiosMyInfo = async (): Promise<any> => {
@@ -35,6 +36,21 @@ export const axiosCreateUser = async ({
       nickname,
       avatar,
     });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosGetUserProfileByNicknameURL = "/user/profile";
+export const axiosGetUserProfileByNickname = async (
+  nickname: string,
+): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetUserProfileByNicknameURL}/${nickname}`,
+    );
     return response;
   } catch (error) {
     console.log(error);
@@ -91,19 +107,14 @@ export const axiosGetChatChannels = async (): Promise<any> => {
 
 const axiosCreateChatChannelURL = "/channel/create";
 export const axiosCreateChatChannel = async (
-  title: string,
-  channelPolicy: ChannelPolicy,
-  password: string | null,
-  creator: number,
+  channelData: ChatCreateProps,
 ): Promise<any> => {
   try {
-    const response = await instance.post(axiosCreateChatChannelURL, {
-      title,
-      channelPolicy,
-      password,
-      creator,
-    });
-    return response;
+    const response = await instance.post(
+      axiosCreateChatChannelURL,
+      channelData,
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;
