@@ -36,6 +36,8 @@
   --input-container-color: #1e1f22;
 
   --search-bar-color: #27272a;
+
+  --chatInputColor: #383a3f;
 }
 
 @media only screen and (max-width: 1000px) {
