@@ -1,19 +1,16 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import io from "socket.io-client";
-import { useRecoilValue } from "recoil";
-import { myState } from "@/recoil/atom";
 import { getCookie } from "@/api/cookie/cookies";
-
-type GameSocketContextType = {
-  gameSocket: any | null;
-  isGameConnected: boolean;
-};
+import { GameSocketContextType } from "@/types/type/game-socket.type";
 
 const GameSocketContext = createContext<GameSocketContextType>({
   gameSocket: null,
   isGameConnected: false,
+  setGameId: () => {},
+  setUserId: () => {},
 });
 
 export const useGameSocket = () => useContext(GameSocketContext);
@@ -23,9 +20,11 @@ export default function GameSocketProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [gameId, setGameId] = useState<number>(0);
+  const [userId, setUserId] = useState<number>(0);
   const [gameSocket, setGameSocket] = useState<any | null>(null);
   const [isGameConnected, setGameIsConnected] = useState(false);
-  const myInfo = useRecoilValue(myState);
+  const router = useRouter();
 
   useEffect(() => {
     if (!gameSocket) {
@@ -34,26 +33,17 @@ export default function GameSocketProvider({
 
     gameSocket.on("disconnect", async () => {
       setGameIsConnected(false);
+      // await router.replace("/game");
     });
-  }, []);
+  }, [gameSocket]);
 
   useEffect(() => {
     const token = getCookie("access_token") ?? null;
-
-    console.log(token);
-
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_GAME_PORT}/game?token=${token}`,
+      `http://10.19.239.198:${process.env.NEXT_PUBLIC_GAME_PORT}/game`,
       {
         auth: {
-          token: `Bearer ${token}`, // 인증 토큰을 auth 객체에 추가
-        },
-        transportOptions: {
-          polling: {
-            extraHeaders: {
-              Authorization: `Bearer ${token}`, // 헤더에 인증 토큰 추가
-            },
-          },
+          token: `Bearer ${token}`,
         },
       },
     );
@@ -64,13 +54,20 @@ export default function GameSocketProvider({
 
     setGameSocket(socketInstance);
     return () => {
-      console.log("disconnect");
+      socketInstance.emit("leaveGame", {
+        gameId,
+        userId,
+      });
+      console.log("leave game", gameId, userId);
+
+      socketInstance.off("connect");
+      socketInstance.off("disconnect");
       socketInstance.disconnect();
     };
   }, []);
 
   const contextValue = useMemo(
-    () => ({ gameSocket, isGameConnected }),
+    () => ({ gameSocket, isGameConnected, setGameId, setUserId }),
     [gameSocket, isGameConnected],
   );
 
