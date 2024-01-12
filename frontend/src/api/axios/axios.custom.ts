@@ -2,6 +2,7 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { GameMode, GameType } from "@/types/enum/game.enum";
 import instance from "@/api/axios/axios.instance";
+import { ChatCreateProps } from "@/types/interface/chat.interface";
 
 const axiosMyInfoURL = "/user/me";
 export const axiosMyInfo = async (): Promise<any> => {
@@ -147,19 +148,14 @@ export const axiosGetChatChannels = async (): Promise<any> => {
 
 const axiosCreateChatChannelURL = "/channel/create";
 export const axiosCreateChatChannel = async (
-  title: string,
-  channelPolicy: ChannelPolicy,
-  password: string | null,
-  creator: number,
+  channelData: ChatCreateProps,
 ): Promise<any> => {
   try {
-    const response = await instance.post(axiosCreateChatChannelURL, {
-      title,
-      channelPolicy,
-      password,
-      creator,
-    });
-    return response;
+    const response = await instance.post(
+      axiosCreateChatChannelURL,
+      channelData,
+    );
+    return response.data;
   } catch (error) {
     console.log(error);
     throw error;

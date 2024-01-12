@@ -1,6 +1,7 @@
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { ChannelPolicy, ChatChannelUserRole } from "@/types/enum/channel.enum";
 import { UserDto } from "@/types/interface/user.interface";
+import { ChatAttendees } from "./chat.interface";
 
 export type ChannelListResponseDto =
   | ChatChannelListDto[]
@@ -66,4 +67,12 @@ export interface UserVerify {
   title: string;
   password: string | null;
   nickname: string;
+}
+
+export interface GetAdminIconProps {
+  role: string;
+  socket: any;
+  title: string;
+  myId: number;
+  user: ChatAttendees;
 }
