@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import LoadingAnimation from "./loading-animation";
 
 export interface PillButtonProps {
   disabled?: boolean;
@@ -10,6 +11,7 @@ export interface PillButtonProps {
   width?: string;
   height?: string;
   theme: string;
+  isLoading?: boolean;
 }
 
 export default function PillButton({
@@ -22,6 +24,7 @@ export default function PillButton({
   fontSize = "20px",
   theme,
   disabled = false,
+  isLoading = false,
 }: PillButtonProps) {
   return (
     <PillButtonStyled
@@ -35,7 +38,7 @@ export default function PillButton({
       disabled={disabled}
       type="button"
     >
-      {text}
+      {isLoading ? <LoadingAnimation></LoadingAnimation> : text}
     </PillButtonStyled>
   );
 }

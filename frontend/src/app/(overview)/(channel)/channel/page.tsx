@@ -1,19 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import ChannelList from "@/ui/overview/channel/channel-list";
-import styled from "styled-components";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import PillButton from "@/ui/pill-button";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
+import ChannelList from "@/ui/overview/channel/channel-list";
+import PillButton from "@/ui/pill-button";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import {
+  ChannelListResponseDto,
+  ChatChannelListDto,
+} from "@/types/interface/channel.interface";
 import { axiosGetChatChannels } from "@/api/axios/axios.custom";
-import { ChatChannelListDto } from "@/types/interface/channel.interface";
 
 export default function Page() {
-  const [showModal, setShowModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [chatChannelList, setChatChannelList] =
-    useState<ChatChannelListDto[]>();
+    useState<ChannelListResponseDto>(undefined);
   const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
 
@@ -25,10 +28,14 @@ export default function Page() {
     try {
       const response = await axiosGetChatChannels()
         .then((res) => {
-          setChatChannelList(res.data);
+          setTimeout(() => {
+            setChatChannelList(res.data);
+          }, 500);
         })
         .catch((err) => {
-          console.log(err);
+          setTimeout(() => {
+            setChatChannelList(STATUS_400_BAD_REQUEST);
+          }, 500);
         });
     } catch (error) {
       console.log(error);
@@ -37,7 +44,7 @@ export default function Page() {
   };
 
   const toggleNewChannelModal = () => {
-    setShowNewChannelModal(!showModal);
+    setShowNewChannelModal(!showNewChatChannelModal);
   };
 
   const handleCloseNewChannelModal = () => {

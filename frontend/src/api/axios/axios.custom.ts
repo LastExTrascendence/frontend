@@ -1,7 +1,7 @@
-import instance from "@/api/axios/axios.instance";
 import { UserRegisterDataDto } from "@/types/dto/user.dto";
-import { GameMode, GameType } from "@/types/enum/game.enum";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
+import { GameMode, GameType } from "@/types/enum/game.enum";
+import instance from "@/api/axios/axios.instance";
 import { ChatCreateProps } from "@/types/interface/chat.interface";
 
 const axiosMyInfoURL = "/user/me";
@@ -50,6 +50,47 @@ export const axiosGetUserProfileByNickname = async (
   try {
     const response = await instance.get(
       `${axiosGetUserProfileByNicknameURL}/${nickname}`,
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosGetSearchResultURL = "/user/search";
+export const axiosGetSearchResult = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetSearchResultURL}/${nickname}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosGetUserGameRecordURL = "/game/record";
+export const axiosGetUserGameRecord = async (
+  nickname: string,
+): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetUserGameRecordURL}/${nickname}`,
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosGetUesrGameStatsURL = "/game/stats";
+export const axiosGetUserGameStats = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `${axiosGetUesrGameStatsURL}/${nickname}`,
     );
     return response;
   } catch (error) {

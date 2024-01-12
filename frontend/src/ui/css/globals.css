@@ -13,6 +13,7 @@
   --background-gray-rgb: 49, 51, 56;
   --background-gray: #313338;
   --background-dark-gray: #232428;
+  --background-shadow: rgba(0, 0, 0, 0.7);
 
   --white: #ffffff;
   --green: #55d428;
@@ -55,7 +56,7 @@
 
   #topNavLogo.on {
     background-color: var(--dark-gray);
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
   }
 
   #topNavTextLogo {
@@ -69,6 +70,35 @@
     transform: translateX(0%);
     display: block;
     line-height: 90px;
+  }
+
+  #menuBackground {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-shadow);
+    transform: translateX(-100%);
+    z-index: 9;
+  }
+  #menuBackground.on {
+    transform: translateX(0%);
+  }
+}
+
+@media only screen and (max-width: 610px) {
+  #userInfoCard {
+    /* visibility: hidden; */
+    position: fixed;
+    z-index: 10;
+    transition: all 0.5s ease-in-out;
+    transform: translateX(100%);
+  }
+  #userInfoCard.on {
+    visibility: visible;
+    transform: translateX(0%);
   }
 }
 
