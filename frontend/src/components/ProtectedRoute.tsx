@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+
 import { getCookie } from "@/api/cookie/cookies";
 
 export default function ProtectedRoute({ children }) {
@@ -12,6 +13,7 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     setIsClient(true);
+
     if (!token && pathname !== "/login") {
       router.replace("/login");
     }
