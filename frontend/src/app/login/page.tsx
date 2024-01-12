@@ -2,14 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
+import { getCookie } from "@/api/cookie/cookies";
+
+const token = getCookie("access_token");
 
 export default function Page() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const url = `${process.env.BE_SERVER}/auth/login`;
+
+  useEffect(() => {
+    if (token) {
+      router.replace("/");
+    }
+  }, []);
   return (
     <LoginPageStyled>
       <LeftSideStyled>

@@ -101,9 +101,9 @@ export default function Page() {
       nickname,
       avatar,
     };
-    updateMyInfo(nickname, avatar);
     try {
       await axiosCreateUser(data);
+      updateMyInfo(nickname, avatar);
       setTimeout(() => {
         router.replace("/");
       }, 4000);
@@ -116,7 +116,7 @@ export default function Page() {
   // check nickname is valid
   // must be 3 ~ 16 characters, only alphabet, number, underscore, hyphen
   const checkNickname = (nickname: string) => {
-    const regExp = /^[a-zA-Z0-9_-]{3,16}$/;
+    const regExp = /^[a-zA-Z0-9_-]{4,16}$/;
     return regExp.test(nickname);
   };
 
