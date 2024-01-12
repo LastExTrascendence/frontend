@@ -2,8 +2,13 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { GameRecordListResponseDto } from "@/types/interface/game.interface";
 
-export default function GameList({ games }: { games: any }) {
+export default function GameList({
+  games,
+}: {
+  games: GameRecordListResponseDto;
+}) {
   if (games === undefined) return <LoadingAnimation />;
 
   const router = useRouter();

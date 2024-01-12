@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { ChannelListResponseDto } from "@/types/interface/channel.interface";
 import {
   CellHeaderStyled,
   CellStyled,
@@ -10,7 +11,11 @@ import {
   TableHeader,
 } from "../game/game-list";
 
-export default function ChannelList({ chats }: { chats: any }) {
+export default function ChannelList({
+  chats,
+}: {
+  chats: ChannelListResponseDto;
+}) {
   if (chats === undefined) return <LoadingAnimation />;
 
   const router = useRouter();
