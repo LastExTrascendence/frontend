@@ -74,18 +74,18 @@ export const axiosCreateGame = async (
   title: string,
   channelPolicy: ChannelPolicy,
   password: string | null,
-  creator: number,
-  type: GameType,
-  mode: GameMode,
+  creatorId: number,
+  gameType: GameType,
+  gameMode: GameMode,
 ): Promise<any> => {
   try {
     const response = await instance.post(axiosCreateGameChannelURL, {
       title,
       channelPolicy,
       password,
-      creator,
-      type,
-      mode,
+      creatorId,
+      gameType,
+      gameMode,
     });
     return response;
   } catch (error) {

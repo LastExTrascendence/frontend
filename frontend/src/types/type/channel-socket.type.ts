@@ -8,7 +8,6 @@ import { Dispatch, SetStateAction } from "react";
  * @param {Dispatch<SetStateAction<number>>} setUserId - user id state 변경 함수
  *
  */
-
 export type ChannelSocketContextType = {
   channelSocket: any | null;
   isChannelConnected: boolean;
