@@ -4,11 +4,12 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
 
 import { Message, ChatAttendees } from "@/types/interface/chat.interface";
-import { useChannelSocket } from "@/components/ChannelSocketProvider";
+import { useGameSocket } from "@/components/GameSocketProvider";
 import useChannelListener from "@/hooks/useChannelListener";
 import useUserListListener from "@/hooks/useUserListListener";
 import useUserListComposer from "@/hooks/useUserListComposer";
@@ -21,13 +22,16 @@ import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
 import changeRole from "@/api/socket/chat/changeRole";
+import PillButton from "@/ui/pill-button";
+import ButtonLeft from "@/ui/button-left";
+import ButtonRight from "@/ui/button-right";
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
-  const { channelSocket, isChannelConnected, setChannelId, setUserId } =
-    useChannelSocket();
-
+  const { gameSocket, isGameConnected, setGameId, setUserId } =
+    useGameSocket();
+  const router = useRouter();
   const [currentMessage, setCurrentMessage] = useState("");
   const [userList, setUserList] = useState<ChatAttendees[]>();
   const [myRole, setMyRole] = useState<string>("USER");
@@ -50,18 +54,17 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   };
 
-  useChannelHandler(myInfo.id, params.id, setUserId, setChannelId);
-  useChannelEnter(channelSocket, isChannelConnected, myInfo.id, name);
-  useChannelListener(channelSocket, setMessages);
-  useUserListListener(channelSocket, setUserList);
+  useChannelHandler(myInfo.id, params.id, setUserId, setGameId);
+  useChannelEnter(gameSocket, isGameConnected, myInfo.id, name);
+  useChannelListener(gameSocket, setMessages);
+  useUserListListener(gameSocket, setUserList);
   useUserListComposer(userList, myInfo.nickname, setMyRole);
 
-  // useChannelListener(channelSocket, setMessages, setUserList, myInfo, name);
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (currentMessage.trim()) {
-      channelSocket.emit("msgToServer", {
+      gameSocket.emit("msgToServer", {
         time: new Date(),
         title: name,
         sender: myInfo.id,
@@ -74,40 +77,6 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
       <div className="flex h-full w-full flex-col bg-chatColor p-9">
-        <div className="flex h-[200px] w-full max-w-[950px]">
-          {/* 왼쪽 표 형태 섹션 */}
-          <div className="flex flex-grow flex-col rounded-l-[20px] bg-gray-800">
-            {/* 타이틀 부분 */}
-            <div className="flex flex-grow">
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                Mode
-              </div>
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                Type
-              </div>
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                Speed
-              </div>
-            </div>
-            {/* 하단 텍스트들 */}
-            <div className="flex flex-grow">
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                LADDER
-              </div>
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                Original
-              </div>
-              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
-                150%
-              </div>
-            </div>
-          </div>
-
-          {/* 오른쪽 이미지 섹션 */}
-          <div className="flex h-full w-60 items-center justify-center rounded-r-[20px] bg-gray-800">
-            <Image src="/map.svg" alt="basic map" width={240} height={160} />
-          </div>
-        </div>
 
         <div className="content-start items-center overflow-y-scroll">
           {messages.map((message, index) => (
@@ -126,49 +95,81 @@ export default function Page({ params }: { params: { id: string } }) {
         />
       </div>
 
-      <div className="hidden h-full min-w-[300px] max-w-[350px] flex-col overflow-y-scroll bg-userInfoColor p-9 md:block">
-        <div className="font-['Noto Sans KR'] text-4xl font-normal text-white">
-          #{name}
-        </div>
-        <div className="mt-10 flex flex-col space-y-4">
-          {userList &&
-            userList.map((user) => (
-              <div key={user.id} className="flex items-center space-x-4">
-                <Image
-                  className={
-                    user.role === "CREATOR"
-                      ? "h-[35.57px] w-[35.57px] rounded-[32px] border-4 border-indigoColor"
-                      : "rounded-full border border-black"
-                  }
-                  width={36}
-                  height={36}
-                  // src={user.avatar}
-                  src="/default_profile.svg"
-                  alt={user.nickname || ""}
-                />
+      <div className="hidden flex-col h-full min-w-[400px] shrink-0 max-w-[600px] bg-userInfoColor md:block items-start content-center">
+        <div className="flex h-full w-full flex-col p-9 ">
+          <div className="flex h-[52px] w-full font-['Noto Sans KR'] text-4xl font-normal text-white">
+            #{name}
+          </div>
+          <div className="mt-10 flex flex-col items-center space-y-4 overflow-y-scroll">
+            {userList &&
+              userList.map((user) => (
+                <div key={user.id} className="flex items-center space-x-4">
+                  <Image
+                    className={
+                      user.role === "CREATOR"
+                        ? "h-[35.57px] w-[35.57px] rounded-[32px] border-4 border-indigoColor"
+                        : "rounded-full border border-black"
+                    }
+                    width={36}
+                    height={36}
+                    src={user.avatar}
+                    // src="/default_profile.svg"
+                    alt={user.nickname || ""}
+                  />
 
-                <GetRoleIcon
-                  myRole={myRole}
-                  userRole={user.role}
-                  changeRole={() =>
-                    changeRole(channelSocket, name, myInfo.id, user.nickname)
-                  }
-                />
+                  <span className="font-['Noto Sans KR'] text-base font-normal text-white">
+                    {user.nickname}
+                  </span>
 
-                <span className="font-['Noto Sans KR'] text-base font-normal text-white">
-                  {user.nickname}
-                </span>
-
-                {myInfo.nickname !== user.nickname &&
-                  getAdminIcon({
-                    role: myRole,
-                    socket: channelSocket,
-                    title: name,
-                    myId: myInfo.id,
-                    user,
-                  })}
+                  {myInfo.nickname !== user.nickname &&
+                    getAdminIcon({
+                      role: myRole,
+                      socket: gameSocket,
+                      title: name,
+                      myId: myInfo.id,
+                      user,
+                    })}
+                </div>
+              ))}
+          </div>
+          <GrowBlank />
+          <div className="flex flex-col h-[440px] min-h-[440px] w-full min-w-[260px] rounded-[20px] bg-bgGrayColor mb-[35px]">
+            <div className="flex h-[160px] w-full items-center justify-center rounded-r-[20px] mt-12 mb-12">
+              <Image src="/map.svg" alt="basic map" width={240} height={160} />
+            </div>
+            <div className="flex m-2">
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                Mode
               </div>
-            ))}
+              <ButtonLeft width={30} height={30} onClick={() => { console.log("click"); }} />
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                Normal
+              </div>
+              <ButtonRight width={30} height={30} onClick={() => { console.log("right"); }} />
+            </div>
+            <div className="flex p-2">
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                Type
+              </div>
+              <ButtonLeft width={30} height={30} onClick={() => { console.log("click"); }} />
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                Original
+              </div>
+
+              <ButtonRight width={30} height={30} onClick={() => { console.log("right"); }} />
+            </div>
+            <div className="flex p-2">
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                Speed
+              </div>
+              <ButtonLeft width={30} height={30} onClick={() => { console.log("click"); }} />
+              <div className="grid flex-grow place-items-center text-[28px] font-normal text-white">
+                150%
+              </div>
+              <ButtonRight width={30} height={30} onClick={() => { console.log("right"); }} />
+            </div>
+          </div>
+          <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text="Start" onClick={() => { router.push(`/game/${params.id}/play?name=${name}`) }} />
         </div>
       </div>
     </div>
