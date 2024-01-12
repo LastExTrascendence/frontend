@@ -59,9 +59,6 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
 
   const getDropdownPosition = () => {
     if (searchBarRef.current) {
-      // const searchBarRect = searchBarRef.current.getBoundingClientRect();
-      // const dropdownTop = searchBarRect.top + searchBarRect.height + 5;
-      // const dropdownLeft = searchBarRect.left;
       setDropdownPosition({
         top: searchBarRef.current.offsetTop + 40,
         left: searchBarRef.current.offsetLeft,
@@ -134,26 +131,6 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
           </DropdownStyled>
         )
       )}
-      {/* {
-        <div className="absolute top-full w-full bg-zinc-800">
-          {userSearchList.map((result) => (
-            <Link key={result.id} href={`/profile/${result.id}`}>
-              <div className="flex flex-row items-center justify-center ">
-                <Image
-                  className="h-[30px] w-[30px] items-center justify-center rounded-[32px] border-black border-opacity-50"
-                  width={30}
-                  height={30}
-                  src={result.profile}
-                  alt="profile"
-                />
-                <p className="block h-full w-full rounded-[32px] border-black border-opacity-50 p-2 text-white hover:bg-gray-100">
-                  {result.id}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      } */}
     </div>
   );
 }

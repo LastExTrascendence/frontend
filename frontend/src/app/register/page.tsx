@@ -132,18 +132,18 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // if (!token) {
-    //   router.replace("/login");
-    // } else {
-    //   try {
-    //     const decodedToken: IToken = jwtDecode(token);
-    //     if (decodedToken.nickname != null) {
-    //       router.replace("/");
-    //     }
-    //   } catch (error) {
-    //     router.replace("/");
-    //   }
-    // }
+    if (!token) {
+      router.replace("/login");
+    } else {
+      try {
+        const decodedToken: IToken = jwtDecode(token);
+        if (decodedToken.nickname != null) {
+          router.replace("/");
+        }
+      } catch (error) {
+        router.replace("/");
+      }
+    }
   }, []);
   // if (avatar) {
   //   encodeFileToBase64(avatar).then((base64Image) => {
