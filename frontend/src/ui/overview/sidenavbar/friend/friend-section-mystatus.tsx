@@ -1,17 +1,17 @@
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
-import ProfileImage from "@/ui/profile-image";
 import {
   UserNickNameStyled,
   UserNicknameWrapperStyled,
   UserStatusStyled,
-} from "./friend-section-card";
-import { useRouter } from "next/navigation";
-import { getCookie } from "@/api/cookie/cookies";
+} from "@/ui/overview/sidenavbar/friend/friend-section-card";
+import ProfileImage from "@/ui/profile-image";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
-import Link from "next/link";
+import { getCookie } from "@/api/cookie/cookies";
 
 export default function FriendSectionMyStatus() {
   const router = useRouter();
@@ -29,7 +29,6 @@ export default function FriendSectionMyStatus() {
   const getMyInfo = async () => {
     try {
       const { data: userInfo } = await axiosMyInfo();
-      console.log(userInfo);
       setMyInfo(userInfo);
     } catch (error) {
       console.log(error);

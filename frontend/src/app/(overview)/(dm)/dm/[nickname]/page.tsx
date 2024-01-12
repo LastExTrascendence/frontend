@@ -1,16 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useSocket } from "@/components/SocketProvider";
-import { useRecoilValue } from "recoil";
 import Image from "next/image";
-import { myState } from "@/recoil/atom";
-import UserInfoCard from "@/ui/user-info-card";
 import { notFound } from "next/navigation";
-import { UserStatus } from "@/types/enum/user.enum";
-import { UserProfileInfoDto } from "@/types/interface/user.interface";
-import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
+import React, { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { myState } from "@/recoil/atom";
+import { useSocket } from "@/components/SocketProvider";
+import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
+import {
+  UserCardInfoDto,
+  UserCardInfoResponseDto,
+} from "@/types/interface/user.interface";
+import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
+import { useMenu } from "@/hooks/useMenu";
 
 interface Message {
   time: string | Date;
@@ -24,20 +27,9 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
-  const messagesEndRef = useRef(null);
-  const [userInfo, setUserInfo] = useState<UserProfileInfoDto>({
-    id: 0,
-    nickname: "",
-    intra_name: "",
-    email: "",
-    status: UserStatus.OFFLINE,
-    is_friend: false,
-    at_friend: new Date(),
-    avatar: "",
-    games: 0,
-    wins: 0,
-    loses: 0,
-  });
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
+  const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
     let timer: any;
@@ -47,7 +39,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
         notFound();
       }, 3000);
     }
-
     return () => {
       clearTimeout(timer);
     };
@@ -69,10 +60,8 @@ export default function DM({ params }: { params: { nickname: string } }) {
     const messageListener = (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     };
-
     socket.emit("getRedis", { sender: myInfo.id, receiver: params.nickname });
     socket.on("msgToClient", messageListener);
-
     return () => {
       socket.off("msgToClient", messageListener);
     };
@@ -80,17 +69,13 @@ export default function DM({ params }: { params: { nickname: string } }) {
 
   const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
-
     const messsage: Message = {
       time: new Date(),
       sender: myInfo.id,
       receiver: params.nickname,
       content: currentMessage,
     };
-
     socket.emit("msgToServer", messsage);
-    console.log("send message", messsage);
-
     setCurrentMessage("");
   };
 
@@ -109,7 +94,9 @@ export default function DM({ params }: { params: { nickname: string } }) {
       const { data: userProfileInfo } = await axiosGetUserProfileByNickname(
         params.nickname,
       );
-      setUserInfo(userProfileInfo);
+      setTimeout(() => {
+        setUserInfo(userProfileInfo);
+      }, 300);
     } catch (error) {
       console.log(error);
     }
@@ -118,20 +105,33 @@ export default function DM({ params }: { params: { nickname: string } }) {
   return (
     <DMPageStyled>
       <DMContainerStyled>
-        <div className="flex h-full w-full flex-col rounded-[20px] bg-chatColor p-9">
+        <DMConentContainerStyled className="bg-chatColor">
           <div className="content-start items-center overflow-y-auto">
+            <UserInfoButtonStyled
+              onClick={() => {
+                openUserInfoCard();
+              }}
+            >
+              <Image
+                src="/arrow_left.svg"
+                alt="UserInfoToggler"
+                width={30}
+                height={30}
+              />
+            </UserInfoButtonStyled>
             {messages.map((message, index) => (
               <div
                 key={index}
                 className="grid grid-cols-[auto_auto_1fr] gap-4 rounded-lg px-2 pb-1 text-base text-white hover:bg-gray-700"
               >
                 <span className="max-w-[100px] overflow-hidden">
-                  <>{message.time ? message.time : new Date()}</>
+                  {/* print in HH:MM AM/PM format */}
+                  <>{message.time ? message.time : ""} </>
                 </span>
                 <span className="max-w-[100px] overflow-hidden">
-                  {message.sender ? message.sender : myInfo.id}
+                  {message.sender ? message.sender : ""}
                 </span>
-                <span>{message.content ? message.content : "noncon"}</span>
+                <span>{message.content ? message.content : ""}</span>
               </div>
             ))}
             <div ref={messagesEndRef} />
@@ -156,21 +156,9 @@ export default function DM({ params }: { params: { nickname: string } }) {
               <Image src="/send.svg" alt="SendButton" width={30} height={30} />
             </button>
           </div>
-        </div>
+        </DMConentContainerStyled>
         {/* isConnected */}
-        <UserInfoCard
-          id={userInfo.id}
-          nickname={userInfo.nickname}
-          intra_name={userInfo.intra_name}
-          email={userInfo.email}
-          status={userInfo.status}
-          is_friend={userInfo.is_friend}
-          at_friend={userInfo.at_friend}
-          avatar={userInfo.avatar}
-          games={userInfo.games}
-          wins={userInfo.wins}
-          loses={userInfo.loses}
-        />
+        <UserInfoCard userInfo={userInfo} />
       </DMContainerStyled>
     </DMPageStyled>
   );
@@ -191,7 +179,32 @@ export const DMContainerStyled = styled.div`
   align-items: center;
   width: calc(100% - 30px);
   height: calc(100%);
-  border-radius: 20px;
   background-color: var(--gray);
   margin: 15px 0;
+  border-radius: 20px;
+
+  @media (max-width: 610px) {
+    width: calc(100%);
+    margin: 0;
+    border-radius: 0;
+    justify-content: flex-end;
+  }
 `;
+
+export const DMConentContainerStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  padding: 2.25rem;
+
+  @media (max-width: 610px) {
+    width: calc(100% - 15px);
+    border-radius: 0;
+  }
+`;
+
+export const UserInfoCardWrapperStyled = styled.div``;

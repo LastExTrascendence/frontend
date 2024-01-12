@@ -17,3 +17,13 @@ export enum GameMode {
   NORMAL = "NORMAL",
   SPEED = "SPEED",
 }
+
+/**
+ * @description Enum for game results
+ * @param {WIN} WIN - 승리
+ * @param {LOSE} LOSE - 패배
+ */
+export enum GameResult {
+  WIN = "WIN",
+  LOSE = "LOSE",
+}

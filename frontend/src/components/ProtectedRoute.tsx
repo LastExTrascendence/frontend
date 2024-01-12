@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 
 import { getCookie } from "@/api/cookie/cookies";
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children }: { children: any }) {
   const token = getCookie("access_token");
   const pathname = usePathname();
   const router = useRouter();

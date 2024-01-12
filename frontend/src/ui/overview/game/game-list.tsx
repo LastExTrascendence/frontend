@@ -1,8 +1,18 @@
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import LoadingAnimation from "@/ui/loading-animation";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { GameRecordListResponseDto } from "@/types/interface/game.interface";
 
-export default function GameList({ games }: { games: any }) {
+export default function GameList({
+  games,
+}: {
+  games: GameRecordListResponseDto;
+}) {
+  if (games === undefined) return <LoadingAnimation />;
+
   const router = useRouter();
+
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -12,7 +22,7 @@ export default function GameList({ games }: { games: any }) {
         <CellHeaderStyled>Type</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games &&
+        {games !== STATUS_400_BAD_REQUEST ? (
           games.map((game: any) => (
             <RowStyled
               key={game.id}
@@ -28,7 +38,12 @@ export default function GameList({ games }: { games: any }) {
               </CellStyled>
               <CellStyled className="align-center">{game.status}</CellStyled>
             </RowStyled>
-          ))}
+          ))
+        ) : (
+          <RowStyled className="channel">
+            <div>게임을 생성해주세요!</div>
+          </RowStyled>
+        )}
       </TableBody>
     </ChannelListContainerStyled>
   );
