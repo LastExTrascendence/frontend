@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import FriendSectionCard from "./friend-section-card";
 import Link from "next/link";
+import styled from "styled-components";
 import { UserInfoDto } from "@/types/interface/user.interface";
+import FriendSectionCard from "./friend-section-card";
 
 export default function FriendSectionFriendList({
   friendList = [],

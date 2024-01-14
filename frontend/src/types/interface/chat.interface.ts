@@ -1,4 +1,4 @@
-import { UserDto } from "./user.interface";
+import { userDto } from "./user.interface";
 
 /**
  * @description 채팅 메시지를 표시하기 위한 인터페이스
@@ -21,7 +21,7 @@ export interface Message {
  * @param {string} role - 유저 역할
  * @param {boolean} mute - 유저 음소거 여부
  */
-export interface ChatAttendees extends UserDto {
+export interface ChatAttendees extends userDto {
   role: string;
   mute: boolean;
 }

@@ -1,8 +1,32 @@
 import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { GameMode, GameType } from "@/types/enum/game.enum";
-import instance from "@/api/axios/axios.instance";
 import { ChatCreateProps } from "@/types/interface/chat.interface";
+import instance from "@/api/axios/axios.instance";
+
+const axiosGenerateOTPURL = "/auth/otp/generate";
+export const axiosGenerateOTP = async (): Promise<any> => {
+  try {
+    const response = await instance.post(axiosGenerateOTPURL);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosVerifyOTPURL = "/auth/otp/verify";
+export const axiosVerifyOTP = async (otp: string): Promise<any> => {
+  try {
+    const response = await instance.post(axiosVerifyOTPURL, {
+      otp,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 const axiosMyInfoURL = "/user/me";
 export const axiosMyInfo = async (): Promise<any> => {
@@ -65,6 +89,19 @@ export const axiosGetSearchResult = async (nickname: string): Promise<any> => {
       `${axiosGetSearchResultURL}/${nickname}`,
     );
     return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosAddFriendURL = "/user/friend/add";
+export const axiosAddFriend = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.post(axiosAddFriendURL, {
+      nickname,
+    });
+    return response;
   } catch (error) {
     console.log(error);
     throw error;

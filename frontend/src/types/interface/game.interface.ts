@@ -32,10 +32,10 @@ export type GameRecordListResponseDto =
  * @param {Date} date - 게임 날짜
  */
 export interface GameRecordListDto {
-  player: string;
-  result: GameResult;
-  type: GameType;
-  mode: GameMode;
+  nickname: string;
+  gameUserRole: GameResult;
+  gameType: GameType;
+  gmaeMode: GameMode;
   date: Date;
 }
 

@@ -1,11 +1,9 @@
 import styled from "styled-components";
+import LoadingAnimation from "@/ui/loading-animation";
+import ProfileImage from "@/ui/profile-image";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
-import {
-  UserCardInfoDto,
-  UserCardInfoResponseDto,
-} from "@/types/interface/user.interface";
-import LoadingAnimation from "./loading-animation";
-import ProfileImage from "./profile-image";
+import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
+import { getFormattedDate } from "@/utils/dateUtils";
 
 export default function UserInfoCard({
   userInfo,
@@ -48,6 +46,18 @@ export default function UserInfoCard({
               </RecordWrapperStyled>
             </UserGameRecordCardStyled>
           </UserInfoCardStyled>
+          {userInfo.is_friend && (
+            <FriendInfoWrapperStyled>
+              <FriendInfoCardStyled>
+                <FriendInfoTextWrapperStyled>
+                  <FriendInfoTextStyled>Friend since</FriendInfoTextStyled>
+                  <FriendInfoTextStyled>
+                    {getFormattedDate(new Date(userInfo.at_friend))}
+                  </FriendInfoTextStyled>
+                </FriendInfoTextWrapperStyled>
+              </FriendInfoCardStyled>
+            </FriendInfoWrapperStyled>
+          )}
         </>
       )}
     </UserInfoAreaStyled>
@@ -124,7 +134,7 @@ const UserGameRecordCardStyled = styled.div`
   justify-content: center;
   background-color: var(--gray);
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin: 1.25rem 0;
 `;
 
 const RecordWrapperStyled = styled.div`
@@ -136,6 +146,40 @@ const RecordWrapperStyled = styled.div`
 
 const RecordTextStyled = styled.div`
   font-size: 1rem;
+  font-weight: 400;
+`;
+
+const FriendInfoWrapperStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+`;
+
+const FriendInfoCardStyled = styled.div`
+  width: 250px;
+  height: 50px;
+  display: flex;
+  border-radius: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-gray);
+  color: var(--white);
+  margin-bottom: 1rem;
+`;
+
+const FriendInfoTextWrapperStyled = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 0.25rem 0;
+  padding: 0 1rem;
+`;
+
+const FriendInfoTextStyled = styled.div`
+  font-size: 0.9rem;
   font-weight: 400;
 `;
 

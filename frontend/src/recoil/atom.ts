@@ -1,7 +1,7 @@
 import { atom } from "recoil";
+import { UserStatus } from "@/types/enum/user.enum";
 import { IToastInfo } from "@/types/interface/toast.interface";
 import { UserInfoDto } from "@/types/interface/user.interface";
-import { UserStatus } from "@/types/enum/user.enum";
 
 /**
  * Atom for toast messages

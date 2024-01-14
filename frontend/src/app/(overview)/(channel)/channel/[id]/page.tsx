@@ -1,26 +1,23 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-
-import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
-
-import { Message, ChatAttendees } from "@/types/interface/chat.interface";
 import { useChannelSocket } from "@/components/ChannelSocketProvider";
-import useChannelListener from "@/hooks/useChannelListener";
-import useUserListListener from "@/hooks/useUserListListener";
-import useUserListComposer from "@/hooks/useUserListComposer";
-import useChannelHandler from "@/hooks/useChannelHandler";
-import useChannelEnter from "@/hooks/useChannelEnter";
-
+import GrowBlank from "@/ui/grow-blank";
 import getAdminIcon from "@/ui/overview/channel/get-admin-icon";
 import GetRoleIcon from "@/ui/overview/channel/get-role-icon";
-import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
-import GrowBlank from "@/ui/grow-blank";
+import MessageItem from "@/ui/overview/channel/message-item";
+import { ChatAttendees, Message } from "@/types/interface/chat.interface";
 import changeRole from "@/api/socket/chat/changeRole";
+import useChannelEnter from "@/hooks/useChannelEnter";
+import useChannelHandler from "@/hooks/useChannelHandler";
+import useChannelListener from "@/hooks/useChannelListener";
+import useUserListComposer from "@/hooks/useUserListComposer";
+import useUserListListener from "@/hooks/useUserListListener";
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);

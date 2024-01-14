@@ -20,6 +20,7 @@ import {
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
   axiosGetUserGameRecord,
+  axiosGetUserGameStats,
   axiosGetUserProfileByNickname,
 } from "@/api/axios/axios.custom";
 import { useMenu } from "@/hooks/useMenu";
@@ -55,37 +56,33 @@ export default function Page({ params }: { params: { nickname: string } }) {
       const { data: userProfileInfo } = await axiosGetUserProfileByNickname(
         params.nickname,
       );
-      setUserInfo(userProfileInfo);
       setTimeout(() => {
         setUserInfo(userProfileInfo);
       }, 500);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const getGameRecord = async () => {
     try {
-      const response = await axiosGetUserGameRecord(params.nickname)
-        .then((res) => {
-          setTimeout(() => {
-            setGameRecordList(res.data);
-          }, 500);
-        })
-        .catch((err) => {
-          setTimeout(() => {
-            setGameRecordList(STATUS_400_BAD_REQUEST);
-          }, 500);
-        });
+      const response = await axiosGetUserGameRecord(params.nickname);
+      console.log(response);
+      console.log("response, data", response.data);
+      setTimeout(() => {
+        setGameRecordList(response.data);
+      }, 500);
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      // console.log(error);
+      setGameRecordList(STATUS_400_BAD_REQUEST);
       throw error;
     }
   };
 
   const getGameStats = async () => {
     try {
-      const response = await axiosGetUserGameRecord(params.nickname)
+      const response = await axiosGetUserGameStats(params.nickname)
         .then((res) => {
           setTimeout(() => {
             setGameStats(res.data);
