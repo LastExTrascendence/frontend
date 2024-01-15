@@ -99,7 +99,7 @@ export const axiosGetUserGameStats = async (nickname: string): Promise<any> => {
   }
 };
 
-const axiosGetGameChannelsURL = "/game/rooms";
+const axiosGetGameChannelsURL = "/game";
 export const axiosGetGameChannels = async (): Promise<any> => {
   try {
     const response = await instance.get(axiosGetGameChannelsURL);
@@ -113,7 +113,7 @@ export const axiosGetGameChannels = async (): Promise<any> => {
 const axiosCreateGameChannelURL = "/game/create";
 export const axiosCreateGame = async (
   title: string,
-  channelPolicy: ChannelPolicy,
+  gameChannelPolicy: ChannelPolicy,
   password: string | null,
   creatorId: number,
   gameType: GameType,
@@ -122,7 +122,7 @@ export const axiosCreateGame = async (
   try {
     const response = await instance.post(axiosCreateGameChannelURL, {
       title,
-      channelPolicy,
+      gameChannelPolicy,
       password,
       creatorId,
       gameType,
