@@ -80,14 +80,11 @@ export interface GameProps extends CanvasProps {
  * @description 게임에 필요한 요소들
  * @param {number} x - x 좌표
  * @param {number} y - y 좌표
- * @param {number} dx - x 속도
- * @param {number} dy - y 속도
  */
 export interface BallProps {
   x: number;
   y: number;
-  dx: number;
-  dy: number;
+  size: number;
 };
 
 /**

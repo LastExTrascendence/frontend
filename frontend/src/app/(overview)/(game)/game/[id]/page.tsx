@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
@@ -13,15 +13,14 @@ import { useGameSocket } from "@/components/GameSocketProvider";
 import useChannelListener from "@/hooks/useChannelListener";
 import useUserListListener from "@/hooks/useUserListListener";
 import useUserListComposer from "@/hooks/useUserListComposer";
-import useChannelHandler from "@/hooks/useChannelHandler";
-import useChannelEnter from "@/hooks/useChannelEnter";
+import useGameChannelHandler from "@/hooks/useGameChannelHandler";
+import useGameEnter from "@/hooks/useGameEnter";
 
 import getAdminIcon from "@/ui/overview/channel/get-admin-icon";
 import GetRoleIcon from "@/ui/overview/channel/get-role-icon";
 import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
-import changeRole from "@/api/socket/chat/changeRole";
 import PillButton from "@/ui/pill-button";
 import ButtonLeft from "@/ui/button-left";
 import ButtonRight from "@/ui/button-right";
@@ -38,6 +37,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const messagesEndRef = useRef(null);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
+  const [isReady, setIsReady] = useState<boolean>(false);
   const messageRef = useRef("");
 
   const scrollToBottom = () => {
@@ -54,12 +54,53 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   };
 
-  useChannelHandler(myInfo.id, params.id, setUserId, setGameId);
-  useChannelEnter(gameSocket, isGameConnected, myInfo.id, name);
+  const gameStartHandler = () => {
+    if (!gameSocket) return;
+    if (!isGameConnected) return;
+    if (myRole === "CREATOR" && isReady) {
+      console.log("game Start");
+      gameSocket.emit("pressStart", { myId: myInfo.id, gameId: params.id, name });
+    } else {
+      console.log("game Ready");
+      gameSocket.emit("pressReady", { myId: myInfo.id, gameId: params.id, name });
+    }
+  }
+
+  useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      const gameReadyHandler = () => {
+        isReady ? setIsReady(false) : setIsReady(true);
+      };
+      gameSocket.on("pressReadyOn", gameReadyHandler);
+      gameSocket.on("pressReadyOff", gameReadyHandler);
+
+      return () => {
+        gameSocket.off("pressReadyOn", gameReadyHandler);
+        gameSocket.off("pressReadyOff", gameReadyHandler);
+      };
+    }
+  }, [isGameConnected]);
+
+  useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      const gameStartRedirect = () => {
+        router.push(`/game/${params.id}/play?id=${params.id}&name=${name}`);
+      };
+      gameSocket.on("gameStart", gameStartRedirect);
+
+      return () => {
+        gameSocket.off("gameStart", gameStartRedirect);
+      }
+    }
+  }, [isGameConnected]);
+
+  useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
+  useGameEnter(gameSocket, isGameConnected, myInfo.id, name);
   useChannelListener(gameSocket, setMessages);
   useUserListListener(gameSocket, setUserList);
   useUserListComposer(userList, myInfo.nickname, setMyRole);
-
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -77,8 +118,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
       <div className="flex h-full w-full flex-col bg-chatColor p-9">
-
-        <div className="content-start items-center overflow-y-scroll">
+        <div className="w-full content-start items-center overflow-y-scroll">
           {messages.map((message, index) => (
             <MessageItem key={index} message={message} />
           ))}
@@ -169,7 +209,8 @@ export default function Page({ params }: { params: { id: string } }) {
               <ButtonRight width={30} height={30} onClick={() => { console.log("right"); }} />
             </div>
           </div>
-          <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text="Start" onClick={() => { router.push(`/game/${params.id}/play?id=${params.id}&name=${name}`) }} />
+          {/* <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text={myRole === "CREATOR" ? "Start" : "Ready"} onClick={gameStartHandler} /> */}
+          <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text={myRole === "CREATOR" ? "Start" : "Ready"} onClick={() => { router.push(`/game/${params.id}/play?id=${params.id}&name=${name}`); }} />
         </div>
       </div>
     </div>

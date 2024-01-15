@@ -37,11 +37,13 @@ export type GameDataProps = {
  * @param {number} paddleWidth - paddle 가로 길이
  * @param {number} paddleHeight - paddle 세로 길이
  * @param {number} ballSize - ball 크기
+ * @param {string} team - 팀 HOME/AWAY 
  */
 export type PlayInfoProps = {
   width: number;
   height: number;
   map: string;
+  team: string;
   paddleWidth: number;
   paddleHeight: number;
   ballSize: number;
