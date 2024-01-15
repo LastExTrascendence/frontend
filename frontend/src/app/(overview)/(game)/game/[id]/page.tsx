@@ -169,7 +169,7 @@ export default function Page({ params }: { params: { id: string } }) {
               <ButtonRight width={30} height={30} onClick={() => { console.log("right"); }} />
             </div>
           </div>
-          <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text="Start" onClick={() => { router.push(`/game/${params.id}/play?name=${name}`) }} />
+          <PillButton width="320px" height="100px" theme="purple" fontSize="3rem" fontStyle="extra-bold" text="Start" onClick={() => { router.push(`/game/${params.id}/play?id=${params.id}&name=${name}`) }} />
         </div>
       </div>
     </div>
