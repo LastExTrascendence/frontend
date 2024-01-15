@@ -1,8 +1,23 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
-import { GameRecordListResponseDto } from "@/types/interface/game.interface";
+import { GameChannelListDto, GameRecordListResponseDto } from "@/types/interface/game.interface";
+
+const gameEnterLogic = (room: GameChannelListDto) => {
+
+  if (room.channelPolicy === PRIVATE) {
+    const password = prompt("비밀번호를 입력해주세요");
+    if (password !== room.password) {
+      alert("비밀번호가 틀렸습니다");
+      return;
+    }
+  }
+  const router = useRouter();
+  router.push(`/game/${game.id}/play?name=${game.name}`);
+}
 
 export default function GameList({
   games,
@@ -20,6 +35,7 @@ export default function GameList({
         <CellHeaderStyled>Creator</CellHeaderStyled>
         <CellHeaderStyled>Users</CellHeaderStyled>
         <CellHeaderStyled>Type</CellHeaderStyled>
+        <CellHeaderStyled>Status</CellHeaderStyled>
       </TableHeader>
       <TableBody>
         {games !== STATUS_400_BAD_REQUEST ? (
@@ -27,16 +43,17 @@ export default function GameList({
             <RowStyled
               key={game.id}
               onClick={() => {
-                router.push(`/game/${game.id}`);
+                router.push(`/game/${game.id}?name=${game.title}`);
               }}
               className="channel"
             >
-              <CellStyled>{game.name}</CellStyled>
-              <CellStyled>{game.join_users[0]}</CellStyled>
+              <CellStyled>{game.title}</CellStyled>
+              <CellStyled>{game.creator.nickname}</CellStyled>
               <CellStyled className="align-center">
-                {game.join_users.length + " / 2"}
+                {game.cur_user + " / 2"}
               </CellStyled>
-              <CellStyled className="align-center">{game.status}</CellStyled>
+              <CellStyled className="align-center">{game.gameType}</CellStyled>
+              <CellStyled className="align-center">{game.gameStatus}</CellStyled>
             </RowStyled>
           ))
         ) : (
