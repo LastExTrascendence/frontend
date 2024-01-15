@@ -65,7 +65,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
     return () => {
       socket.off("msgToClient", messageListener);
     };
-  }, [socket]);
+  }, [socket, isConnected, myInfo.id]);
 
   const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
@@ -194,7 +194,7 @@ export const DMContainerStyled = styled.div`
 export const DMConentContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   width: 100%;
   height: 100%;

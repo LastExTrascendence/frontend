@@ -42,7 +42,7 @@ export default function SocketProvider({
   useEffect(() => {
     const token = getCookie("access_token") ?? null;
     const socketInstance = io(
-      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_DM_PORT}/dm`,
+      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_USER_PORT}/user`,
       {
         auth: {
           token: `Bearer ${token}`,
