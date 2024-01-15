@@ -50,3 +50,58 @@ export interface GameStatsDto {
   winRate: number;
   total: number;
 }
+
+/**
+ * @description canvas에 그려질 요소들
+ * @param {string} map - 배경 이미지
+ * @param {number} width - 캔버스 너비
+ * @param {number} height - 캔버스 높이
+ */
+export interface CanvasProps {
+  map: string;
+  width: number;
+  height: number;
+};
+
+/**
+ * @description 게임에 필요한 요소들
+ * @extends {CanvasProps} CanvasProps
+ * @param {BallProps} ball - 공
+ * @param {PaddleProps} leftPaddle - 왼쪽 패들
+ * @param {PaddleProps} rightPaddle - 오른쪽 패들
+ */
+export interface GameProps extends CanvasProps {
+  ball: BallProps;
+  leftPaddle: PaddleProps;
+  rightPaddle: PaddleProps;
+};
+
+/**
+ * @description 게임에 필요한 요소들
+ * @param {number} x - x 좌표
+ * @param {number} y - y 좌표
+ * @param {number} dx - x 속도
+ * @param {number} dy - y 속도
+ */
+export interface BallProps {
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+};
+
+/**
+ * @description 게임에 필요한 요소들
+ * @param {number} x - x 좌표
+ * @param {number} y - y 좌표
+ * @param {number} width - 너비
+ * @param {number} height - 높이
+ * @param {string} color - 색상
+ */
+export interface PaddleProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: string;
+};

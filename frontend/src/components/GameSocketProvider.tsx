@@ -9,8 +9,8 @@ import { GameSocketContextType } from "@/types/type/game-socket.type";
 const GameSocketContext = createContext<GameSocketContextType>({
   gameSocket: null,
   isGameConnected: false,
-  setGameId: () => {},
-  setUserId: () => {},
+  setGameId: () => { },
+  setUserId: () => { },
 });
 
 export const useGameSocket = () => useContext(GameSocketContext);

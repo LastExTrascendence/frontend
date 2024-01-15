@@ -1,40 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-
-
-type CanvasProps = {
-  map: string;
-  width: number;
-  height: number;
-};
+import { PlayInfoProps, GameDataProps } from '@/types/type/game-socket.type';
 
 const canvasPropsDefault: CanvasProps = {
   map: '/map.svg',
   width: 1024,
   height: 600,
-};
-
-type BallProps = {
-  x: number;
-  y: number;
-  dx: number;
-  dy: number;
-};
-
-const ballPropsDefault: BallProps = {
-  x: canvasPropsDefault.width / 2,
-  y: canvasPropsDefault.height - 20,
-  dx: 7,
-  dy: -7,
-};
-
-type PaddleProps = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  color: string;
 };
 
 // const leftPaddleProps: PaddleProps = {
@@ -53,9 +25,11 @@ type PaddleProps = {
 //   color: '#FF0000',
 // };
 
-function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, width: number, height: number) {
+function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playInfo: PlayInfoProps, gameData: GameDataProps) {
   const rootStyle = getComputedStyle(document.documentElement);
   const mainDarkPurple = rootStyle.getPropertyValue('--main-dark-purple').trim() || '#827baf';
+  const gray = rootStyle.getPropertyValue('--gray').trim() || '#2b2d31';
+  const white = rootStyle.getPropertyValue('--white').trim() || '#FFFFFF';
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,37 +37,36 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, width
 
     if (canvas && context) {
       const dpi = window.devicePixelRatio;
-      canvas.width = width * dpi;
-      canvas.height = height * dpi;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
+      canvas.width = playInfo.width * dpi;
+      canvas.height = playInfo.height * dpi;
+      canvas.style.width = `${playInfo.width}px`;
+      canvas.style.height = `${playInfo.height}px`;
       context.scale(dpi, dpi);
-      console.log('canvas', canvas.style.width, canvas.style.width);
 
       let { dx, dy } = ballPropsDefault;
-      let x = width / 2;
-      let y = height - 20;
+      let x = playInfo.width / 2;
+      let y = playInfo.height - 20;
 
       const leftPaddleProps: PaddleProps = {
-        x: 10,
-        y: height / 2 - 50,
+        x: playInfo.paddleWidth,
+        y: playInfo.paddleHeight,
         width: 10,
         height: 100,
-        color: '#0000FF',
+        color: gray,
       };
 
       const rightPaddleProps: PaddleProps = {
-        x: width - 20,
-        y: height / 2 - 50,
+        x: playInfo.paddleWidth,
+        y: playInfo.paddleHeight,
         width: 10,
         height: 100,
-        color: '#FF0000',
+        color: white,
       };
 
       const resetBall = () => {
         // 공을 초기 위치로 리셋
-        x = width / 2;
-        y = height - 20;
+        x = playInfo.width / 2;
+        y = playInfo.height;
         dx = 7;
         dy = -7;
       };
@@ -170,7 +143,7 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, width
         }
 
         // 공이 캔버스 경계를 넘어간 경우
-        if (x + dx > width) {
+        if (x + dx > width * dpi) {
           console.log('left win');
           resetBall();
         } else if (x + dx < 0) {
@@ -201,21 +174,18 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, width
         document.removeEventListener('keyup', handleKeyUp);
       };
     }
-  }, [width, height]);
+  }, [width, height, ball, leftPaddle, rightPaddle]);
 }
 
-export default function DrawGame({ width, height }: CanvasProps) {
+export default function DrawGame({ playInfo, gameData }: { playInfo: PlayInfoProps, gameData: GameDataProps }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // useCanvasAnimation(canvasRef, canvasPropsDefault.width, canvasPropsDefault.height);
-  useCanvasAnimation(canvasRef, width / 2, height / 3);
+  useCanvasAnimation(canvasRef, playInfo, gameData);
 
   return (
     <canvas
       ref={canvasRef}
-      width={width / 2}
-      height={height / 3}
-      // width={canvasPropsDefault.width}
-      // height={canvasPropsDefault.height}
+      width={playInfo.width / 2}
+      height={playInfo.height / 3}
       style={{
         background: `url(${canvasPropsDefault.map}) no-repeat center center`,
         backgroundSize: 'cover'
