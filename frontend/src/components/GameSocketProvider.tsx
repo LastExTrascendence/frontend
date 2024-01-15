@@ -64,7 +64,7 @@ export default function GameSocketProvider({
       socketInstance.off("disconnect");
       socketInstance.disconnect();
     };
-  }, []);
+  }, [gameId, userId]);
 
   const contextValue = useMemo(
     () => ({ gameSocket, isGameConnected, setGameId, setUserId }),
