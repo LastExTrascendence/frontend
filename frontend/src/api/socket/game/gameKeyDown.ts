@@ -1,13 +1,14 @@
 
 export default function gameKeyDown(
-  gameId: number,
-  socket: any,
+  // gameId: number,
+  socket,
   team: string,
   key: string,
 ) {
-  console.log("keyDown","room", gameId, "team", team, "key", key);
+  if (!socket) return;
+  console.log("keyDown", "team", team, "key", key);
   socket.emit("keyDown", {
-    gameId,
+    // gameId,
     team,
     key,
   });

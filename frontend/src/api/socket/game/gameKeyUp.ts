@@ -1,13 +1,14 @@
 
 export default function gameKeyUp(
-  gameId: number,
-  socket: any,
+  // gameId: number,
+  socket,
   team: string,
   key: string,
 ) {
-  console.log("keyUp", "room", gameId, "team", team, "key", key);
+  if (!socket) return;
+  console.log("keyUp", "team", team, "key", key);
   socket.emit("keyUp", {
-    gameId,
+    // gameId,
     team,
     key,
   });
