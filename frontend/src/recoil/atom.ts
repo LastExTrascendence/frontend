@@ -21,7 +21,7 @@ export const toastMessagesState = atom<IToastInfo[]>({
 export const myState = atom<UserInfoDto>({
   key: "myInfo",
   default: {
-    id: 1,
+    id: 0,
     nickname: "default",
     avatar:
       "https://cdn.intra.42.fr/users/684b78b28e8b79779609c8ed0def0ebe/chanheki.jpg",
