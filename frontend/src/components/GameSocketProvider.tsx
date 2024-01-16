@@ -40,7 +40,7 @@ export default function GameSocketProvider({
   useEffect(() => {
     const token = getCookie("access_token") ?? null;
     const socketInstance = io(
-      `http://10.19.239.198:${process.env.NEXT_PUBLIC_GAME_PORT}/game`,
+      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_GAME_PORT}/game`,
       {
         auth: {
           token: `Bearer ${token}`,
