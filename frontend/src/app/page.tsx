@@ -1,10 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import styled from "styled-components";
 import Image from "next/image";
 import MainButtonList from "@/ui/mainpage/main-buttons";
 import LogoutIcon from "@/ui/icon/logout-icon";
 import InfoIcon from "@/ui/icon/info-icon";
+
+import { useSetRecoilState } from "recoil";
+import { myState } from "@/recoil/atom";
+import { getCookie } from "@/api/cookie/cookies";
+import { axiosMyInfo } from "@/api/axios/axios.custom";
 
 const MainPageStyled = styled.main`
   width: 100%;
@@ -47,6 +55,27 @@ const ButtonGroupContainerStyled = styled.div`
 `;
 
 export default function Home() {
+  const router = useRouter();
+  const setMyInfo = useSetRecoilState(myState);
+  const token = getCookie("access_token");
+
+  useEffect(() => {
+    if (!token) {
+      router.replace("/login");
+    } else {
+      getMyInfo();
+    }
+  }, []);
+
+  const getMyInfo = async () => {
+    try {
+      const { data: userInfo } = await axiosMyInfo();
+      setMyInfo(userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <MainPageStyled>
       <TopNavStyled>
