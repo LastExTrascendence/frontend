@@ -13,7 +13,9 @@ export default function UserInfoCard({
   return (
     <UserInfoAreaStyled id="userInfoCard">
       {userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST ? (
-        <LoadingAnimation />
+        <LoadingAnimationWrapperStyled>
+          <LoadingAnimation />
+        </LoadingAnimationWrapperStyled>
       ) : (
         <>
           <ProfileImageWrapperStyled>
@@ -64,12 +66,20 @@ export default function UserInfoCard({
   );
 }
 
+const LoadingAnimationWrapperStyled = styled.div`
+  width: 250px;
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 const UserInfoAreaStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 300px;
+  /* width: 300px; */
   height: 100%;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
