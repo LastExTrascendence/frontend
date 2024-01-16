@@ -3,6 +3,7 @@
 const nextConfig = {
   images: {
     domains: ["cdn.intra.42.fr"],
+    loader: 'default',
   },
   env: {
     BE_SERVER: process.env.BE_SERVER,

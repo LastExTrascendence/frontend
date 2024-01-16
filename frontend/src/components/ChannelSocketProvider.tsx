@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import { getCookie } from "@/api/cookie/cookies";
 import { ChannelSocketContextType } from "@/types/type/channel-socket.type";
-import { useRouter } from "next/navigation";
 
 const ChannelSocketContext = createContext<ChannelSocketContextType>({
   channelSocket: null,

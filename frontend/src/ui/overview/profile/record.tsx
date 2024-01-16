@@ -1,4 +1,3 @@
-import { getNDaysAgoString } from "@/utils/dateUtils";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import {
@@ -11,6 +10,7 @@ import {
 } from "@/ui/overview/game/game-list";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameRecordListResponseDto } from "@/types/interface/game.interface";
+import { getNDaysAgoString } from "@/utils/dateUtils";
 
 export default function Record({
   games,
