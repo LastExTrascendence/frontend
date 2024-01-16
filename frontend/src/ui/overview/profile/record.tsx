@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import {
   CellHeaderStyled,
@@ -16,7 +15,8 @@ export default function Record({
 }: {
   games: GameRecordListResponseDto;
 }) {
-  if (games === undefined) return <LoadingAnimation />;
+  console.log(games);
+  if (!Array.isArray(games)) return <LoadingAnimation />;
 
   return (
     <ChannelListContainerStyled>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import ModalPortal from "../ModalPortal";
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
@@ -7,7 +8,6 @@ import { GameMode, GameType } from "@/types/enum/game.enum";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { axiosCreateGame } from "@/api/axios/axios.custom";
 import { myState } from "@/recoil/atom";
-import { useRouter } from "next/navigation";
 import { FailResponseModal } from "../ResponseModal/ResponseModal";
 
 const ChannelPolicyList = [
@@ -25,7 +25,11 @@ const GameTypeList = [
   { name: "Ladder", key: GameType.LADDER },
 ];
 
-const NewGameChannelModal = ({ closeModal }: { closeModal: () => void }) => {
+export default function NewGameChannelModal({
+  closeModal,
+}: {
+  closeModal: () => void;
+}) {
   const router = useRouter();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const [title, setTitle] = useState("");
@@ -40,7 +44,7 @@ const NewGameChannelModal = ({ closeModal }: { closeModal: () => void }) => {
     if (!title) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
-      const channelId = await axiosCreateGame(
+      const gameId = await axiosCreateGame(
         title,
         channelPolicy,
         channelPolicy === ChannelPolicy.PRIVATE ? password : null,
@@ -48,7 +52,7 @@ const NewGameChannelModal = ({ closeModal }: { closeModal: () => void }) => {
         gameType,
         gameMode,
       );
-      router.push(`/game/${channelId}`);
+      router.push(`/game/${gameId}?name=${title}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
@@ -140,6 +144,4 @@ const NewGameChannelModal = ({ closeModal }: { closeModal: () => void }) => {
       )}
     </ModalPortal>
   );
-};
-
-export default NewGameChannelModal;
+}
