@@ -113,6 +113,11 @@ function MainButtonList() {
     }
   }
 
+  const cancelHandler = () => {
+    exitQueue();
+    setIsQueueConnected(false);
+  }
+
   useEffect(() => {
     let interval;
     if (isQueueConnected) {
@@ -137,7 +142,7 @@ function MainButtonList() {
       <QueueStatusContainer isVisible={isQueueConnected}>
         <StatusText>Looking for game...</StatusText>
         <TimerText>{formattedTimer()}</TimerText>
-        <CancelButton onClick={() => { exitQueue(); setIsQueueConnected(false); }}>
+        <CancelButton onClick={cancelHandler}>
           <Image src="/symbols_cancel.svg" alt="close" width={40} height={40} />
         </CancelButton>
       </QueueStatusContainer>
