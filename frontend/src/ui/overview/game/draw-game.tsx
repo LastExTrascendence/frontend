@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { PlayInfoProps, GameDataProps } from '@/types/type/game-socket.type';
 import { PaddleProps } from '@/types/interface/game.interface';
 
 const canvasPropsDefault: CanvasProps = {
   map: '/map.svg',
-  width: 1024,
-  height: 600,
+  width: 512,
+  height: 300,
 };
 
 function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playInfo: PlayInfoProps, gameData: GameDataProps) {
