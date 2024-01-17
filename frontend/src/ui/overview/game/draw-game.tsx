@@ -73,7 +73,16 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
       draw();
     };
 
-    animate();
+    const animationId = requestAnimationFrame(animate);
+
+    // animate();
+    setTimeout(() => {
+      draw();
+    }, 500)
+
+    return () => {
+      cancelAnimationFrame(animationId)
+    }
 
   }, [playInfo, gameData, leftPaddleProps, rightPaddleProps]);
 }
