@@ -25,8 +25,8 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
     r: 0,
   });
   const [playInfo, setPlayInfo] = useState<PlayInfoProps>({
-    width: 1024,
-    height: 600,
+    width: 512,
+    height: 300,
     map: 'NORMAL',
     paddleWidth: 20,
     paddleHeight: 100,
@@ -64,22 +64,6 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
       }
     }
   }, [isGameConnected]);
-
-  useEffect(() => {
-    if (!gameSocket) return;
-    if (isGameConnected) {
-      const playInfoInitialize = (data: PlayInfoProps) => {
-        setPlayInfo(data)
-      }
-      gameSocket.emit("play", { title: name, gameId: id });
-      gameSocket.on("play", playInfoInitialize);
-
-      return () => {
-        gameSocket.off("play", playInfoInitialize);
-      }
-    }
-  }, [isGameConnected]);
-
 
   useEffect(() => {
     const activeKeys = new Set();
@@ -134,6 +118,23 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [isGameConnected, gameSocket, countdown]);
+
+  useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      const playInfoInitialize = (data: PlayInfoProps) => {
+        setPlayInfo(data)
+      }
+      gameSocket.emit("play", { title: name, gameId: id });
+      gameSocket.on("play", playInfoInitialize);
+
+      gameSocket.emit("loopPosition", { gameId: id });
+
+      return () => {
+        gameSocket.off("play", playInfoInitialize);
+      }
+    }
+  }, [isGameConnected]);
 
   return (
     <div className="flex min-w-[512px] min-h-[300px] max-w-[512px] max-h-[300px] items-center justify-center p-12">
