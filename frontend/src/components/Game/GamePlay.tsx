@@ -1,28 +1,68 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGameSocket } from "@/components/GameSocketProvider";
-import { useRecoilValue } from "recoil";
-import { myState } from "@/recoil/atom";
 
 import DrawGame from "@/ui/overview/game/draw-game";
 import gameKeyDown from '@/api/socket/game/gameKeyDown';
 import gameKeyUp from '@/api/socket/game/gameKeyUp';
 
 import { GameDataProps, PlayInfoProps } from "@/types/type/game-socket.type";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-export default function GamePlay({ myRole, id }: { myRole: string, id: string }) {
+const renderTime = ({ remainingTime }) => {
+  const currentTime = useRef(remainingTime);
+  const prevTime = useRef(null);
+  const isNewTimeFirstTick = useRef(false);
+  const [, setOneLastRerender] = useState(0);
+
+  if (currentTime.current !== remainingTime) {
+    isNewTimeFirstTick.current = true;
+    prevTime.current = currentTime.current;
+    currentTime.current = remainingTime;
+  } else {
+    isNewTimeFirstTick.current = false;
+  }
+
+  // force one last re-render when the time is over to tirgger the last animation
+  if (remainingTime === 0) {
+    setTimeout(() => {
+      setOneLastRerender((val) => val + 1);
+    }, 20);
+  }
+
+  const isTimeUp = isNewTimeFirstTick.current;
+
+  return (
+    <div className="time-wrapper">
+      <div key={remainingTime} className={`time ${isTimeUp ? "up" : ""}`}>
+        {remainingTime}
+      </div>
+      {prevTime.current !== null && (
+        <div
+          key={prevTime.current}
+          className={`time ${!isTimeUp ? "down" : ""}`}
+        >
+          {prevTime.current}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, id: string, isGameStart: boolean }) {
+  const [score, setScore] = useState<number[]>([0, 0]);
   const [countdown, setCountdown] = useState(3);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   // const id = searchParams.get("id");
   const { gameSocket, isGameConnected } = useGameSocket();
   const [gameData, setGameData] = useState<GameDataProps>({
-    x: 0,
-    y: 0,
-    l: 0,
-    r: 0,
+    x: 256,
+    y: 150,
+    l: 100,
+    r: 100,
   });
   const [playInfo, setPlayInfo] = useState<PlayInfoProps>({
     width: 512,
@@ -51,7 +91,7 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
 
   useEffect(() => {
     if (!gameSocket) return;
-    if (isGameConnected) {
+    if (isGameStart) {
 
       const loopGameData = (data: GameDataProps) => {
         // console.log(data)
@@ -63,7 +103,7 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
         gameSocket.off("loopGameData", loopGameData);
       }
     }
-  }, [isGameConnected]);
+  }, [isGameStart]);
 
   useEffect(() => {
     const activeKeys = new Set();
@@ -109,15 +149,29 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
 
   useEffect(() => {
     let timer;
-    if (isGameConnected && countdown > 0) {
+    if (isGameStart && countdown > 0) {
       // 1초마다 카운트다운 감소
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       // 카운트다운이 0이 되면 loopPosition 이벤트 발생
       gameSocket.emit("loopPosition", { gameId: id });
+      clearTimeout(timer);
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
-  }, [isGameConnected, gameSocket, countdown]);
+  }, [isGameStart, countdown]);
+
+  useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      gameSocket.on("score", (gameScore: number[]) => {
+        setScore(gameScore);
+      });
+
+      return () => {
+        gameSocket.off("score");
+      };
+    }
+  }, [isGameConnected]);
 
   useEffect(() => {
     if (!gameSocket) return;
@@ -128,8 +182,6 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
       gameSocket.emit("play", { title: name, gameId: id });
       gameSocket.on("play", playInfoInitialize);
 
-      gameSocket.emit("loopPosition", { gameId: id });
-
       return () => {
         gameSocket.off("play", playInfoInitialize);
       }
@@ -137,17 +189,27 @@ export default function GamePlay({ myRole, id }: { myRole: string, id: string })
   }, [isGameConnected]);
 
   return (
-    <div className="flex min-w-[512px] min-h-[300px] max-w-[512px] max-h-[300px] items-center justify-center p-12">
-      {countdown < 0 ? (
-        // 카운트다운 표시
-        <div className="countdown justify-center content-center w-[300px] h-[300px] ">
-          <p className="text-6xl text-white">{countdown}</p>
-          {/* <Image src={`/${countdown}.png`} width={300} height={300} /> */}
+    <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">
+      <div className="h-[45px]" />
+      <DrawGame playInfo={playInfo} gameData={gameData} />
+      <div className="absolute top-[45px] left-0 z-3 flex w-full h-full justify-center">
+        <div className="text-white text-4xl">
+          {score[0]} {" : "} {score[1]}
         </div>
-        // {countdown}
-      ) : (
-        // 카운트다운이 0이면 게임 화면 표시
-        <DrawGame playInfo={playInfo} gameData={gameData} />
+      </div>
+      {countdown > 0 && isGameStart && (
+        <div className="absolute top-0 left-0 z-4 flex w-full h-full items-center justify-center bg-black bg-opacity-90 rounded-lg ">
+          <div className="timer-wrapper text-white text-6xl">
+            <CountdownCircleTimer
+              isPlaying
+              duration={3}
+              colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+              colorsTime={[3, 2, 1, 0]}
+            >
+              {renderTime}
+            </CountdownCircleTimer>
+          </div>
+        </div>
       )
       }
     </div >

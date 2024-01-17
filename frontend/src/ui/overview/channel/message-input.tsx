@@ -64,7 +64,7 @@ export default function MessageInput({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      // sendMessage(messageRef.current?.value);
+      sendMessage(messageRef.current?.value);
       messageRef.current.value = ""; // 입력 필드 초기화
     }
   };
