@@ -21,10 +21,10 @@ export default function UserList({ setMyRole, myRole, setUserList, userList, nam
   useUserListComposer(userList, myInfo.nickname, setMyRole);
 
   return (
-    <div className="mt-10 flex flex-col items-center space-y-4 overflow-y-scroll">
+    <div className="mt-3 flex flex-col items-start space-y-4 overflow-y-scroll h-full">
       {userList &&
         userList.map((user) => (
-          <div key={user.id} className="flex items-center space-x-4">
+          <div key={user.id} className="flex justify-center items-center space-x-4">
             <Image
               className={
                 user.role === "CREATOR"
