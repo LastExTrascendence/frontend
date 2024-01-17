@@ -10,7 +10,6 @@ import { myState } from "@/recoil/atom";
 
 import { Message, ChatAttendees } from "@/types/interface/chat.interface";
 import { useGameSocket } from "@/components/GameSocketProvider";
-import useChannelListener from "@/hooks/useChannelListener";
 import useUserListListener from "@/hooks/useUserListListener";
 import useUserListComposer from "@/hooks/useUserListComposer";
 import useGameChannelHandler from "@/hooks/useGameChannelHandler";
@@ -24,6 +23,8 @@ import GrowBlank from "@/ui/grow-blank";
 import PillButton from "@/ui/pill-button";
 import ButtonLeft from "@/ui/button-left";
 import ButtonRight from "@/ui/button-right";
+
+import Chat from "@/ui/overview/chat/chat";
 
 import { useMenu } from "@/hooks/useMenu";
 import GamePlay from "@/components/games/GamePlay";
@@ -43,26 +44,22 @@ export default function Page({ params }: { params: { id: string } }) {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGameStart, setIsGameStart] = useState<boolean>(true);
   const messageRef = useRef("");
+  const [score, setScore] = useState<number[]>([0, 0]);
 
   const { closeAll } = useMenu();
 
   useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      gameSocket.on("score", (gameScore: number[]) => {
+        setScore(gameScore);
+      });
 
-  }, [isGameStart]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      sendMessage(e);
+      return () => {
+        gameSocket.off("score");
+      };
     }
-  };
+  }, [isGameConnected]);
 
   const gameStartHandler = () => {
     if (!gameSocket) return;
@@ -110,22 +107,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
   useGameEnter(gameSocket, isGameConnected, myInfo.id, name);
-  useChannelListener(gameSocket, setMessages);
   useUserListListener(gameSocket, setUserList);
   useUserListComposer(userList, myInfo.nickname, setMyRole);
-
-  const sendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (currentMessage.trim()) {
-      gameSocket.emit("msgToServer", {
-        time: new Date(),
-        title: name,
-        sender: myInfo.id,
-        content: currentMessage,
-      });
-      setCurrentMessage("");
-    }
-  };
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-center content-center">
@@ -134,24 +117,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <GamePlay myRole={myRole} id={params.id} />
       }
       <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
-        <div className="flex h-full w-full flex-col bg-chatColor p-9">
-          <div className="w-full content-start items-center overflow-y-scroll">
-            {messages.map((message, index) => (
-              <MessageItem key={index} message={message} />
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
-          <GrowBlank />
-          <MessageInput
-            currentMessage={currentMessage}
-            setCurrentMessage={setCurrentMessage}
-            // messageRef={messageRef}
-            handleKeyDown={handleKeyDown}
-            sendMessage={sendMessage}
-            name={name}
-          />
-        </div>
-
+        <Chat name={name} />
         <div className="hidden flex-col h-full min-w-[400px] shrink-0 max-w-[600px] bg-userInfoColor md:block items-start content-center">
           <div className="flex h-full w-full flex-col p-9 ">
             <div className="flex h-[52px] w-full font-['Noto Sans KR'] text-4xl font-normal text-white">
@@ -189,6 +155,12 @@ export default function Page({ params }: { params: { id: string } }) {
                   </div>
                 ))}
             </div>
+            {isGameStart &&
+              <div className="flex text-white">
+                score -
+                {userList?.[0]?.nickname} {score[0]} : {score[1]} {userList?.[1]?.nickname}
+              </div>
+            }
             {!isGameStart &&
               < div >
                 <GrowBlank />
