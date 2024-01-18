@@ -114,6 +114,17 @@ export const axiosGetSearchResult = async (nickname: string): Promise<any> => {
   }
 };
 
+const axiosGetFriendsURL = "/user/friend";
+export const axiosGetFriends = async (): Promise<any> => {
+  try {
+    const response = await instance.get(axiosGetFriendsURL);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosAddFriendURL = "/user/friend/add";
 export const axiosAddFriend = async (nickname: string): Promise<any> => {
   try {

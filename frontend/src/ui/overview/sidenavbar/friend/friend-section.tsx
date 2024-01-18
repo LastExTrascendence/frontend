@@ -1,14 +1,43 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import FriendSectionOnlineCount from "./friend-section-online-count";
-import followlist from "../followlist-mock";
-import FriendSectionFriendList from "./friend-section-friend-list";
-import FriendSectionMyStatus from "./friend-section-mystatus";
+import FriendSectionFriendList from "@/ui/overview/sidenavbar/friend/friend-section-friend-list";
+import FriendSectionMyStatus from "@/ui/overview/sidenavbar/friend/friend-section-mystatus";
+import FriendSectionOnlineCount from "@/ui/overview/sidenavbar/friend/friend-section-online-count";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { UserFriendListResponseDto } from "@/types/dto/user.dto";
+import { axiosGetFriends } from "@/api/axios/axios.custom";
 
 const FriendSection = () => {
+  const [friendsList, setFriendsList] =
+    useState<UserFriendListResponseDto>(undefined);
+
+  useEffect(() => {
+    tryGetFriendsList();
+  }, []);
+
+  const tryGetFriendsList = async () => {
+    try {
+      const response = await axiosGetFriends()
+        .then((res) => {
+          console.log(res.data);
+          setTimeout(() => {
+            setFriendsList(res.data);
+          }, 500);
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            setFriendsList(STATUS_400_BAD_REQUEST);
+          }, 500);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <FriendSectionStyled>
-      <FriendSectionOnlineCount friendList={followlist} />
-      <FriendSectionFriendList friendList={followlist} />
+      <FriendSectionOnlineCount friendList={friendsList} />
+      <FriendSectionFriendList friendList={friendsList} />
       <FriendSectionMyStatus />
     </FriendSectionStyled>
   );
