@@ -144,6 +144,18 @@ export default function DM({ params }: { params: { nickname: string } }) {
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
+              <button
+                type="submit"
+                className="bg-primary hover:bg-primary/90 rounded-r-md text-sm text-white transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 p-1"
+                onClick={(e) => sendMessage(e)}
+              >
+                <Image
+                  src="/send.svg"
+                  alt="SendButton"
+                  width={30}
+                  height={30}
+                />
+              </button>
             </InputMessageContainerStyled>
           </DMAreaStyled>
           <UserInfoCard
@@ -235,7 +247,7 @@ const InputMessageContainerStyled = styled.div`
   width: 100%;
   border-radius: 10px;
   margin: 1rem 0;
-  background-color: var(--background-gray);
+  background-color: var(--chatInputColor);
 `;
 
 const InputMessageStyled = styled.input`
