@@ -5,6 +5,7 @@ import FriendSectionMyStatus from "@/ui/overview/sidenavbar/friend/friend-sectio
 import FriendSectionOnlineCount from "@/ui/overview/sidenavbar/friend/friend-section-online-count";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserFriendListResponseDto } from "@/types/dto/user.dto";
+import { UserInfoDto } from "@/types/interface/user.interface";
 import { axiosGetFriends } from "@/api/axios/axios.custom";
 
 const FriendSection = () => {
@@ -19,9 +20,9 @@ const FriendSection = () => {
     try {
       const response = await axiosGetFriends()
         .then((res) => {
-          console.log(res.data);
+          console.log(res);
           setTimeout(() => {
-            setFriendsList(res.data);
+            setFriendsList(res.data as UserInfoDto[]);
           }, 500);
         })
         .catch((err) => {

@@ -16,7 +16,7 @@ export default function FriendSectionCard({
     <FriendContainerStyled>
       <FriendInfoWrapperStyled $status={friend.status}>
         <ProfileImage
-          src={friend.avatar}
+          src={friend.avatar || "/default_profile.svg"}
           width={width}
           height={height}
           showOutline={true}

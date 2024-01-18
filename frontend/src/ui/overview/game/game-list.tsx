@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
-import { GameChannelListDto, GameRecordListResponseDto } from "@/types/interface/game.interface";
+import {
+  GameChannelListDto,
+  GameRecordListResponseDto,
+} from "@/types/interface/game.interface";
 
 const gameEnterLogic = (room: GameChannelListDto) => {
-
   if (room.channelPolicy === PRIVATE) {
     const password = prompt("비밀번호를 입력해주세요");
     if (password !== room.password) {
@@ -17,7 +19,7 @@ const gameEnterLogic = (room: GameChannelListDto) => {
   }
   const router = useRouter();
   router.push(`/game/${game.id}/play?name=${game.name}`);
-}
+};
 
 export default function GameList({
   games,
@@ -53,7 +55,9 @@ export default function GameList({
                 {game.cur_user + " / 2"}
               </CellStyled>
               <CellStyled className="align-center">{game.gameType}</CellStyled>
-              <CellStyled className="align-center">{game.gameStatus}</CellStyled>
+              <CellStyled className="align-center">
+                {game.gameStatus}
+              </CellStyled>
             </RowStyled>
           ))
         ) : (
