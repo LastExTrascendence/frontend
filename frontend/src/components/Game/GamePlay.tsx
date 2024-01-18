@@ -154,7 +154,9 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       // 카운트다운이 0이 되면 loopPosition 이벤트 발생
-      gameSocket.emit("loopPosition", { gameId: id });
+      if (myRole === "CREATOR") {
+        gameSocket.emit("loopPosition", { gameId: id });
+      }
       clearTimeout(timer);
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
@@ -203,7 +205,7 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
             <CountdownCircleTimer
               isPlaying
               duration={3}
-              colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+              colors={["#5849b6", "#827baf", "#A30000", "#A30000"]}
               colorsTime={[3, 2, 1, 0]}
             >
               {renderTime}

@@ -17,7 +17,7 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
   const white = rootStyle.getPropertyValue('--white').trim() || '#FFFFFF';
 
   const leftPaddleProps = useMemo(() => ({
-    x: 0,
+    x: 5,
     y: gameData.l,
     width: playInfo.paddleWidth,
     height: playInfo.paddleHeight,
@@ -25,7 +25,7 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
   }), [gameData.l, playInfo.paddleWidth, playInfo.paddleHeight]);
 
   const rightPaddleProps = useMemo(() => ({
-    x: playInfo.width - playInfo.paddleWidth,
+    x: playInfo.width - playInfo.paddleWidth - 5,
     y: gameData.r,
     width: playInfo.paddleWidth,
     height: playInfo.paddleHeight,
