@@ -20,7 +20,6 @@ const FriendSection = () => {
     try {
       const response = await axiosGetFriends()
         .then((res) => {
-          console.log(res);
           setTimeout(() => {
             setFriendsList(res.data as UserInfoDto[]);
           }, 500);

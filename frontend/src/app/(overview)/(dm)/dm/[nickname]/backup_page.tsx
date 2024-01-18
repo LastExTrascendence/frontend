@@ -27,7 +27,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const { openUserInfoCard } = useMenu();
-  const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
 
   useEffect(() => {
     let timer: any;
@@ -42,12 +41,9 @@ export default function DM({ params }: { params: { nickname: string } }) {
     };
   }, [isConnected]);
 
-  useEffect(() => {
-    if (updateUserInfo) {
-      getUserProfileInfo();
-      setUpdateUserInfo(false);
-    }
-  }, [updateUserInfo]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -68,10 +64,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
     };
   }, [socket, isConnected, myInfo.id]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
     const messsage: Message = {
@@ -90,6 +82,10 @@ export default function DM({ params }: { params: { nickname: string } }) {
     }
   };
 
+  useEffect(() => {
+    getUserProfileInfo();
+  }, []);
+
   const getUserProfileInfo = async () => {
     try {
       const { data: userProfileInfo } = await axiosGetUserProfileByNickname(
@@ -105,65 +101,80 @@ export default function DM({ params }: { params: { nickname: string } }) {
 
   return (
     <>
-      <DMPageContainerStyled>
-        <DMPageContentWrapperStyled>
-          <DMAreaStyled className="bg-chatColor">
-            <UserInfoButtonStyled
-              onClick={() => {
-                openUserInfoCard();
-              }}
-            >
-              <Image
-                src="/arrow_left.svg"
-                alt="UserInfoToggler"
-                width={30}
-                height={30}
-              />
-            </UserInfoButtonStyled>
-            <DMHistoryContainerStyled>
-              {messages.map((message, index) => (
-                <DMContentStyled key={index}>
-                  <TimeStampStyled>
-                    <>{message.time ? message.time : ""}</>
-                  </TimeStampStyled>
-                  <SenderStyled>
-                    <>{message.sender ? message.sender : ""}</>
-                  </SenderStyled>
-                  <MessageStyled>
-                    <>{message.content ? message.content : ""}</>
-                  </MessageStyled>
-                </DMContentStyled>
-              ))}
-            </DMHistoryContainerStyled>
-            <div ref={messagesEndRef} />
-            <InputMessageContainerStyled>
-              <InputMessageStyled
-                type="text"
-                placeholder={`Send message to ${params.nickname}`}
-                value={currentMessage}
-                onChange={(e) => setCurrentMessage(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-            </InputMessageContainerStyled>
-          </DMAreaStyled>
-          <UserInfoCard
-            userInfo={userInfo}
-            updateUserInfo={setUpdateUserInfo}
-          />
-        </DMPageContentWrapperStyled>
-      </DMPageContainerStyled>
+      <DMPageStyled>
+        <DMContainerStyled>
+          <DMConentContainerStyled className="bg-chatColor">
+            <div className="content-start items-center">
+              <UserInfoButtonStyled
+                onClick={() => {
+                  openUserInfoCard();
+                }}
+              >
+                <Image
+                  src="/arrow_left.svg"
+                  alt="UserInfoToggler"
+                  width={30}
+                  height={30}
+                />
+              </UserInfoButtonStyled>
+              <DMContentStyled>
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-[auto_auto_1fr] gap-4 rounded-lg px-2 pb-1 text-base text-white hover:bg-gray-700"
+                  >
+                    <span className="max-w-[100px] overflow-hidden">
+                      {/* print in HH:MM AM/PM format */}
+                      <>{message.time ? message.time : ""} </>
+                    </span>
+                    <span className="max-w-[100px] overflow-hidden">
+                      {message.sender ? message.sender : ""}
+                    </span>
+                    <span>{message.content ? message.content : ""}</span>
+                  </div>
+                ))}
+              </DMContentStyled>
+              <div ref={messagesEndRef} />
+              <div className="my-2 w-full grow" />
+              <div className="flex min-h-[35px] w-full rounded-md bg-chatInputColor shadow-sm">
+                <input
+                  className="placeholder:text-muted-foreground focus-visible:ring-ring border-input focus-visible:false flex-1 rounded-md rounded-l-md bg-transparent p-2 text-sm text-white shadow-sm transition-colors focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                  type="text"
+                  placeholder={`Send message to ${params.nickname}`}
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                <button
+                  type="submit"
+                  className="bg-primary hover:bg-primary/90 rounded-r-md text-sm text-white transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+                  onClick={(e) => sendMessage(e)}
+                >
+                  <Image
+                    src="/send.svg"
+                    alt="SendButton"
+                    width={30}
+                    height={30}
+                  />
+                </button>
+              </div>
+            </div>
+          </DMConentContainerStyled>
+          <UserInfoCard userInfo={userInfo} />
+        </DMContainerStyled>
+      </DMPageStyled>
     </>
   );
 }
 
-const DMPageContainerStyled = styled.div`
+const DMPageStyled = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
 `;
 
-export const DMPageContentWrapperStyled = styled.div`
+export const DMContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,70 +192,30 @@ export const DMPageContentWrapperStyled = styled.div`
   }
 `;
 
-export const DMAreaStyled = styled.div`
+export const DMConentContainerStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  padding: 1rem;
+  padding: 2.25rem 1rem;
+  overflow-y: auto;
 
   @media (max-width: 610px) {
     border-radius: 0;
   }
 `;
 
-const DMHistoryContainerStyled = styled.div`
-  overflow-y: auto;
-  height: 100%;
-`;
-
 const DMContentStyled = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 0.3rem;
-`;
-
-const TimeStampStyled = styled.div`
-  font-size: 0.7rem;
-  color: var(--line-color-light-gray);
-  min-width: 50px;
-  margin-right: 0.5rem;
-`;
-
-const SenderStyled = styled.div`
-  font-size: 0.8rem;
-  color: var(--light-gray);
-  margin-right: 0.5rem;
-`;
-
-const MessageStyled = styled.div`
-  font-size: 1rem;
-  color: var(--white);
+  background-color: var(--gray);
+  overflow-y: auto;
   word-break: break-all;
-`;
-
-const InputMessageContainerStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: 100%;
-  border-radius: 10px;
-  margin: 1rem 0;
-  background-color: var(--background-gray);
-`;
-
-const InputMessageStyled = styled.input`
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  padding: 0 1rem;
-  background-color: var(--chatInputColor);
-  color: var(--white);
 `;
 
 export const UserInfoCardWrapperStyled = styled.div``;
