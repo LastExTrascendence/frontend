@@ -1,9 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import { useRef } from "react";
 import styled from "styled-components";
-
 import { MessageInputProps } from "@/types/interface/chat.interface";
-import { useState } from "react";
 
 const MessageInputContainer = styled.div`
   display: flex;
@@ -57,26 +55,32 @@ const SendButton = styled.button`
   }
 `;
 
-// messageRef,
 export default function MessageInput({
-  currentMessage,
-  setCurrentMessage,
-  handleKeyDown,
   sendMessage,
   name,
 }: MessageInputProps) {
-  // const [currentMessage, setCurrentMessage] = useState("");
+  const messageRef = useRef<HTMLInputElement>(null);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage(messageRef.current?.value);
+      messageRef.current.value = ""; // 입력 필드 초기화
+    }
+  };
 
   return (
     <MessageInputContainer>
       <StyledInput
+        ref={messageRef}
         type="text"
         placeholder={`Send message to ${name}`}
-        value={currentMessage}
-        onChange={(e) => setCurrentMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <SendButton type="submit" onClick={sendMessage}>
+      <SendButton type="submit" onClick={() => {
+        sendMessage(messageRef.current?.value);
+        messageRef.current.value = ""; // 입력 필드 초기화
+      }}>
         <Image src="/send.svg" alt="SendButton" width={30} height={30} />
       </SendButton>
     </MessageInputContainer>

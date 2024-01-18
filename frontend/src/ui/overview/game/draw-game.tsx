@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { PlayInfoProps, GameDataProps } from '@/types/type/game-socket.type';
 import { PaddleProps } from '@/types/interface/game.interface';
 
 const canvasPropsDefault: CanvasProps = {
   map: '/map.svg',
-  width: 1024,
-  height: 600,
+  width: 512,
+  height: 300,
 };
 
 function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playInfo: PlayInfoProps, gameData: GameDataProps) {
@@ -17,7 +17,7 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
   const white = rootStyle.getPropertyValue('--white').trim() || '#FFFFFF';
 
   const leftPaddleProps = useMemo(() => ({
-    x: 0,
+    x: 5,
     y: gameData.l,
     width: playInfo.paddleWidth,
     height: playInfo.paddleHeight,
@@ -25,7 +25,7 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
   }), [gameData.l, playInfo.paddleWidth, playInfo.paddleHeight]);
 
   const rightPaddleProps = useMemo(() => ({
-    x: playInfo.width - playInfo.paddleWidth,
+    x: playInfo.width - playInfo.paddleWidth - 5,
     y: gameData.r,
     width: playInfo.paddleWidth,
     height: playInfo.paddleHeight,
@@ -73,7 +73,16 @@ function useCanvasAnimation(canvasRef: React.RefObject<HTMLCanvasElement>, playI
       draw();
     };
 
-    animate();
+    const animationId = requestAnimationFrame(animate);
+
+    // animate();
+    setTimeout(() => {
+      draw();
+    }, 500)
+
+    return () => {
+      cancelAnimationFrame(animationId)
+    }
 
   }, [playInfo, gameData, leftPaddleProps, rightPaddleProps]);
 }

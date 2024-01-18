@@ -44,7 +44,7 @@ export default function NewGameChannelModal({
     if (!title) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
-      const gameId = await axiosCreateGame(
+      const game = await axiosCreateGame(
         title,
         channelPolicy,
         channelPolicy === ChannelPolicy.PRIVATE ? password : null,
@@ -52,7 +52,7 @@ export default function NewGameChannelModal({
         gameType,
         gameMode,
       );
-      router.push(`/game/${gameId}?name=${title}`);
+      router.push(`/game/${game.data.id}?name=${title}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
@@ -97,11 +97,10 @@ export default function NewGameChannelModal({
               />
             </label>
             <div
-              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
-                channelPolicy === ChannelPolicy.PRIVATE
-                  ? "mb-3 max-h-40"
-                  : "max-h-0"
-              }`}
+              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${channelPolicy === ChannelPolicy.PRIVATE
+                ? "mb-3 max-h-40"
+                : "max-h-0"
+                }`}
             >
               <label className="flex flex-col items-start justify-center">
                 Password

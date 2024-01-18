@@ -1,11 +1,13 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Link from "next/link"
 import { useRouter } from "next/navigation";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
 import useDebounce from "@/hooks/useDebounce";
+import GameInvite from "@/components/Game/GameInvite";
 
 export default function SearchUser({ placeholder }: { placeholder: string }) {
   const router = useRouter();
@@ -108,30 +110,38 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                   setShowDropdown(false);
                   setSearchInput("");
                   setSearchResults([]);
-                  router.push(`/profile/${user.nickname}`);
+                  // router.push(`/profile/${user.nickname}`);
                 }}
               >
                 <UserImageContainerStyled>
-                  <ProfileImage
-                    src={user.avatar || "/default_profile.svg"}
-                    width={40}
-                    height={40}
-                    borderRadius={100}
-                    showOutline={true}
-                  />
+                  <Link href={`/profile/${user.nickname}`}>
+                    <ProfileImage
+                      src={user.avatar || "/default_profile.svg"}
+                      width={40}
+                      height={40}
+                      borderRadius={100}
+                      showOutline={true}
+                    />
+                  </Link>
                 </UserImageContainerStyled>
                 <SearchItemRightStyled>
-                  <NameContainerStyled>
-                    <MemberNameStyled>{user.nickname}</MemberNameStyled>
-                    <IntraNameStyled>{user.intra_name}</IntraNameStyled>
-                  </NameContainerStyled>
+                  <Link href={`/dm/${user.nickname}`}>
+                    <NameContainerStyled>
+                      <MemberNameStyled>{user.nickname}</MemberNameStyled>
+                      <IntraNameStyled>{user.intra_name}</IntraNameStyled>
+                    </NameContainerStyled>
+                  </Link>
                 </SearchItemRightStyled>
+                <InviteButtonStyled >
+                  <GameInvite nickname={user.nickname} />
+                </InviteButtonStyled>
               </DropdownItemStyled>
             ))}
           </DropdownStyled>
         )
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
@@ -200,7 +210,7 @@ const SearchItemRightStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
 
 const NameContainerStyled = styled.div`
@@ -226,5 +236,20 @@ const IntraNameStyled = styled.div`
   transition: all 0.3s ease;
   &:hover {
     color: var(--white);
+  }
+`;
+
+const InviteButtonStyled = styled.button`
+ background-color: var(--main-purple);
+  color: var(--white);
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--main-dark-purple);
   }
 `;
