@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { ChannelPolicy } from "@/types/enum/channel.enum";
 import {
   GameChannelListDto,
   GameRecordListResponseDto,
 } from "@/types/interface/game.interface";
 
 const gameEnterLogic = (room: GameChannelListDto) => {
-  if (room.channelPolicy === PRIVATE) {
+  if (room.channelPolicy === ChannelPolicy.PRIVATE) {
     const password = prompt("비밀번호를 입력해주세요");
     if (password !== room.password) {
       alert("비밀번호가 틀렸습니다");
