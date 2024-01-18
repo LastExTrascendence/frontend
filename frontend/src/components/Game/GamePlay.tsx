@@ -1,15 +1,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from 'react';
-import { useGameSocket } from "@/components/GameSocketProvider";
-
-import DrawGame from "@/ui/overview/game/draw-game";
-import gameKeyDown from '@/api/socket/game/gameKeyDown';
-import gameKeyUp from '@/api/socket/game/gameKeyUp';
-
-import { GameDataProps, PlayInfoProps } from "@/types/type/game-socket.type";
+import { useEffect, useRef, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { useGameSocket } from "@/components/GameSocketProvider";
+import DrawGame from "@/ui/overview/game/draw-game";
+import { GameDataProps, PlayInfoProps } from "@/types/type/game-socket.type";
+import gameKeyDown from "@/api/socket/game/gameKeyDown";
+import gameKeyUp from "@/api/socket/game/gameKeyUp";
 
 const renderTime = ({ remainingTime }) => {
   const currentTime = useRef(remainingTime);
@@ -51,7 +49,15 @@ const renderTime = ({ remainingTime }) => {
   );
 };
 
-export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, id: string, isGameStart: boolean }) {
+export default function GamePlay({
+  myRole,
+  id,
+  isGameStart,
+}: {
+  myRole: string;
+  id: string;
+  isGameStart: boolean;
+}) {
   const [score, setScore] = useState<number[]>([0, 0]);
   const [countdown, setCountdown] = useState(3);
   const searchParams = useSearchParams();
@@ -67,41 +73,38 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
   const [playInfo, setPlayInfo] = useState<PlayInfoProps>({
     width: 512,
     height: 300,
-    map: 'NORMAL',
+    map: "NORMAL",
     paddleWidth: 20,
     paddleHeight: 100,
     ballSize: 10,
-    team: 'HOME',
+    team: "HOME",
   });
 
   useEffect(() => {
     if (myRole === "USER") {
-      setPlayInfo(prevPlayInfo => ({
+      setPlayInfo((prevPlayInfo) => ({
         ...prevPlayInfo,
-        team: "AWAY"
+        team: "AWAY",
       }));
     } else {
-      setPlayInfo(prevPlayInfo => ({
+      setPlayInfo((prevPlayInfo) => ({
         ...prevPlayInfo,
-        team: "HOME"
+        team: "HOME",
       }));
     }
   }, [myRole]);
 
-
   useEffect(() => {
     if (!gameSocket) return;
     if (isGameStart) {
-
       const loopGameData = (data: GameDataProps) => {
-        // console.log(data)
-        setGameData(data)
-      }
+        setGameData(data);
+      };
       gameSocket.on("loopGameData", loopGameData);
 
       return () => {
         gameSocket.off("loopGameData", loopGameData);
-      }
+      };
     }
   }, [isGameStart]);
 
@@ -112,11 +115,11 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
       if (activeKeys.has(event.key)) return; // 이미 눌린 키는 무시
       activeKeys.add(event.key);
       switch (event.key) {
-        case 'ArrowUp':
-          gameKeyDown(gameSocket, playInfo.team, "ArrowUp")
+        case "ArrowUp":
+          gameKeyDown(gameSocket, playInfo.team, "ArrowUp");
           break;
-        case 'ArrowDown':
-          gameKeyDown(gameSocket, playInfo.team, "ArrowDown")
+        case "ArrowDown":
+          gameKeyDown(gameSocket, playInfo.team, "ArrowDown");
           break;
         default:
           break;
@@ -127,23 +130,23 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
       if (!activeKeys.has(event.key)) return; // 관리되지 않는 키는 무시
       activeKeys.delete(event.key);
       switch (event.key) {
-        case 'ArrowUp':
-          gameKeyUp(gameSocket, playInfo.team, "ArrowUp")
+        case "ArrowUp":
+          gameKeyUp(gameSocket, playInfo.team, "ArrowUp");
           break;
-        case 'ArrowDown':
-          gameKeyUp(gameSocket, playInfo.team, "ArrowDown")
+        case "ArrowDown":
+          gameKeyUp(gameSocket, playInfo.team, "ArrowDown");
           break;
         default:
           break;
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
     };
   }, [gameSocket, playInfo.team]);
 
@@ -179,14 +182,14 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
     if (!gameSocket) return;
     if (isGameConnected) {
       const playInfoInitialize = (data: PlayInfoProps) => {
-        setPlayInfo(data)
-      }
+        setPlayInfo(data);
+      };
       gameSocket.emit("play", { title: name, gameId: id });
       gameSocket.on("play", playInfoInitialize);
 
       return () => {
         gameSocket.off("play", playInfoInitialize);
-      }
+      };
     }
   }, [isGameConnected]);
 
@@ -212,8 +215,7 @@ export default function GamePlay({ myRole, id, isGameStart }: { myRole: string, 
             </CountdownCircleTimer>
           </div>
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 }

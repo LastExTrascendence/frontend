@@ -1,8 +1,6 @@
 import Image from "next/image";
 
 export default function GetRoleIcon({ myRole, userRole, changeRole }) {
-  console.log(">>>>>>>>>>>>>getRoleIcon", myRole, userRole);
-
   if (myRole === "CREATOR" && userRole === "OPERATOR") {
     return (
       <button type="button" onClick={changeRole}>

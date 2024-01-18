@@ -1,12 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import io from "socket.io-client";
-import { getCookie } from "@/api/cookie/cookies";
-import { useRecoilValue } from "recoil";
-import { myState } from "@/recoil/atom";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import io from "socket.io-client";
+import { myState } from "@/recoil/atom";
+import { getCookie } from "@/api/cookie/cookies";
 
 interface ConnectInfo {
   sender: number; // mystate id
@@ -23,8 +23,8 @@ type SocketContextType = {
 const SocketContext = createContext<SocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => { },
-  exitQueue: () => { }
+  enterQueue: () => {},
+  exitQueue: () => {},
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -38,8 +38,7 @@ export default function SocketProvider({
   const [isConnected, setIsConnected] = useState(false);
   const myInfo = useRecoilValue(myState);
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(getCookie("access_token"))
-
+  const [token, setToken] = useState<string | null>(getCookie("access_token"));
 
   function CustomToast({ hostNickname, url }) {
     const [pathname, query] = url.split("?");
@@ -54,13 +53,15 @@ export default function SocketProvider({
     return (
       <div>
         {hostNickname} 님께서 {name}방으로 초대했습니다.
-        <button onClick={() => {
-          router.push(url)
-        }}>
+        <button
+          onClick={() => {
+            router.push(url);
+          }}
+        >
           수락
         </button>
       </div>
-    )
+    );
   }
 
   useEffect(() => {
@@ -81,8 +82,8 @@ export default function SocketProvider({
           token: `Bearer ${token}`,
           user: {
             id: `${myInfo.id}`,
-            nickname: `${myInfo.nickname}`
-          }
+            nickname: `${myInfo.nickname}`,
+          },
         },
       },
     );
@@ -99,14 +100,12 @@ export default function SocketProvider({
 
   const enterQueue = () => {
     if (socket) {
-      console.log("enterQueue", myInfo);
       socket.emit("enterQueue", { userId: myInfo.id });
     }
   };
 
   const exitQueue = () => {
     if (socket) {
-      console.log("exitQueue", myInfo);
       socket.emit("exitQueue", { userId: myInfo.id });
     }
   };
@@ -117,9 +116,12 @@ export default function SocketProvider({
       return;
     }
 
-    socket.on("gameMatch", async ({ gameId, title }: { gameId: string, title: string }) => {
-      await router.replace(`/game/${gameId}?name=${title}`);
-    });
+    socket.on(
+      "gameMatch",
+      async ({ gameId, title }: { gameId: string; title: string }) => {
+        await router.replace(`/game/${gameId}?name=${title}`);
+      },
+    );
 
     return () => {
       socket.off("gameMatch");
@@ -131,20 +133,23 @@ export default function SocketProvider({
     if (!socket) {
       return;
     }
-    socket.on("invitedUser", async ({ hostNickname, url }: { hostNickname: string, url: string }) => {
-
-      console.log(hostNickname, url);
-
-      const notify = () => toast(<CustomToast hostNickname={hostNickname} url={url} />);
-      notify()
-    })
+    socket.on(
+      "invitedUser",
+      async ({ hostNickname, url }: { hostNickname: string; url: string }) => {
+        const notify = () =>
+          toast(<CustomToast hostNickname={hostNickname} url={url} />);
+        notify();
+      },
+    );
     return () => {
       socket.off("invitedUser");
-    }
+    };
   }, [socket]);
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected, enterQueue, exitQueue }}>
+    <SocketContext.Provider
+      value={{ socket, isConnected, enterQueue, exitQueue }}
+    >
       {children}
     </SocketContext.Provider>
   );

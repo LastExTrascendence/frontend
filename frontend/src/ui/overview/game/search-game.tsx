@@ -16,8 +16,6 @@ export default function SearchGame({ placeholder }: { placeholder: string }) {
   const fetchSearchResults = async (searchQuery: string) => {
     const res = await getSearchedUser(searchQuery);
     setSearchedResults(res);
-    console.log(searchQuery);
-    console.log(res);
   };
 
   const handleBlur = () => {

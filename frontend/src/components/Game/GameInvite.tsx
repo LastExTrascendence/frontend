@@ -2,24 +2,26 @@
 
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSocket } from "@/components/SocketProvider";
-
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
+import { useSocket } from "@/components/SocketProvider";
 
 export default function GameInvite({ nickname }: { nickname: string }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const { socket, isConnected } = useSocket();
   const iconColor = "var(--light-gray)";
   const myInfo = useRecoilValue(myState);
 
   const handleInviteClick = () => {
-    const currentUrl = `${pathname}?${searchParams}`
+    const currentUrl = `${pathname}?${searchParams}`;
 
-    console.log("gameInvite", { userId: myInfo.id, inviteUserNick: nickname, url: currentUrl });
     if (isConnected && socket) {
-      socket.emit("gameInvite", { userId: myInfo.id, inviteUserNick: nickname, url: currentUrl });
+      socket.emit("gameInvite", {
+        userId: myInfo.id,
+        inviteUserNick: nickname,
+        url: currentUrl,
+      });
     }
   };
 

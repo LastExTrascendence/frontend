@@ -1,16 +1,14 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-
-import ModalPortal from "../ModalPortal";
+import { myState } from "@/recoil/atom";
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
 import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
-import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
-import { myState } from "@/recoil/atom";
-
-import { FailResponseModal } from "../ResponseModal/ResponseModal";
 import { ChatCreateProps } from "@/types/interface/chat.interface";
+import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
+import ModalPortal from "../ModalPortal";
+import { FailResponseModal } from "../ResponseModal/ResponseModal";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -46,8 +44,6 @@ export default function NewChatChannelModal({
 
       const responseChannelData: ChatCreateProps =
         await axiosCreateChatChannel(channelData);
-
-      console.log("response =============>", responseChannelData);
 
       router.push(`/channel/${responseChannelData.id}?name=${title}`);
     } catch (error: any) {

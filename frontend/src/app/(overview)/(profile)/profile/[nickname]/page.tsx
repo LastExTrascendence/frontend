@@ -83,8 +83,6 @@ export default function Page({ params }: { params: { nickname: string } }) {
   const getGameRecord = async () => {
     try {
       const response = await axiosGetUserGameRecord(params.nickname);
-      console.log(response);
-      console.log("response, data", response.data);
       setTimeout(() => {
         setGameRecordList(response.data);
       }, 500);
