@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import { getCookie } from "@/api/cookie/cookies";
 import { ChannelSocketContextType } from "@/types/type/channel-socket.type";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
 
 const ChannelSocketContext = createContext<ChannelSocketContextType>({
   channelSocket: null,
   isChannelConnected: false,
-  setChannelId: () => {},
-  setUserId: () => {},
+  setChannelId: () => { },
+  setUserId: () => { },
 });
 
 export const useChannelSocket = () => useContext(ChannelSocketContext);
@@ -24,6 +26,7 @@ export default function ChannelSocketProvider({
   const [userId, setUserId] = useState<number>(0);
   const [channelSocket, setChannelSocket] = useState<any | null>(null);
   const [isChannelConnected, setIsConnected] = useState(false);
+  const myInfo = useRecoilValue(myState);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +47,10 @@ export default function ChannelSocketProvider({
       {
         auth: {
           token: `Bearer ${token}`,
+          user: {
+            id: `${myInfo.id}`,
+            nickname: `${myInfo.nickname}`
+          }
         },
       },
     );
