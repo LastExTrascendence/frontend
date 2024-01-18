@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import io from "socket.io-client";
 import { getCookie } from "@/api/cookie/cookies";
 import { GameSocketContextType } from "@/types/type/game-socket.type";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
 
 const GameSocketContext = createContext<GameSocketContextType>({
   gameSocket: null,
@@ -24,6 +26,7 @@ export default function GameSocketProvider({
   const [userId, setUserId] = useState<number>(0);
   const [gameSocket, setGameSocket] = useState<any | null>(null);
   const [isGameConnected, setGameIsConnected] = useState(false);
+  const myInfo = useRecoilValue(myState);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +47,10 @@ export default function GameSocketProvider({
       {
         auth: {
           token: `Bearer ${token}`,
+          user: {
+            id: `${myInfo.id}`,
+            nickname: `${myInfo.nickname}`
+          }
         },
       },
     );
