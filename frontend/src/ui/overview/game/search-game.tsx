@@ -1,10 +1,10 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useDebouncedCallback } from "use-debounce";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
 import games from "@/lib/game-data";

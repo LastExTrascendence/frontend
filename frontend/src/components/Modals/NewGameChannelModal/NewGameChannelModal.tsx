@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import ModalPortal from "../ModalPortal";
-import Modal, { ModalTypes } from "@/components/Modals/Modal";
-import MultiToggleSwitch from "@/ui/multi-toggle-switch";
-import { GameMode, GameType } from "@/types/enum/game.enum";
-import { ChannelPolicy } from "@/types/enum/channel.enum";
-import { axiosCreateGame } from "@/api/axios/axios.custom";
 import { myState } from "@/recoil/atom";
-import { FailResponseModal } from "../ResponseModal/ResponseModal";
+import Modal, { ModalTypes } from "@/components/Modals/Modal";
+import ModalPortal from "@/components/Modals/ModalPortal";
+import { FailResponseModal } from "@/components/Modals/ResponseModal/ResponseModal";
+import MultiToggleSwitch from "@/ui/multi-toggle-switch";
+import { ChannelPolicy } from "@/types/enum/channel.enum";
+import { GameMode, GameType } from "@/types/enum/game.enum";
+import { axiosCreateGame } from "@/api/axios/axios.custom";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },

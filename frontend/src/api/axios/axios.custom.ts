@@ -50,6 +50,25 @@ export const axiosMyProfileInfo = async (): Promise<any> => {
   }
 };
 
+const axiosUpdateMyProfileURL = "/user/me/update";
+export const axiosUpdateMyProfile = async (
+  nickname: string,
+  avatar: string,
+  two_fa: boolean,
+): Promise<any> => {
+  try {
+    const response = await instance.post(axiosUpdateMyProfileURL, {
+      nickname,
+      avatar,
+      two_fa,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosCreateUserURL = "/user/create";
 export const axiosCreateUser = async ({
   nickname,
@@ -99,6 +118,19 @@ const axiosAddFriendURL = "/user/friend/add";
 export const axiosAddFriend = async (nickname: string): Promise<any> => {
   try {
     const response = await instance.post(axiosAddFriendURL, {
+      nickname,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosRemoveFriendURL = "/user/friend/remove";
+export const axiosRemoveFriend = async (nickname: string): Promise<any> => {
+  try {
+    const response = await instance.post(axiosRemoveFriendURL, {
       nickname,
     });
     return response;

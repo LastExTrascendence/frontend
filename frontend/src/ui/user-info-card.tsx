@@ -1,68 +1,153 @@
+import Image from "next/image";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { myState } from "@/recoil/atom";
+import {
+  FailResponseModal,
+  SuccessResponseModal,
+} from "@/components/Modals/ResponseModal/ResponseModal";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
+import { axiosAddFriend, axiosRemoveFriend } from "@/api/axios/axios.custom";
 import { getFormattedDate } from "@/utils/dateUtils";
+
+interface UserInfoCardProps {
+  userInfo: UserCardInfoResponseDto;
+  updateUserInfo?: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export default function UserInfoCard({
   userInfo,
-}: {
-  userInfo: UserCardInfoResponseDto;
-}) {
-  return (
-    <UserInfoAreaStyled id="userInfoCard">
-      {userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST ? (
+  updateUserInfo,
+}: UserInfoCardProps) {
+  if (userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST) {
+    return (
+      <UserInfoAreaStyled id="userInfoCard">
         <LoadingAnimationWrapperStyled>
           <LoadingAnimation />
         </LoadingAnimationWrapperStyled>
-      ) : (
-        <>
-          <ProfileImageWrapperStyled>
-            <ProfileImage
-              src={userInfo.avatar || "/default_profile.svg"}
-              width={100}
-              height={100}
-              borderRadius={40}
-              showBorder={true}
-            />
-          </ProfileImageWrapperStyled>
-          <UserInfoCardStyled>
-            <UserInfoDetailWrapperStyled>
-              <NicknameStyled>{userInfo.nickname}</NicknameStyled>
-              <IntraNameStyled>{userInfo.intra_name}</IntraNameStyled>
-              <EmailStyled>{userInfo.email}</EmailStyled>
-            </UserInfoDetailWrapperStyled>
-            <UserGameRecordCardStyled>
-              <RecordWrapperStyled>
-                <RecordTextStyled>Total Games</RecordTextStyled>
-                <RecordTextStyled>{userInfo.games}</RecordTextStyled>
-              </RecordWrapperStyled>
-              <RecordWrapperStyled>
-                <RecordTextStyled>Wins</RecordTextStyled>
-                <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
-              </RecordWrapperStyled>
-              <RecordWrapperStyled>
-                <RecordTextStyled>Loses</RecordTextStyled>
-                <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
-              </RecordWrapperStyled>
-            </UserGameRecordCardStyled>
-          </UserInfoCardStyled>
-          {userInfo.is_friend && (
-            <FriendInfoWrapperStyled>
-              <FriendInfoCardStyled>
-                <FriendInfoTextWrapperStyled>
-                  <FriendInfoTextStyled>Friend since</FriendInfoTextStyled>
-                  <FriendInfoTextStyled>
-                    {getFormattedDate(new Date(userInfo.at_friend))}
-                  </FriendInfoTextStyled>
-                </FriendInfoTextWrapperStyled>
-              </FriendInfoCardStyled>
-            </FriendInfoWrapperStyled>
-          )}
-        </>
-      )}
-    </UserInfoAreaStyled>
+      </UserInfoAreaStyled>
+    );
+  }
+
+  const myInfo = useRecoilValue(myState);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
+
+  const tryAddFriend = async () => {
+    try {
+      await axiosAddFriend(userInfo.nickname);
+      setModalTitle("친구추가에 성공했습니다");
+      if (updateUserInfo) updateUserInfo(true);
+    } catch (err: any) {
+      setModalTitle("친구추가에 실패했습니다");
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
+
+  const tryRemoveFriend = async () => {
+    try {
+      await axiosRemoveFriend(userInfo.nickname);
+      setModalTitle("삭제에 성공했습니다");
+      if (updateUserInfo) updateUserInfo(true);
+    } catch (err: any) {
+      setModalTitle("삭제에 실패했습니다");
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
+
+  const handleCloseResponseModal = () => {
+    setShowResponseModal(false);
+    setHasErrorOnResponse(false);
+  };
+
+  return (
+    <>
+      <UserInfoAreaStyled id="userInfoCard">
+        <ProfileImageWrapperStyled>
+          <ProfileImage
+            src={userInfo.avatar || "/default_profile.svg"}
+            width={100}
+            height={100}
+            borderRadius={40}
+            showBorder={true}
+          />
+          {userInfo.nickname !== myInfo.nickname &&
+            (userInfo.is_friend ? (
+              <FriendButtonStyled onClick={tryRemoveFriend}>
+                <Image
+                  src="/remove_friend.svg"
+                  alt="친구삭제"
+                  width={30}
+                  height={30}
+                />
+              </FriendButtonStyled>
+            ) : (
+              <FriendButtonStyled onClick={tryAddFriend}>
+                <Image
+                  src="/add_friend.svg"
+                  alt="친구추가"
+                  width={30}
+                  height={30}
+                />
+              </FriendButtonStyled>
+            ))}
+        </ProfileImageWrapperStyled>
+        <UserInfoCardStyled>
+          <UserInfoDetailWrapperStyled>
+            <NicknameStyled>{userInfo.nickname}</NicknameStyled>
+            <IntraNameStyled>{userInfo.intra_name}</IntraNameStyled>
+            <EmailStyled>{userInfo.email}</EmailStyled>
+          </UserInfoDetailWrapperStyled>
+          <UserGameRecordCardStyled>
+            <RecordWrapperStyled>
+              <RecordTextStyled>Total Games</RecordTextStyled>
+              <RecordTextStyled>{userInfo.games}</RecordTextStyled>
+            </RecordWrapperStyled>
+            <RecordWrapperStyled>
+              <RecordTextStyled>Wins</RecordTextStyled>
+              <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
+            </RecordWrapperStyled>
+            <RecordWrapperStyled>
+              <RecordTextStyled>Loses</RecordTextStyled>
+              <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
+            </RecordWrapperStyled>
+          </UserGameRecordCardStyled>
+        </UserInfoCardStyled>
+        {userInfo.is_friend && (
+          <FriendInfoWrapperStyled>
+            <FriendInfoCardStyled>
+              <FriendInfoTextWrapperStyled>
+                <FriendInfoTextStyled>Friend since</FriendInfoTextStyled>
+                <FriendInfoTextStyled>
+                  {getFormattedDate(new Date(userInfo.at_friend))}
+                </FriendInfoTextStyled>
+              </FriendInfoTextWrapperStyled>
+            </FriendInfoCardStyled>
+          </FriendInfoWrapperStyled>
+        )}
+      </UserInfoAreaStyled>
+      {showResponseModal &&
+        (hasErrorOnResponse ? (
+          <FailResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ) : (
+          <SuccessResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ))}
+    </>
   );
 }
 
@@ -99,6 +184,15 @@ const ProfileImageWrapperStyled = styled.div`
   align-items: center;
   width: 100%;
   margin: 2rem 0;
+`;
+
+const FriendButtonStyled = styled.button`
+  /* display: flex; */
+  /* top: calc(50%); */
+  position: fixed;
+  right: 4%;
+  margin: 1rem;
+  cursor: pointer;
 `;
 
 const UserInfoCardStyled = styled.div`

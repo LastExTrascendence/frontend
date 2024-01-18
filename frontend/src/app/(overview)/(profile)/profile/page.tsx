@@ -5,15 +5,20 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
+import {
+  FailResponseModal,
+  SuccessResponseModal,
+} from "@/components/Modals/ResponseModal/ResponseModal";
+import { TwoFAModal } from "@/components/Modals/TwoFAModal/TwoFAModal";
 import InputContainer from "@/ui/input-container";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import PillButton from "@/ui/pill-button";
 import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
+import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
-  UserCardInfoDto,
-  UserCardInfoResponseDto,
-} from "@/types/interface/user.interface";
-import { axiosMyProfileInfo } from "@/api/axios/axios.custom";
+  axiosMyProfileInfo,
+  axiosUpdateMyProfile,
+} from "@/api/axios/axios.custom";
 import { useMenu } from "@/hooks/useMenu";
 
 export enum TwoFAType {
@@ -32,20 +37,40 @@ export default function Page() {
   const [avatar, setAvatar] = useState<Blob>();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
+  const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
+  const [showTwoFAModal, setShowTwoFAModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const { openUserInfoCard } = useMenu();
 
-  // 상태 업데이트
-  const updateMyInfo = (newNickname: any, newAvatar: any) => {
-    setMyInfo((prevInfo) => ({
-      ...prevInfo,
-      nickname: newNickname,
-      avatar: newAvatar,
-    }));
-  };
-
   useEffect(() => {
-    getMyProfileInfo();
-  }, []);
+    if (updateUserInfo) {
+      getMyProfileInfo();
+      setUpdateUserInfo(false);
+    }
+  }, [updateUserInfo]);
+
+  const updateMyInfo = async (
+    newNickname: string,
+    newAvatar: any,
+    two_fa: boolean,
+  ) => {
+    try {
+      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa);
+      setUpdateUserInfo(true);
+      setMyInfo((prevInfo) => ({
+        ...prevInfo,
+        nickname: newNickname,
+        avatar: newAvatar,
+      }));
+    } catch (err: any) {
+      setModalTitle("프로필 수정에 실패했습니다");
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
 
   const getMyProfileInfo = async () => {
     try {
@@ -54,112 +79,140 @@ export default function Page() {
       setTimeout(() => {
         setUserInfo(userProfileInfo);
       }, 500);
-    } catch (error) {
-      console.log(error);
+    } catch (err: any) {
+      setModalTitle("내 정보를 불러오는데 실패했습니다");
+      setHasErrorOnResponse(true);
+      setShowResponseModal(true);
     }
   };
 
+  const handleCloseTwoFAModal = () => {
+    setShowTwoFAModal(false);
+  };
+
+  const handleCloseResponseModal = () => {
+    setShowResponseModal(false);
+    setHasErrorOnResponse(false);
+  };
+
   return (
-    <ProfilePageStyled>
-      <ProfileContainerStyled>
-        <UserConfigAreaStyled>
-          <div className="content-start items-center overflow-y-auto">
-            <UserInfoButtonStyled
-              onClick={() => {
-                openUserInfoCard();
-              }}
-            >
-              <Image
-                src="/arrow_left.svg"
-                alt="UserInfoToggler"
-                width={30}
-                height={30}
-              />
-            </UserInfoButtonStyled>
-            <PropertyContainerWrapperStyled>
-              <PropertyTitleStyled width={"300px"}>
-                Nickname
-              </PropertyTitleStyled>
-              <InputContainer
-                placeholder="Nickname"
-                width={"300px"}
-                height={"50px"}
-                borderRadius={"10px"}
-                value={nickname}
-                onChange={(e: ChangeEvent<HTMLInputElement>): void => {
-                  setNickname(e.target.value);
+    <>
+      <ProfilePageStyled>
+        <ProfileContainerStyled>
+          <UserConfigAreaStyled>
+            <div className="content-start items-center overflow-y-auto">
+              <UserInfoButtonStyled
+                onClick={() => {
+                  openUserInfoCard();
                 }}
-              />
-            </PropertyContainerWrapperStyled>
-            <PropertyContainerWrapperStyled>
-              <PropertyTitleStyled width={"300px"}>Avatar</PropertyTitleStyled>
-              <ButtonContainerStyled>
-                <PillButton
-                  width={"140px"}
-                  height={"30px"}
-                  theme={"purple"}
-                  fontSize="1rem"
-                  text="Change Avatar"
-                  onClick={() => {
-                    console.log("click");
+              >
+                <Image
+                  src="/arrow_left.svg"
+                  alt="UserInfoToggler"
+                  width={30}
+                  height={30}
+                />
+              </UserInfoButtonStyled>
+              <PropertyContainerWrapperStyled>
+                <PropertyTitleStyled width={"300px"}>
+                  Nickname
+                </PropertyTitleStyled>
+                <InputContainer
+                  placeholder="Nickname"
+                  width={"300px"}
+                  height={"50px"}
+                  borderRadius={"10px"}
+                  value={nickname}
+                  onChange={(e: ChangeEvent<HTMLInputElement>): void => {
+                    setNickname(e.target.value);
                   }}
                 />
-                <PillButton
-                  width={"140px"}
-                  height={"30px"}
-                  theme={"gray"}
-                  fontSize="1rem"
-                  text="Remove Avatar"
-                  onClick={() => {
-                    console.log("click");
-                  }}
-                />
-              </ButtonContainerStyled>
-            </PropertyContainerWrapperStyled>
-            <TwoFAWrapperStyled>
-              <PropertyTitleStyled width={"300px"}>
-                2-Factor Authentication
-              </PropertyTitleStyled>
-              <ToggleSwitchWrapperStyled>
-                <MultiToggleSwitch
-                  toggleList={toggleList}
-                  initialState={twoFA}
-                  setState={setTwoFA}
-                />
-              </ToggleSwitchWrapperStyled>
-            </TwoFAWrapperStyled>
-            <ButtonGroupStyled>
-              <ButtonWrapperStyled>
-                <PillButton
-                  width={"100px"}
-                  height={"30px"}
-                  theme={"lightgray"}
-                  fontSize="1rem"
-                  text="Reset"
-                  onClick={() => {
-                    setNickname(myInfo.nickname);
-                    setAvatar(undefined);
-                  }}
-                />
-              </ButtonWrapperStyled>
-              <ButtonWrapperStyled>
-                <PillButton
-                  width={"100px"}
-                  height={"30px"}
-                  theme={"purple"}
-                  fontSize="1rem"
-                  text="Save"
-                  onClick={() => {
-                    updateMyInfo(nickname, avatar);
-                  }}
-                />
-              </ButtonWrapperStyled>
-            </ButtonGroupStyled>
-          </div>
-        </UserConfigAreaStyled>
-        <UserInfoCard userInfo={userInfo} />
-      </ProfileContainerStyled>
-    </ProfilePageStyled>
+              </PropertyContainerWrapperStyled>
+              <PropertyContainerWrapperStyled>
+                <PropertyTitleStyled width={"300px"}>
+                  Avatar
+                </PropertyTitleStyled>
+                <ButtonContainerStyled>
+                  <PillButton
+                    width={"140px"}
+                    height={"30px"}
+                    theme={"purple"}
+                    fontSize="1rem"
+                    text="Change Avatar"
+                    onClick={() => {
+                      console.log("click");
+                    }}
+                  />
+                  <PillButton
+                    width={"140px"}
+                    height={"30px"}
+                    theme={"gray"}
+                    fontSize="1rem"
+                    text="Remove Avatar"
+                    onClick={() => {
+                      console.log("click");
+                    }}
+                  />
+                </ButtonContainerStyled>
+              </PropertyContainerWrapperStyled>
+              <TwoFAWrapperStyled>
+                <PropertyTitleStyled width={"300px"}>
+                  2-Factor Authentication
+                </PropertyTitleStyled>
+                <ToggleSwitchWrapperStyled>
+                  <MultiToggleSwitch
+                    toggleList={toggleList}
+                    initialState={twoFA}
+                    setState={setTwoFA}
+                  />
+                </ToggleSwitchWrapperStyled>
+              </TwoFAWrapperStyled>
+              <ButtonGroupStyled>
+                <ButtonWrapperStyled>
+                  <PillButton
+                    width={"100px"}
+                    height={"30px"}
+                    theme={"lightgray"}
+                    fontSize="1rem"
+                    text="Reset"
+                    onClick={() => {
+                      setNickname(myInfo.nickname);
+                      setAvatar(undefined);
+                    }}
+                  />
+                </ButtonWrapperStyled>
+                <ButtonWrapperStyled>
+                  <PillButton
+                    width={"100px"}
+                    height={"30px"}
+                    theme={"purple"}
+                    fontSize="1rem"
+                    text="Save"
+                    onClick={() => {
+                      updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON);
+                    }}
+                  />
+                </ButtonWrapperStyled>
+              </ButtonGroupStyled>
+            </div>
+          </UserConfigAreaStyled>
+          <UserInfoCard userInfo={userInfo} />
+        </ProfileContainerStyled>
+      </ProfilePageStyled>
+      {showTwoFAModal && <TwoFAModal closeModal={handleCloseTwoFAModal} />}
+      {showResponseModal &&
+        (hasErrorOnResponse ? (
+          <FailResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ) : (
+          <SuccessResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ))}
+    </>
   );
 }
 
@@ -202,21 +255,8 @@ const UserConfigAreaStyled = styled.div`
   padding: 2.25rem;
 
   @media (max-width: 610px) {
-    /* width: calc(100% - 15px); */
     border-radius: 0;
   }
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: calc(100% - 300px);
-  height: 100%;
-  border-radius: 20px;
-  color: var(--white);
-
-  @media (max-width: 610px) {
-    width: 100%;
-  } */
 `;
 
 const PropertyContainerWrapperStyled = styled.div`
