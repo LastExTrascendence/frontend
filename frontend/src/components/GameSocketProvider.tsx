@@ -1,18 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import io from "socket.io-client";
-import { getCookie } from "@/api/cookie/cookies";
-import { GameSocketContextType } from "@/types/type/game-socket.type";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
+import io from "socket.io-client";
 import { myState } from "@/recoil/atom";
+import { GameSocketContextType } from "@/types/type/game-socket.type";
+import { getCookie } from "@/api/cookie/cookies";
 
 const GameSocketContext = createContext<GameSocketContextType>({
   gameSocket: null,
   isGameConnected: false,
-  setGameId: () => { },
-  setUserId: () => { },
+  setGameId: () => {},
+  setUserId: () => {},
 });
 
 export const useGameSocket = () => useContext(GameSocketContext);
@@ -49,8 +49,8 @@ export default function GameSocketProvider({
           token: `Bearer ${token}`,
           user: {
             id: `${myInfo.id}`,
-            nickname: `${myInfo.nickname}`
-          }
+            nickname: `${myInfo.nickname}`,
+          },
         },
       },
     );
@@ -65,7 +65,6 @@ export default function GameSocketProvider({
         gameId,
         userId,
       });
-      console.log("leave game", gameId, userId);
 
       socketInstance.off("connect");
       socketInstance.off("disconnect");

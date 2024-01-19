@@ -227,7 +227,7 @@ export default function Page() {
   );
 }
 
-const shakeAnimation = keyframes`
+export const shakeAnimation = keyframes`
   0% { transform: translateX(0); }
   20% { transform: translateX(-5px); }
   40% { transform: translateX(5px); }

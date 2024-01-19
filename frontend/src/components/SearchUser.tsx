@@ -56,7 +56,6 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     const result = await axiosGetSearchResult(searchInput);
     setSearchResults(result);
     setIsLoading(false);
-    console.log(result);
   };
 
   const getDropdownPosition = () => {

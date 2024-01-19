@@ -1,11 +1,17 @@
 import styled from "styled-components";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { UserFriendListResponseDto } from "@/types/dto/user.dto";
 import { UserInfoDto } from "@/types/interface/user.interface";
 
 function FriendSectionOnlineCount({
-  friendList = [],
+  friendList,
 }: {
-  friendList: UserInfoDto[];
+  friendList: UserFriendListResponseDto;
 }) {
+  if (friendList === undefined || friendList === STATUS_400_BAD_REQUEST) {
+    return <></>;
+  }
+
   const onlineCount = friendList.filter(
     (person: UserInfoDto) => person.status === "ONLINE",
   ).length;

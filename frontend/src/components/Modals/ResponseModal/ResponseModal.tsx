@@ -10,7 +10,7 @@ export const SuccessResponseModal: React.FC<{
     <ModalPortal>
       <Modal
         type={ModalTypes.noBtn}
-        // icon={checkIcon}
+        icon={"/check.svg"}
         iconScaleEffect={true}
         title={props.modalTitle ?? "처리되었습니다"}
         closeModal={props.closeModal}
@@ -27,7 +27,7 @@ export const FailResponseModal: React.FC<{
     <ModalPortal>
       <Modal
         type={ModalTypes.noBtn}
-        // icon={}
+        icon={"/cancel.svg"}
         iconScaleEffect={true}
         title={props.modalTitle ?? "실패했습니다"}
         closeModal={props.closeModal}

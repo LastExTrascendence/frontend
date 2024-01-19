@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import ModalPortal from "../ModalPortal";
-import Modal, { ModalTypes } from "@/components/Modals/Modal";
-import MultiToggleSwitch from "@/ui/multi-toggle-switch";
-import { GameMode, GameType } from "@/types/enum/game.enum";
-import { ChannelPolicy } from "@/types/enum/channel.enum";
-import { axiosCreateGame } from "@/api/axios/axios.custom";
 import { myState } from "@/recoil/atom";
-import { FailResponseModal } from "../ResponseModal/ResponseModal";
+import Modal, { ModalTypes } from "@/components/Modals/Modal";
+import ModalPortal from "@/components/Modals/ModalPortal";
+import { FailResponseModal } from "@/components/Modals/ResponseModal/ResponseModal";
+import MultiToggleSwitch from "@/ui/multi-toggle-switch";
+import { ChannelPolicy } from "@/types/enum/channel.enum";
+import { GameMode, GameType } from "@/types/enum/game.enum";
+import { axiosCreateGame } from "@/api/axios/axios.custom";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -81,7 +81,7 @@ export default function NewGameChannelModal({
               <input
                 type="text"
                 name="game"
-                className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
+                className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
                 maxLength={20}
                 minLength={1}
                 onChange={(e) => setTitle(e.target.value)}
@@ -97,17 +97,18 @@ export default function NewGameChannelModal({
               />
             </label>
             <div
-              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${channelPolicy === ChannelPolicy.PRIVATE
-                ? "mb-3 max-h-40"
-                : "max-h-0"
-                }`}
+              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
+                channelPolicy === ChannelPolicy.PRIVATE
+                  ? "mb-3 max-h-40"
+                  : "max-h-0"
+              }`}
             >
               <label className="flex flex-col items-start justify-center">
                 Password
                 <input
                   type="password"
                   name="password"
-                  className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
+                  className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
                   maxLength={10}
                   minLength={1}
                   onChange={(e) => setPassword(e.target.value)}

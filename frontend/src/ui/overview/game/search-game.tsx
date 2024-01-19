@@ -1,10 +1,10 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useDebouncedCallback } from "use-debounce";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import getSearchedUser from "@/api/getSearchedUser";
 import { UserlistProps } from "@/lib/definitions";
 import games from "@/lib/game-data";
@@ -16,8 +16,6 @@ export default function SearchGame({ placeholder }: { placeholder: string }) {
   const fetchSearchResults = async (searchQuery: string) => {
     const res = await getSearchedUser(searchQuery);
     setSearchedResults(res);
-    console.log(searchQuery);
-    console.log(res);
   };
 
   const handleBlur = () => {

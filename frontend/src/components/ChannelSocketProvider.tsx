@@ -1,18 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import io from "socket.io-client";
-import { getCookie } from "@/api/cookie/cookies";
-import { ChannelSocketContextType } from "@/types/type/channel-socket.type";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
+import io from "socket.io-client";
 import { myState } from "@/recoil/atom";
+import { ChannelSocketContextType } from "@/types/type/channel-socket.type";
+import { getCookie } from "@/api/cookie/cookies";
 
 const ChannelSocketContext = createContext<ChannelSocketContextType>({
   channelSocket: null,
   isChannelConnected: false,
-  setChannelId: () => { },
-  setUserId: () => { },
+  setChannelId: () => {},
+  setUserId: () => {},
 });
 
 export const useChannelSocket = () => useContext(ChannelSocketContext);
@@ -49,8 +49,8 @@ export default function ChannelSocketProvider({
           token: `Bearer ${token}`,
           user: {
             id: `${myInfo.id}`,
-            nickname: `${myInfo.nickname}`
-          }
+            nickname: `${myInfo.nickname}`,
+          },
         },
       },
     );
@@ -65,7 +65,6 @@ export default function ChannelSocketProvider({
         channelId,
         userId,
       });
-      console.log("leave channel", channelId, userId);
 
       socketInstance.off("connect");
       socketInstance.off("disconnect");

@@ -8,6 +8,10 @@ import {
   ProfileContainerStyled,
   ProfilePageStyled,
 } from "@/app/(overview)/(profile)/profile/page";
+import {
+  FailResponseModal,
+  SuccessResponseModal,
+} from "@/components/Modals/ResponseModal/ResponseModal";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import Record from "@/ui/overview/profile/record";
 import Stats from "@/ui/overview/profile/stats";
@@ -17,10 +21,16 @@ import {
   GameRecordListResponseDto,
   GameStatsResponseDto,
 } from "@/types/interface/game.interface";
-import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
+  UserCardInfoDto,
+  UserCardInfoResponseDto,
+} from "@/types/interface/user.interface";
+import {
+  axiosAddFriend,
   axiosGetUserGameRecord,
+  axiosGetUserGameStats,
   axiosGetUserProfileByNickname,
+  axiosRemoveFriend,
 } from "@/api/axios/axios.custom";
 import { useMenu } from "@/hooks/useMenu";
 
@@ -42,50 +52,51 @@ export default function Page({ params }: { params: { nickname: string } }) {
   const [gameRecordList, setGameRecordList] =
     useState<GameRecordListResponseDto>(undefined);
   const [gameStats, setGameStats] = useState<GameStatsResponseDto>(undefined);
+  const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
   const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
-    getUserProfileInfo();
     getGameRecord();
     getGameStats();
   }, []);
+
+  useEffect(() => {
+    if (updateUserInfo) {
+      getUserProfileInfo();
+      setUpdateUserInfo(false);
+    }
+  }, [updateUserInfo]);
 
   const getUserProfileInfo = async () => {
     try {
       const { data: userProfileInfo } = await axiosGetUserProfileByNickname(
         params.nickname,
       );
-      setUserInfo(userProfileInfo);
       setTimeout(() => {
         setUserInfo(userProfileInfo);
       }, 500);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const getGameRecord = async () => {
     try {
-      const response = await axiosGetUserGameRecord(params.nickname)
-        .then((res) => {
-          setTimeout(() => {
-            setGameRecordList(res.data);
-          }, 500);
-        })
-        .catch((err) => {
-          setTimeout(() => {
-            setGameRecordList(STATUS_400_BAD_REQUEST);
-          }, 500);
-        });
+      const response = await axiosGetUserGameRecord(params.nickname);
+      setTimeout(() => {
+        setGameRecordList(response.data);
+      }, 500);
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      // console.log(error);
+      setGameRecordList(STATUS_400_BAD_REQUEST);
       throw error;
     }
   };
 
   const getGameStats = async () => {
     try {
-      const response = await axiosGetUserGameRecord(params.nickname)
+      const response = await axiosGetUserGameStats(params.nickname)
         .then((res) => {
           setTimeout(() => {
             setGameStats(res.data);
@@ -103,42 +114,47 @@ export default function Page({ params }: { params: { nickname: string } }) {
   };
 
   return (
-    <ProfilePageStyled>
-      <ProfileContainerStyled>
-        <UserConfigAreaStyled>
-          <div className="w-full h-full content-start items-center">
-            <UserInfoButtonStyled
-              onClick={() => {
-                openUserInfoCard();
-              }}
-            >
-              <Image
-                src="/arrow_left.svg"
-                alt="UserInfoToggler"
-                width={30}
-                height={30}
-              />
-            </UserInfoButtonStyled>
-            <ToggleSwitchWrapperStyled>
-              <MultiToggleSwitch
-                toggleList={toggleList}
-                initialState={profileView}
-                setState={setProfileView}
-                width="130px"
-              />
-            </ToggleSwitchWrapperStyled>
-            <ChatChannelContainerStyled>
-              {profileView === ProfileViewType.RECORD ? (
-                <Record games={gameRecordList} />
-              ) : (
-                <Stats stats={gameStats} />
-              )}
-            </ChatChannelContainerStyled>
-          </div>
-        </UserConfigAreaStyled>
-        <UserInfoCard userInfo={userInfo} />
-      </ProfileContainerStyled>
-    </ProfilePageStyled>
+    <>
+      <ProfilePageStyled>
+        <ProfileContainerStyled>
+          <UserConfigAreaStyled>
+            <div className="w-full h-full content-start items-center">
+              <UserInfoButtonStyled
+                onClick={() => {
+                  openUserInfoCard();
+                }}
+              >
+                <Image
+                  src="/arrow_left.svg"
+                  alt="UserInfoToggler"
+                  width={30}
+                  height={30}
+                />
+              </UserInfoButtonStyled>
+              <ToggleSwitchWrapperStyled>
+                <MultiToggleSwitch
+                  toggleList={toggleList}
+                  initialState={profileView}
+                  setState={setProfileView}
+                  width="130px"
+                />
+              </ToggleSwitchWrapperStyled>
+              <ChatChannelContainerStyled>
+                {profileView === ProfileViewType.RECORD ? (
+                  <Record games={gameRecordList} />
+                ) : (
+                  <Stats stats={gameStats} />
+                )}
+              </ChatChannelContainerStyled>
+            </div>
+          </UserConfigAreaStyled>
+          <UserInfoCard
+            userInfo={userInfo}
+            updateUserInfo={setUpdateUserInfo}
+          />
+        </ProfileContainerStyled>
+      </ProfilePageStyled>
+    </>
   );
 }
 

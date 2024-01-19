@@ -43,7 +43,7 @@ export interface UserCardInfoDto extends UserDto {
   intra_name: string;
   email: string;
   is_friend: boolean;
-  at_friend: Date | null;
+  at_friend: Date;
   games: number;
   wins: number;
   loses: number;

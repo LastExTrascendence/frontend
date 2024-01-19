@@ -1,16 +1,14 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-
-import ModalPortal from "../ModalPortal";
+import { myState } from "@/recoil/atom";
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
 import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
-import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
-import { myState } from "@/recoil/atom";
-
-import { FailResponseModal } from "../ResponseModal/ResponseModal";
 import { ChatCreateProps } from "@/types/interface/chat.interface";
+import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
+import ModalPortal from "../ModalPortal";
+import { FailResponseModal } from "../ResponseModal/ResponseModal";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -27,6 +25,7 @@ export default function NewChatChannelModal({
   const [title, setTitle] = useState("");
   const [channelPolicy, setChannelPolicy] = useState(ChannelPolicy.PUBLIC);
   const [password, setPassword] = useState("");
+  const [maxUser, setMaxUser] = useState<string>("42");
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
 
@@ -34,6 +33,7 @@ export default function NewChatChannelModal({
     if (!title) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
+      closeModal();
       const channelData: ChatCreateProps = {
         id: 0,
         title: title,
@@ -41,13 +41,11 @@ export default function NewChatChannelModal({
         password: channelPolicy === ChannelPolicy.PRIVATE ? password : null,
         creatorId: myInfo.id,
         curUser: 0,
-        maxUser: 42,
+        maxUser: Number(maxUser),
       };
 
       const responseChannelData: ChatCreateProps =
         await axiosCreateChatChannel(channelData);
-
-      console.log("response =============>", responseChannelData);
 
       router.push(`/channel/${responseChannelData.id}?name=${title}`);
     } catch (error: any) {
@@ -78,7 +76,7 @@ export default function NewChatChannelModal({
               <input
                 type="text"
                 name="chat"
-                className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
+                className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
                 maxLength={20}
                 minLength={1}
                 onChange={(e) => setTitle(e.target.value)}
@@ -105,13 +103,24 @@ export default function NewChatChannelModal({
                 <input
                   type="password"
                   name="password"
-                  className="mt-2 rounded bg-buttonColor p-2 text-white focus:bg-violet-400 focus:outline-none focus:ring-2"
+                  className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
                   maxLength={10}
                   minLength={1}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </label>
             </div>
+            <label className="relative mb-3 flex flex-col items-start justify-center">
+              Max User
+              <input
+                type="number"
+                name="chat"
+                className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
+                min={2}
+                max={42}
+                onChange={(e) => setMaxUser(e.target.value)}
+              />
+            </label>
           </div>
         </Modal>
       )}

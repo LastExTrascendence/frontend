@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
 import {
   CellHeaderStyled,
@@ -9,14 +10,14 @@ import {
 } from "@/ui/overview/game/game-list";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameRecordListResponseDto } from "@/types/interface/game.interface";
+import { getNDaysAgoString } from "@/utils/dateUtils";
 
 export default function Record({
   games,
 }: {
   games: GameRecordListResponseDto;
 }) {
-  console.log(games);
-  if (!Array.isArray(games)) return <LoadingAnimation />;
+  if (games === undefined) return <LoadingAnimation />;
 
   return (
     <ChannelListContainerStyled>
@@ -31,15 +32,19 @@ export default function Record({
         {games !== STATUS_400_BAD_REQUEST ? (
           games.map((game: any, idx: number) => (
             <RowStyled key={idx} onClick={() => {}} className="channel">
-              <CellStyled className="align-center">{game.player}</CellStyled>
-              <CellStyled className="align-center">{game.result}</CellStyled>
-              <CellStyled className="align-center">{game.type}</CellStyled>
-              <CellStyled className="align-center">{game.mode}</CellStyled>
-              <CellStyled className="align-center">{game.date}</CellStyled>
+              <CellStyled className="align-center">{game.nickname}</CellStyled>
+              <CellStyled className="align-center">
+                {game.gameUserRole}
+              </CellStyled>
+              <CellStyled className="align-center">{game.gameType}</CellStyled>
+              <CellStyled className="align-center">{game.gameMode}</CellStyled>
+              <CellStyled className="align-center">
+                {getNDaysAgoString(new Date(game.date))}
+              </CellStyled>
             </RowStyled>
           ))
         ) : (
-          <div>전적이 없어요!</div>
+          <RowStyled>전적이 없어요!</RowStyled>
         )}
       </TableBody>
     </ChannelListContainerStyled>

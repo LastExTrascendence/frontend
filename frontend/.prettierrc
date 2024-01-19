@@ -16,6 +16,7 @@
     "^@/api/(.*)$",
     "^@/hooks/(.*)$",
     "^@/lib/(.*)$",
+    "^@/utils/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": false,

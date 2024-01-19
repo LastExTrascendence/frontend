@@ -1,13 +1,13 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useDebouncedCallback } from "use-debounce";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import getSearchedUser from "@/api/getSearchedUser";
-import { UserlistProps } from "@/lib/definitions";
 import chats from "@/lib/chat-data";
+import { UserlistProps } from "@/lib/definitions";
 
 export default function SearchChannel({
   placeholder,
@@ -20,8 +20,6 @@ export default function SearchChannel({
   const fetchSearchResults = async (searchQuery: string) => {
     const res = await getSearchedUser(searchQuery);
     setSearchedResults(res);
-    console.log(searchQuery);
-    console.log(res);
   };
 
   const handleBlur = () => {

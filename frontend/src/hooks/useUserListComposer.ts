@@ -9,7 +9,6 @@ export default function useUserListComposer(
   setMyRole,
 ) {
   useEffect(() => {
-    console.log("user", userList);
     if (!userList || !myNickname) return;
     const matchingUser = userList.find((user) => user.nickname === myNickname);
 

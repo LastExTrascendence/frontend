@@ -1,8 +1,7 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-
 import { getCookie } from "@/api/cookie/cookies";
 
 export default function ProtectedRoute({ children }: { children: any }) {
@@ -14,7 +13,7 @@ export default function ProtectedRoute({ children }: { children: any }) {
   useEffect(() => {
     setIsClient(true);
 
-    if (!token && pathname !== "/login") {
+    if (!token && pathname !== "/login" && pathname !== "/login/otp") {
       router.replace("/login");
     }
   }, [token, pathname, router]);

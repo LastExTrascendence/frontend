@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { UserInfoDto } from "@/types/interface/user.interface";
 import ProfileImage from "@/ui/profile-image";
 import { UserStatus } from "@/types/enum/user.enum";
+import { UserInfoDto } from "@/types/interface/user.interface";
 
 export default function FriendSectionCard({
   friend,
@@ -16,7 +16,7 @@ export default function FriendSectionCard({
     <FriendContainerStyled>
       <FriendInfoWrapperStyled $status={friend.status}>
         <ProfileImage
-          src={friend.avatar}
+          src={friend.avatar || "/default_profile.svg"}
           width={width}
           height={height}
           showOutline={true}

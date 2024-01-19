@@ -1,9 +1,9 @@
 import Image from "next/image";
+import { GetAdminIconProps } from "@/types/interface/channel.interface";
+import { ChatAttendees } from "@/types/interface/chat.interface";
 import banUser from "@/api/socket/chat/banUser";
 import kickUser from "@/api/socket/chat/kickUser";
 import muteUser from "@/api/socket/chat/muteUser";
-import { ChatAttendees } from "@/types/interface/chat.interface";
-import { GetAdminIconProps } from "@/types/interface/channel.interface";
 
 function renderButton(iconSrc: string, altText: string, onClick: () => void) {
   return (
@@ -20,7 +20,6 @@ export default function getAdminIcon({
   myId,
   user,
 }: GetAdminIconProps) {
-  // console.log("admin icon ", role, socket, title, myId, user.nickname);
   switch (role) {
     case "CREATOR":
       return (

@@ -62,7 +62,7 @@ export default function Modal({
       >
         <ModalContentWrapperStyled $width={"auto"} $height={"auto"}>
           {icon && (
-            <ModalIconImgStyled src={icon} iconScaleEffect={iconScaleEffect} />
+            <ModalIconImgStyled src={icon} $iconScaleEffect={iconScaleEffect} />
           )}
           <H2Styled>{title}</H2Styled>
           {children}
@@ -157,11 +157,13 @@ const ModalContentWrapperStyled = styled.div<{
   padding: 1rem 0.5rem 2rem;
 `;
 
-const ModalIconImgStyled = styled.img<{ iconScaleEffect: boolean | undefined }>`
+const ModalIconImgStyled = styled.img<{
+  $iconScaleEffect: boolean | undefined;
+}>`
   width: 70px;
   margin-bottom: 20px;
   ${(props) =>
-    props.iconScaleEffect &&
+    props.$iconScaleEffect &&
     css`
       animation: scaleUpModalIcon 1s;
       @keyframes scaleUpModalIcon {

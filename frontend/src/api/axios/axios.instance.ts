@@ -1,7 +1,7 @@
 import axios from "axios";
 import Router from "next/router";
-import { getCookie, removeCookie } from "@/api/cookie/cookies";
 import { STATUS_401_UNAUTHORIZED } from "@/types/constants/status-code";
+import { getCookie, removeCookie } from "@/api/cookie/cookies";
 
 const instance = axios.create({
   baseURL: process.env.BE_SERVER,
@@ -28,7 +28,7 @@ instance.interceptors.response.use(
         path: "/",
         domain: `${process.env.FE_DOMAIN}`,
       });
-      // Router.push("/login"); // SPA 방식 리디렉션 (CSR)
+      Router.push("/login"); // SPA 방식 리디렉션 (CSR)
       // window.location.href = "/login";
     }
     return Promise.reject(error);
