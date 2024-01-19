@@ -225,7 +225,7 @@ const DMContentStyled = styled.div`
 
 const TimeStampStyled = styled.div`
   font-size: 0.7rem;
-  color: var(--line-color-light-gray);
+  color: var(--light-gray);
   min-width: 50px;
   margin-right: 0.5rem;
 `;

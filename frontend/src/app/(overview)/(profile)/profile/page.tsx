@@ -82,6 +82,7 @@ export default function Page() {
       setTimeout(() => {
         setUserInfo(userProfileInfo);
         setNickname(userProfileInfo.nickname);
+        setTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -158,6 +159,7 @@ export default function Page() {
                     height={"30px"}
                     theme={"purple"}
                     fontSize="1rem"
+                    fontStyle="italic"
                     text="Change Avatar"
                     onClick={() => {
                       console.log("click");
@@ -168,6 +170,7 @@ export default function Page() {
                     height={"30px"}
                     theme={"gray"}
                     fontSize="1rem"
+                    fontStyle="italic"
                     text="Remove Avatar"
                     onClick={() => {
                       console.log("click");
@@ -195,10 +198,11 @@ export default function Page() {
                     height={"30px"}
                     theme={"lightgray"}
                     fontSize="1rem"
+                    fontStyle="italic"
                     text="Reset"
                     onClick={() => {
                       setNickname(myInfo.nickname);
-                      setAvatar(undefined);
+                      setAvatar("");
                     }}
                   />
                 </ButtonWrapperStyled>
@@ -208,6 +212,7 @@ export default function Page() {
                     height={"30px"}
                     theme={"purple"}
                     fontSize="1rem"
+                    fontStyle="italic"
                     text="Save"
                     onClick={() => {
                       updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON);
