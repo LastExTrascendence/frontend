@@ -12,7 +12,13 @@ import {
 import LoadingAnimation from "@/ui/loading-animation";
 import { axiosGenerateOTP, axiosVerifyOTP } from "@/api/axios/axios.custom";
 
-export const TwoFAModal = ({ closeModal }: { closeModal: () => void }) => {
+export const TwoFAModal = ({
+  closeModal,
+  onVerificationSuccess,
+}: {
+  closeModal: () => void;
+  onVerificationSuccess: () => void;
+}) => {
   const [qrCode, setQrCode] = useState<string>("");
   const [otpCode, setOtpCode] = useState<string>("");
   const [isOtpCodeValid, setIsOtpCodeValid] = useState<boolean>(true);
@@ -46,15 +52,26 @@ export const TwoFAModal = ({ closeModal }: { closeModal: () => void }) => {
   };
 
   const tryVerifyOTP = async (event: React.MouseEvent) => {
-    if (!qrcode || !otpCode || otpCode.length !== 6) return;
+    if (!qrcode || !otpCode || otpCode.length !== 6) {
+      setIsOtpCodeValid(false);
+      setTimeout(() => {
+        setIsOtpCodeValid(true);
+      }, 500);
+      return;
+    }
     try {
-      await axiosVerifyOTP(otpCode);
+      const response = await axiosVerifyOTP(otpCode);
+      console.log(response);
       setModalTitle("인증에 성공했습니다");
       setShowResponseModal(true);
-      closeModal();
+      onVerificationSuccess();
+      // closeModal();
     } catch (error: any) {
       console.log(error);
       setIsOtpCodeValid(false);
+      setTimeout(() => {
+        setIsOtpCodeValid(true);
+      }, 500);
       setOtpCode("");
     }
   };
@@ -63,33 +80,37 @@ export const TwoFAModal = ({ closeModal }: { closeModal: () => void }) => {
     <ModalPortal>
       {!showResponseModal && (
         <Modal
+          title="2-Factor Authentication"
           type={ModalTypes.hasProceedBtn}
           proceedBtnText="인증하기"
           onClickProceed={tryVerifyOTP}
           cancleBtnText="취소"
           closeModal={closeModal}
         >
-          <div>
-            {qrCode ? (
-              <Image
-                src={`${qrCode}`}
-                alt="OTP QR Code"
-                width={150}
-                height={150}
-              />
-            ) : (
-              <LoadingAnimation />
-            )}
-            <div>인증번호를 입력해주세요</div>
+          <TwoFAModalWrapperStyled>
+            <QRCodeContainerStyled>
+              {qrCode ? (
+                <Image
+                  src={`${qrCode}`}
+                  alt="OTP QR Code"
+                  width={150}
+                  height={150}
+                />
+              ) : (
+                <LoadingAnimation />
+              )}
+            </QRCodeContainerStyled>
+            <p>QR 코드를 스캔하신 후,</p>
+            <p>인증번호를 입력해주세요</p>
             <OtpCodeInputStyled
-              type="text"
+              type="number"
               placeholder="Enter OTP"
               $isValid={isOtpCodeValid}
               onChange={(e) => {
                 setOtpCode(e.target.value);
               }}
             />
-          </div>
+          </TwoFAModalWrapperStyled>
         </Modal>
       )}
       {showResponseModal &&
@@ -107,6 +128,24 @@ export const TwoFAModal = ({ closeModal }: { closeModal: () => void }) => {
     </ModalPortal>
   );
 };
+
+const TwoFAModalWrapperStyled = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const QRCodeContainerStyled = styled.div`
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
 
 const OtpCodeInputStyled = styled.input<{ $isValid: boolean }>`
   width: 70%;

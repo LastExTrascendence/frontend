@@ -34,7 +34,7 @@ const toggleList: toggleItem[] = [
 export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
-  const [avatar, setAvatar] = useState<Blob>();
+  const [avatar, setAvatar] = useState<string>("");
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
@@ -42,6 +42,7 @@ export default function Page() {
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
   const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function Page() {
 
   const updateMyInfo = async (
     newNickname: string,
-    newAvatar: any,
+    newAvatar: string,
     two_fa: boolean,
   ) => {
     try {
@@ -64,7 +65,9 @@ export default function Page() {
         nickname: newNickname,
         avatar: newAvatar,
       }));
+      setModalTitle("수정되었습니다");
     } catch (err: any) {
+      console.log("error", err);
       setModalTitle("프로필 수정에 실패했습니다");
       setHasErrorOnResponse(true);
     } finally {
@@ -78,6 +81,7 @@ export default function Page() {
 
       setTimeout(() => {
         setUserInfo(userProfileInfo);
+        setNickname(userProfileInfo.nickname);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -86,13 +90,29 @@ export default function Page() {
     }
   };
 
+  const handleToggleChange = (newState: TwoFAType) => {
+    if (newState === TwoFAType.ON) {
+      setShowTwoFAModal(true);
+    } else {
+      setIsOtpVerified(false);
+    }
+    setTwoFA(newState);
+  };
+
   const handleCloseTwoFAModal = () => {
     setShowTwoFAModal(false);
+    if (!isOtpVerified) {
+      setTwoFA(TwoFAType.OFF);
+    }
   };
 
   const handleCloseResponseModal = () => {
     setShowResponseModal(false);
     setHasErrorOnResponse(false);
+  };
+
+  const handleVerifySuccess = () => {
+    setIsOtpVerified(true);
   };
 
   return (
@@ -164,6 +184,7 @@ export default function Page() {
                     toggleList={toggleList}
                     initialState={twoFA}
                     setState={setTwoFA}
+                    onToggleChange={handleToggleChange}
                   />
                 </ToggleSwitchWrapperStyled>
               </TwoFAWrapperStyled>
@@ -199,7 +220,12 @@ export default function Page() {
           <UserInfoCard userInfo={userInfo} />
         </ProfileContainerStyled>
       </ProfilePageStyled>
-      {showTwoFAModal && <TwoFAModal closeModal={handleCloseTwoFAModal} />}
+      {showTwoFAModal && (
+        <TwoFAModal
+          closeModal={handleCloseTwoFAModal}
+          onVerificationSuccess={handleVerifySuccess}
+        />
+      )}
       {showResponseModal &&
         (hasErrorOnResponse ? (
           <FailResponseModal

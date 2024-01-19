@@ -18,9 +18,7 @@ instance.interceptors.request.use(async (config: any) => {
 });
 
 instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     console.log("error", error);
     if (error.response?.status === STATUS_401_UNAUTHORIZED) {
