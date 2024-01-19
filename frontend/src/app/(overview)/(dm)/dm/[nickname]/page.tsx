@@ -24,7 +24,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const { socket, isConnected } = useSocket();
-  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const messagesContainerRef = useRef<null | HTMLDivElement>(null);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const { openUserInfoCard } = useMenu();
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
@@ -69,7 +69,10 @@ export default function DM({ params }: { params: { nickname: string } }) {
   }, [socket, isConnected, myInfo.id]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
   };
 
   const sendMessage = async (e: React.MouseEvent | React.KeyboardEvent) => {
@@ -120,7 +123,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
                 height={30}
               />
             </UserInfoButtonStyled>
-            <DMHistoryContainerStyled>
+            <DMHistoryContainerStyled ref={messagesContainerRef}>
               {messages.map((message, index) => (
                 <DMContentStyled key={index}>
                   <TimeStampStyled>
@@ -135,7 +138,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
                 </DMContentStyled>
               ))}
             </DMHistoryContainerStyled>
-            <div ref={messagesEndRef} />
             <InputMessageContainerStyled>
               <InputMessageStyled
                 type="text"
@@ -210,6 +212,7 @@ export const DMAreaStyled = styled.div`
 
 const DMHistoryContainerStyled = styled.div`
   overflow-y: auto;
+  width: 100%;
   height: 100%;
 `;
 

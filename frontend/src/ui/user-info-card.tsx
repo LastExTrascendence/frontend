@@ -189,9 +189,10 @@ const ProfileImageWrapperStyled = styled.div`
 const FriendButtonStyled = styled.button`
   /* display: flex; */
   /* top: calc(50%); */
+  /* right: 4%; */
+  /* margin: 1rem; */
   position: fixed;
-  right: 4%;
-  margin: 1rem;
+  padding-left: 12rem;
   cursor: pointer;
 `;
 
