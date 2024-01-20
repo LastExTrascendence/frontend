@@ -2,17 +2,29 @@
 
 import { useEffect } from "react";
 import { UserFriendListResponseDto } from "@/types/dto/user.dto";
+import { UserInfoDto } from "@/types/interface/user.interface";
 
-export default function useFriendStatusListner({ socket, isConnected, friendsList, setFriendsList }) {
+export default function useFriendStatusListner({ socket, friendsList, setFriendsList }: { socket: any, friendsList: UserFriendListResponseDto, setFriendsList: any }) {
+
   useEffect(() => {
     if (!socket) return;
-    console.log("socket =====> ", friendsList);
-    socket.on("friendStatus", (data: UserFriendListResponseDto) => {
-      setFriendsList(data);
+    if (!friendsList) return;
+
+    socket.on("followingStatus", (data: UserInfoDto) => {
+      if (!data) return;
+
+      const newFriendsList = friendsList.map((friend: { id: number; }) => {
+        if (friend.id === data.id) {
+          return data;
+        }
+        return friend;
+      });
+
+      setFriendsList(newFriendsList);
     });
 
     return () => {
-      socket.off("friendStatus");
+      socket.off("followingStatus");
     };
-  }, [socket, isConnected]);
+  }, [socket, friendsList, setFriendsList]);
 }

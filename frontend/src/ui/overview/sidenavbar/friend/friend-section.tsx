@@ -20,9 +20,9 @@ const FriendSectionStyled = styled.section`
 
 export default function FriendSection() {
   const [friendsList, setFriendsList] = useState<UserFriendListResponseDto>(undefined);
-  const { socket, isConnected } = useSocket();
+  const { socket } = useSocket();
 
-  useFriendStatusListner({ socket, isConnected, friendsList, setFriendsList });
+  useFriendStatusListner({ socket, friendsList, setFriendsList });
 
   const tryGetFriendsList = async () => {
     try {
