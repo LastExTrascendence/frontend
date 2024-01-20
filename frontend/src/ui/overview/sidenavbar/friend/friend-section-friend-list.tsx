@@ -2,7 +2,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserFriendListResponseDto } from "@/types/dto/user.dto";
-import { UserInfoDto } from "@/types/interface/user.interface";
 import { useMenu } from "@/hooks/useMenu";
 import FriendSectionCard from "./friend-section-card";
 
