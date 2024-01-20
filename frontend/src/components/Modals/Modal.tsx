@@ -64,7 +64,7 @@ export default function Modal({
           {icon && (
             <ModalIconImgStyled src={icon} $iconScaleEffect={iconScaleEffect} />
           )}
-          <H2Styled>{title}</H2Styled>
+          <ModalTitleStyled>{title}</ModalTitleStyled>
           {children}
           {type === "hasProceedBtn" && (
             <ButtonWrapperStyled>
@@ -72,6 +72,9 @@ export default function Modal({
                 width="120px"
                 height="40px"
                 onClick={closeModal}
+                fontSize="1.5rem"
+                fontStyle="italic"
+                fontWeight="800"
                 text={cancleBtnText || "취소"}
                 theme="white"
               />
@@ -81,6 +84,9 @@ export default function Modal({
                 onClick={(e: React.MouseEvent) => {
                   onClickProceed!(e);
                 }}
+                fontSize="1.5rem"
+                fontStyle="italic"
+                fontWeight="800"
                 text={proceedBtnText || "확인"}
                 theme="purple"
               />
@@ -154,7 +160,7 @@ const ModalContentWrapperStyled = styled.div<{
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  padding: 1rem 0.5rem 2rem;
+  padding: 1rem 0.75rem 2rem;
 `;
 
 const ModalIconImgStyled = styled.img<{
@@ -186,13 +192,14 @@ export const DetailStyled = styled.p`
   white-space: break-spaces;
 `;
 
-const H2Styled = styled.h2`
-  font-weight: 500;
-  font-size: 1.25rem;
+const ModalTitleStyled = styled.h2`
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1.5rem;
   line-height: 1.75rem;
   white-space: break-spaces;
   margin-bottom: 1rem;
-  /* color: var(--main-purple); */
+  color: var(--main-purple);
 `;
 
 const ButtonWrapperStyled = styled.div`

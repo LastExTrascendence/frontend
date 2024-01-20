@@ -197,9 +197,9 @@ export default function Page() {
                 <ButtonWrapperStyled>
                   <PillButton
                     width={"100px"}
-                    height={"30px"}
+                    height={"35px"}
                     theme={"purple"}
-                    fontSize="1rem"
+                    fontSize="1.5rem"
                     fontWeight="800"
                     fontStyle="italic"
                     text="Save"
