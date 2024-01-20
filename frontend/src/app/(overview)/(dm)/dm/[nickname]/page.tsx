@@ -220,7 +220,7 @@ const DMContentStyled = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 `;
 
 const TimeStampStyled = styled.div`
@@ -231,7 +231,7 @@ const TimeStampStyled = styled.div`
 `;
 
 const SenderStyled = styled.div`
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--light-gray);
   margin-right: 0.5rem;
 `;
