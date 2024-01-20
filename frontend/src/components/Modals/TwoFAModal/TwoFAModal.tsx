@@ -82,9 +82,9 @@ export const TwoFAModal = ({
         <Modal
           title="2-Factor Authentication"
           type={ModalTypes.hasProceedBtn}
-          proceedBtnText="인증하기"
+          proceedBtnText="Verify"
           onClickProceed={tryVerifyOTP}
-          cancleBtnText="취소"
+          cancleBtnText="Cancel"
           closeModal={closeModal}
         >
           <TwoFAModalWrapperStyled>
@@ -100,8 +100,14 @@ export const TwoFAModal = ({
                 <LoadingAnimation />
               )}
             </QRCodeContainerStyled>
-            <p>QR 코드를 스캔하신 후,</p>
-            <p>인증번호를 입력해주세요</p>
+            <OtpCodeDescriptionWrapperStyled>
+              <OtpCodeDescriptionStyled>
+                QR 코드를 스캔하신 후,
+              </OtpCodeDescriptionStyled>
+              <OtpCodeDescriptionStyled>
+                인증번호를 입력해주세요
+              </OtpCodeDescriptionStyled>
+            </OtpCodeDescriptionWrapperStyled>
             <OtpCodeInputStyled
               type="number"
               placeholder="Enter OTP"
@@ -144,7 +150,24 @@ const QRCodeContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+`;
+
+const OtpCodeDescriptionWrapperStyled = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 1rem 0;
+`;
+
+const OtpCodeDescriptionStyled = styled.p`
+  font-size: 1rem;
+  font-weight: 400;
+  /* color: var(--main-purple); */
+  /* font-style: italic; */
+  margin-bottom: 0.5rem;
 `;
 
 const OtpCodeInputStyled = styled.input<{ $isValid: boolean }>`

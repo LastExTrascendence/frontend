@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
 import {
@@ -14,6 +14,7 @@ import InputContainer from "@/ui/input-container";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import PillButton from "@/ui/pill-button";
 import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
+import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
   axiosMyProfileInfo,
@@ -26,7 +27,7 @@ export enum TwoFAType {
   OFF = "OFF",
 }
 
-const toggleList: toggleItem[] = [
+const twoFAToggleList: toggleItem[] = [
   { name: "On", key: TwoFAType.ON },
   { name: "Off", key: TwoFAType.OFF },
 ];
@@ -35,7 +36,7 @@ export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
-  const [myInfo, setMyInfo] = useRecoilState(myState);
+  const setMyInfo = useSetRecoilState(myState);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
   const [showTwoFAModal, setShowTwoFAModal] = useState<boolean>(false);
@@ -89,6 +90,56 @@ export default function Page() {
       setHasErrorOnResponse(true);
       setShowResponseModal(true);
     }
+  };
+
+  const convertBase64 = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        if (fileReader.result !== null) {
+          resolve(fileReader.result as string);
+        } else {
+          reject(new Error("파일 읽기에 실패했습니다"));
+        }
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target);
+    if (!e || !e.target || !e.target.files) return;
+    const file = e.target.files[0];
+    try {
+      const fileSize = file.size / 1024 ** 2;
+      if (fileSize > 1.37) {
+        throw new Error("1MB 이하의\n파일을 선택해주세요");
+      }
+      const base64 = await convertBase64(file);
+      console.log(base64);
+      setAvatar(base64);
+      setModalTitle("파일 업로드에 성공했습니다");
+    } catch (err: any) {
+      if (err.message) {
+        setModalTitle(err.message);
+      } else {
+        setModalTitle("파일 업로드에 실패했습니다");
+      }
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
+
+  const handleChangeAvatar = async () => {
+    const imageUploadInput = document.getElementById(
+      "imageUploadInput",
+    ) as HTMLInputElement;
+    if (!imageUploadInput) return;
+    imageUploadInput.click();
   };
 
   const handleToggleChange = (newState: TwoFAType) => {
@@ -154,6 +205,14 @@ export default function Page() {
                   Avatar
                 </PropertyTitleStyled>
                 <ButtonContainerStyled>
+                  <ImageUploadInputStyled
+                    id="imageUploadInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      handleImageUpload(e);
+                    }}
+                  />
                   <PillButton
                     width={"140px"}
                     height={"30px"}
@@ -162,8 +221,8 @@ export default function Page() {
                     fontWeight="800"
                     fontStyle="italic"
                     text="Change Avatar"
-                    onClick={() => {
-                      console.log("click");
+                    onClick={(e) => {
+                      handleChangeAvatar();
                     }}
                   />
                   <PillButton
@@ -175,7 +234,7 @@ export default function Page() {
                     fontStyle="italic"
                     text="Remove Avatar"
                     onClick={() => {
-                      console.log("click");
+                      setAvatar("");
                     }}
                   />
                 </ButtonContainerStyled>
@@ -186,7 +245,7 @@ export default function Page() {
                 </PropertyTitleStyled>
                 <ToggleSwitchWrapperStyled>
                   <MultiToggleSwitch
-                    toggleList={toggleList}
+                    toggleList={twoFAToggleList}
                     initialState={twoFA}
                     setState={setTwoFA}
                     onToggleChange={handleToggleChange}
@@ -319,6 +378,10 @@ const ButtonContainerStyled = styled.div`
   width: 300px;
   height: 50px;
   margin: 1rem 0;
+`;
+
+const ImageUploadInputStyled = styled.input`
+  display: none;
 `;
 
 const TwoFAWrapperStyled = styled.div`
