@@ -34,9 +34,9 @@ const twoFAToggleList: toggleItem[] = [
 
 export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
+  const [initialTwoFA, setInitialTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
-  const setMyInfo = useSetRecoilState(myState);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
   const [showTwoFAModal, setShowTwoFAModal] = useState<boolean>(false);
@@ -44,6 +44,7 @@ export default function Page() {
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const setMyInfo = useSetRecoilState(myState);
   const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function Page() {
         nickname: newNickname,
         avatar: newAvatar,
       }));
+      setInitialTwoFA(twoFA);
       setModalTitle("수정되었습니다");
     } catch (err: any) {
       console.log("error", err);
@@ -84,6 +86,7 @@ export default function Page() {
         setUserInfo(userProfileInfo);
         setNickname(userProfileInfo.nickname);
         setTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
+        setInitialTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -143,7 +146,7 @@ export default function Page() {
   };
 
   const handleToggleChange = (newState: TwoFAType) => {
-    if (newState === TwoFAType.ON) {
+    if (newState === TwoFAType.ON && initialTwoFA !== TwoFAType.ON) {
       setShowTwoFAModal(true);
     } else {
       setIsOtpVerified(false);
