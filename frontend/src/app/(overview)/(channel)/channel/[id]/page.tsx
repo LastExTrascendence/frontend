@@ -18,13 +18,13 @@ import useChannelHandler from "@/hooks/useChannelHandler";
 import useChannelListener from "@/hooks/useChannelListener";
 import useUserListComposer from "@/hooks/useUserListComposer";
 import useUserListListener from "@/hooks/useUserListListener";
+import ChannelChat from "@/ui/overview/channel/channel-chat";
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
   const [messages, setMessages] = useState<Message[]>([]);
   const { channelSocket, isChannelConnected, setChannelId, setUserId } =
     useChannelSocket();
-
   const [currentMessage, setCurrentMessage] = useState("");
   const [userList, setUserList] = useState<ChatAttendees[]>();
   const [myRole, setMyRole] = useState<string>("USER");
@@ -41,19 +41,10 @@ export default function Page({ params }: { params: { id: string } }) {
     scrollToBottom();
   }, [messages]);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      sendMessage(e);
-    }
-  };
-
   useChannelHandler(myInfo.id, params.id, setUserId, setChannelId);
   useChannelEnter(channelSocket, isChannelConnected, myInfo.id, name);
-  useChannelListener(channelSocket, setMessages);
   useUserListListener(channelSocket, setUserList);
   useUserListComposer(userList, myInfo.nickname, setMyRole);
-
-  // useChannelListener(channelSocket, setMessages, setUserList, myInfo, name);
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -70,24 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="m-12 flex max-h-[1833px] min-h-[400px] w-full min-w-[400px] flex-row content-center items-start">
-      <div className="flex h-full w-full flex-col bg-chatColor p-9">
-        <div className="content-start items-center overflow-y-scroll">
-          {messages.map((message, index) => (
-            <MessageItem key={index} message={message} />
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-        <GrowBlank />
-        <MessageInput
-          currentMessage={currentMessage}
-          setCurrentMessage={setCurrentMessage}
-          // messageRef={messageRef}
-          handleKeyDown={handleKeyDown}
-          sendMessage={sendMessage}
-          name={name}
-        />
-      </div>
-
+      <ChannelChat name={name} />
       <div className="hidden h-full min-w-[300px] max-w-[350px] flex-col overflow-y-scroll bg-userInfoColor p-9 md:block">
         <div className="font-['Noto Sans KR'] text-4xl font-normal text-white">
           #{name}
