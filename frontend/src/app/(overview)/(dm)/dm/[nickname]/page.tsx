@@ -11,13 +11,7 @@ import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
 import { useMenu } from "@/hooks/useMenu";
-
-interface Message {
-  time: string | Date;
-  sender: number; // mystate id
-  receiver: string; // receiver nickname
-  content: string; //
-}
+import { Message } from "@/types/interface/dm.interface"
 
 export default function DM({ params }: { params: { nickname: string } }) {
   const myInfo = useRecoilValue(myState);
@@ -28,19 +22,6 @@ export default function DM({ params }: { params: { nickname: string } }) {
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const { openUserInfoCard } = useMenu();
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
-
-  useEffect(() => {
-    let timer: any;
-    // TODO : notFound
-    if (isConnected) {
-      timer = setTimeout(() => {
-        notFound();
-      }, 3000);
-    }
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [isConnected]);
 
   useEffect(() => {
     if (updateUserInfo) {
