@@ -1,16 +1,15 @@
-import { useState, useRef, useEffect } from 'react'
-import { useRecoilValue } from "recoil";
-import { myState } from "@/recoil/atom";
+"use client";
 
+import { useState, useRef, useEffect } from 'react'
 import { useChannelSocket } from "@/components/ChannelSocketProvider";
 import useChannelListener from "@/hooks/useChannelListener";
 import MessageItem from "@/ui/overview/channel/message-item";
 import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
 import { Message } from "@/types/interface/chat.interface";
+import { UserInfoDto } from '@/types/interface/user.interface';
 
-export default function ChannelChat({ name }: { name: string }) {
-  const myInfo = useRecoilValue(myState);
+export default function ChannelChat({ name, myInfo }: { name: string, myInfo: UserInfoDto }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const { channelSocket } = useChannelSocket();
   const messagesEndRef = useRef(null);
