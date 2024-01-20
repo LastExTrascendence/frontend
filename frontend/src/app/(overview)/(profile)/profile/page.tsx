@@ -159,6 +159,7 @@ export default function Page() {
                     height={"30px"}
                     theme={"purple"}
                     fontSize="1rem"
+                    fontWeight="800"
                     fontStyle="italic"
                     text="Change Avatar"
                     onClick={() => {
@@ -170,6 +171,7 @@ export default function Page() {
                     height={"30px"}
                     theme={"gray"}
                     fontSize="1rem"
+                    fontWeight="800"
                     fontStyle="italic"
                     text="Remove Avatar"
                     onClick={() => {
@@ -196,22 +198,9 @@ export default function Page() {
                   <PillButton
                     width={"100px"}
                     height={"30px"}
-                    theme={"lightgray"}
-                    fontSize="1rem"
-                    fontStyle="italic"
-                    text="Reset"
-                    onClick={() => {
-                      setNickname(myInfo.nickname);
-                      setAvatar("");
-                    }}
-                  />
-                </ButtonWrapperStyled>
-                <ButtonWrapperStyled>
-                  <PillButton
-                    width={"100px"}
-                    height={"30px"}
                     theme={"purple"}
                     fontSize="1rem"
+                    fontWeight="800"
                     fontStyle="italic"
                     text="Save"
                     onClick={() => {
