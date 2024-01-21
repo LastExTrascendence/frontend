@@ -85,6 +85,21 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [isGameConnected]);
 
+  useEffect(() => {
+    if (!gameSocket) return;
+    if (isGameConnected) {
+      const gameEndLogic = () => {
+        setIsGameStart(false);
+
+      };
+      gameSocket.on("gameEnd", gameEndLogic);
+
+      return () => {
+        gameSocket.off("gameEnd", gameEndLogic);
+      };
+    }
+  }, [gameSocket, isGameConnected]);
+
   useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
   useGameEnter(gameSocket, isGameConnected, myInfo.id, name);
 
