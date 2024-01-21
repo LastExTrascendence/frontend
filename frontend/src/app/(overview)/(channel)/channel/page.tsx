@@ -7,86 +7,8 @@ import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChat
 import PillButton from "@/ui/pill-button";
 import ChannelList from "@/ui/overview/channel/channel-list";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
-import {
-  ChannelListResponseDto,
-  ChatChannelListDto,
-} from "@/types/interface/channel.interface";
+import { ChannelListResponseDto } from "@/types/interface/channel.interface";
 import { axiosGetChatChannels } from "@/api/axios/axios.custom";
-
-export default function Page() {
-  const [searchInput, setSearchInput] = useState("");
-  const [chatChannelList, setChatChannelList] =
-    useState<ChannelListResponseDto>(undefined);
-  const [showNewChatChannelModal, setShowNewChannelModal] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    getChatChannels();
-  }, []);
-
-  const getChatChannels = async () => {
-    try {
-      const response = await axiosGetChatChannels()
-        .then((res) => {
-          setTimeout(() => {
-            setChatChannelList(res.data);
-          }, 500);
-        })
-        .catch((err) => {
-          setTimeout(() => {
-            setChatChannelList(STATUS_400_BAD_REQUEST);
-          }, 500);
-        });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-
-  const toggleNewChannelModal = () => {
-    setShowNewChannelModal(!showNewChatChannelModal);
-  };
-
-  const handleCloseNewChannelModal = () => {
-    setShowNewChannelModal(false);
-  };
-
-  return (
-    <>
-      <ChannelPageStyled>
-        <TopSectionWrapperStyled>
-          <SearchBarWrapperStyled>
-            <SearchBarStyled
-              className="placeholder:text-stone-300"
-              placeholder="Search Channels"
-              value={searchInput}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchInput(e.target.value)
-              }
-            />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
-          </SearchBarWrapperStyled>
-          <PillButton
-            onClick={toggleNewChannelModal}
-            text="New"
-            width="100px"
-            height="35px"
-            fontWeight="800"
-            fontStyle="italic"
-            fontSize="1.5rem"
-            theme="purple"
-          />
-        </TopSectionWrapperStyled>
-        <ChatChannelContainerStyled>
-          <ChannelList chats={chatChannelList} />
-        </ChatChannelContainerStyled>
-      </ChannelPageStyled>
-      {showNewChatChannelModal && (
-        <NewChatChannelModal closeModal={handleCloseNewChannelModal} />
-      )}
-    </>
-  );
-}
 
 const ChannelPageStyled = styled.div`
   width: 100%;
@@ -144,3 +66,92 @@ export const ChatChannelContainerStyled = styled.div`
   background-color: var(--gray);
   margin-bottom: 15px;
 `;
+
+export default function Page() {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [chatChannelList, setChatChannelList] =
+    useState<ChannelListResponseDto>(undefined);
+  const [showNewChatChannelModal, setShowNewChannelModal] =
+    useState<boolean>(false);
+  const [filteredChatChannelList, setFilteredChatChannelList] = useState(chatChannelList);
+
+  const getChatChannels = async () => {
+    try {
+      const response = await axiosGetChatChannels()
+        .then((res) => {
+          setTimeout(() => {
+            setChatChannelList(res.data);
+          }, 500);
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            setChatChannelList(STATUS_400_BAD_REQUEST);
+          }, 500);
+        });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    getChatChannels();
+  }, []);
+
+  useEffect(() => {
+    if (!searchInput) {
+      setFilteredChatChannelList(chatChannelList);
+      return;
+    }
+
+    const filtered = chatChannelList?.filter((channel: { title: string; }) =>
+      channel.title.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    setFilteredChatChannelList(filtered);
+  }, [searchInput, chatChannelList]);
+
+  const toggleNewChannelModal = () => {
+    setShowNewChannelModal(!showNewChatChannelModal);
+  };
+
+  const handleCloseNewChannelModal = () => {
+    setShowNewChannelModal(false);
+  };
+
+  return (
+    <>
+      <ChannelPageStyled>
+        <TopSectionWrapperStyled>
+          <SearchBarWrapperStyled>
+            <SearchBarStyled
+              className="placeholder:text-stone-300"
+              placeholder="Search Channels"
+              value={searchInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchInput(e.target.value)
+              }
+            />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
+          </SearchBarWrapperStyled>
+          <PillButton
+            onClick={toggleNewChannelModal}
+            text="New"
+            width="100px"
+            height="35px"
+            fontWeight="800"
+            fontStyle="italic"
+            fontSize="1.5rem"
+            theme="purple"
+          />
+        </TopSectionWrapperStyled>
+        <ChatChannelContainerStyled>
+          <ChannelList chats={filteredChatChannelList} />
+        </ChatChannelContainerStyled>
+      </ChannelPageStyled>
+      {showNewChatChannelModal && (
+        <NewChatChannelModal closeModal={handleCloseNewChannelModal} />
+      )}
+    </>
+  );
+}
