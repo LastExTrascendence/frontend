@@ -68,7 +68,7 @@ export const GameChannelContainerStyled = styled.div`
 `;
 
 export default function Page() {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const [showNewGameChannelModal, setShowNewGameChannelModal] =
     useState<boolean>(false);
   const [gameChannelList, setGameChannelList] =

@@ -73,7 +73,7 @@ export default function Page() {
     useState<ChannelListResponseDto>(undefined);
   const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
-  const [filteredChatChannelList, setFilteredChatChannelList] = useState(chatChannelList);
+  const [filteredChatChannelList, setFilteredChatChannelList] = useState<ChannelListResponseDto>(chatChannelList);
 
   const getChatChannels = async () => {
     try {
