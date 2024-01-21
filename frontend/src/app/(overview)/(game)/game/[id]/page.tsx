@@ -18,8 +18,6 @@ import { ChatAttendees } from "@/types/interface/chat.interface";
 import useGameChannelHandler from "@/hooks/useGameChannelHandler";
 import useGameEnter from "@/hooks/useGameEnter";
 import { useMenu } from "@/hooks/useMenu";
-import useUserListComposer from "@/hooks/useUserListComposer";
-import useUserListListener from "@/hooks/useUserListListener";
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
@@ -67,7 +65,7 @@ export default function Page({ params }: { params: { id: string } }) {
         gameSocket.off("readyOff", gameReadyHandler);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   useEffect(() => {
     if (!gameSocket) return;
@@ -83,7 +81,7 @@ export default function Page({ params }: { params: { id: string } }) {
         gameSocket.off("gameStart", gameStartRedirect);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
   useGameEnter(gameSocket, isGameConnected, myInfo.id, name);
@@ -91,18 +89,16 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col h-full w-full items-center justify-center content-center">
       <div
-        className={`relative ${
-          isGameStart
-            ? "opacity-100 translate-y-0 max-h-[350px]"
-            : "max-h-[0px] opacity-0 translate-y-10"
-        } transition-all duration-1000 ease-in-out z-0 mb-3`}
+        className={`relative ${isGameStart
+          ? "opacity-100 translate-y-0 max-h-[350px]"
+          : "max-h-[0px] opacity-0 translate-y-10"
+          } transition-all duration-1000 ease-in-out z-0 mb-3`}
       >
         <GamePlay myRole={myRole} id={params.id} isGameStart={isGameStart} />
       </div>
       <div
-        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${
-          isGameStart ? "mt-8" : "mt-4"
-        } p-12 flex max-h-[1833px] min-h-[700px] w-full min-w-[400px] flex-row content-center items-start z-9`}
+        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${isGameStart ? "mt-8" : "mt-4"
+          } p-12 flex max-h-[1833px] min-h-[700px] w-full min-w-[400px] flex-row content-center items-start z-9`}
       >
         <GameChat name={name} />
         <div className="hidden flex-col h-full min-w-[400px] shrink-0 max-w-[600px] bg-userInfoColor md:block items-start content-center">
