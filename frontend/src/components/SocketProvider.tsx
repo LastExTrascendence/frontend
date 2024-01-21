@@ -7,24 +7,13 @@ import { useRecoilValue } from "recoil";
 import io from "socket.io-client";
 import { myState } from "@/recoil/atom";
 import { getCookie } from "@/api/cookie/cookies";
+import UserSocketContextType from "@/types/user-socket.type";
 
-interface ConnectInfo {
-  sender: number; // mystate id
-  receiver: string; // receiver nickname
-}
-
-type SocketContextType = {
-  socket: any | null;
-  isConnected: boolean;
-  enterQueue: () => void;
-  exitQueue: () => void;
-};
-
-const SocketContext = createContext<SocketContextType>({
+const SocketContext = createContext<UserSocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => {},
-  exitQueue: () => {},
+  enterQueue: () => { },
+  exitQueue: () => { },
 });
 
 export const useSocket = () => useContext(SocketContext);
