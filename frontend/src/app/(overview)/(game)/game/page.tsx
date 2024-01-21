@@ -55,7 +55,7 @@ export default function Page() {
           <SearchBarWrapperStyled>
             <SearchBarStyled
               className="placeholder:text-stone-300"
-              placeholder="Search Games"
+              placeholder="Search"
               value={searchInput}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchInput(e.target.value)
@@ -116,7 +116,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 100;
   color: var(--white);
   outline: none;

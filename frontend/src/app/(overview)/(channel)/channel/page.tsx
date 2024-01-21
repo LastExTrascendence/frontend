@@ -119,7 +119,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 100;
   color: var(--white);
   outline: none;

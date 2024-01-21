@@ -46,10 +46,11 @@ const OnlineCountContainerStyled = styled.div`
 const OnlineCountTextWrapperStyled = styled.div`
   width: 100%;
   padding-left: 1.5rem;
+  margin: 1rem 0;
 `;
 
 const OnlineCountTextStyled = styled.p`
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: var(--white);
   font-weight: 400;
 `;
