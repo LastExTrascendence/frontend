@@ -3,6 +3,10 @@ import { UserStatus } from "@/types/enum/user.enum";
 import { IToastInfo } from "@/types/interface/toast.interface";
 import { UserInfoDto } from "@/types/interface/user.interface";
 
+interface ExtendedUserInfoDto extends UserInfoDto {
+  beforeUserNick?: string;
+}
+
 /**
  * Atom for toast messages
  * @atom toastMessagesState
@@ -18,7 +22,7 @@ export const toastMessagesState = atom<IToastInfo[]>({
  * @atom myState
  * @property {UserDto} myState - user info
  */
-export const myState = atom<UserInfoDto>({
+export const myState = atom<ExtendedUserInfoDto>({
   key: "myInfo",
   default: {
     id: 0,
@@ -26,5 +30,6 @@ export const myState = atom<UserInfoDto>({
     avatar:
       "/default_profile.svg",
     status: UserStatus.ONLINE,
+    beforeUserNick: "",
   },
 });
