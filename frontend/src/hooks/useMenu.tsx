@@ -18,7 +18,8 @@ export const useMenu = () => {
     document.getElementById("sideNavWrap")?.classList.add("on");
     document.getElementById("topNavLogo")?.classList.add("on");
     document.getElementById("topNavTextLogo")?.classList.add("on");
-    document.getElementById("menuBackground")?.classList.add("on");
+    document.getElementById("background")?.classList.add("on");
+    // document.getElementById("mainSectionBackground")?.classList.add("on");
   };
 
   const closeSideNav = () => {
@@ -28,13 +29,14 @@ export const useMenu = () => {
       document.getElementById("sideNavWrap")?.classList.remove("on");
       document.getElementById("topNavLogo")?.classList.remove("on");
       document.getElementById("topNavTextLogo")?.classList.remove("on");
-      document.getElementById("menuBackground")?.classList.remove("on");
+      document.getElementById("background")?.classList.remove("on");
+      // document.getElementById("mainSectionBackground")?.classList.remove("on");
     }
   };
 
   const openUserInfoCard = () => {
     document.getElementById("userInfoCard")?.classList.add("on");
-    document.getElementById("menuBackground")?.classList.add("on");
+    document.getElementById("mainSectionBackground")?.classList.add("on");
   };
 
   const closeUserInfoCard = () => {
@@ -42,7 +44,7 @@ export const useMenu = () => {
       document.getElementById("userInfoCard")?.classList.contains("on") === true
     ) {
       document.getElementById("userInfoCard")?.classList.remove("on");
-      document.getElementById("menuBackground")?.classList.remove("on");
+      document.getElementById("mainSectionBackground")?.classList.remove("on");
     }
   };
 
