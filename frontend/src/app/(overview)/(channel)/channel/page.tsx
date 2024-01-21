@@ -4,8 +4,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
-import PillButton from "@/ui/pill-button";
 import ChannelList from "@/ui/overview/channel/channel-list";
+import PillButton from "@/ui/pill-button";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import {
   ChannelListResponseDto,
@@ -58,7 +58,7 @@ export default function Page() {
           <SearchBarWrapperStyled>
             <SearchBarStyled
               className="placeholder:text-stone-300"
-              placeholder="Search Channels"
+              placeholder="Search"
               value={searchInput}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchInput(e.target.value)

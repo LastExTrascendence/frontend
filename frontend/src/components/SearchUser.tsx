@@ -87,8 +87,8 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
       {showDropdown && isLoading ? (
         <DropdownStyled
           id="search-result"
-          top={dropdownPosition.top}
-          left={dropdownPosition.left}
+          $top={dropdownPosition.top}
+          $left={dropdownPosition.left}
         >
           <DropdownLoadingAnimationContainerStyled>
             <LoadingAnimation />
@@ -99,8 +99,8 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
         searchResults.length > 0 && (
           <DropdownStyled
             id="search-result"
-            top={dropdownPosition.top}
-            left={dropdownPosition.left}
+            $top={dropdownPosition.top}
+            $left={dropdownPosition.left}
           >
             {searchResults.map((user: any) => (
               <DropdownItemStyled
@@ -143,7 +143,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
   );
 }
 
-const DropdownStyled = styled.div<{ top?: number; left?: number }>`
+const DropdownStyled = styled.div<{ $top?: number; $left?: number }>`
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -158,8 +158,8 @@ const DropdownStyled = styled.div<{ top?: number; left?: number }>`
   overflow-x: hidden;
   z-index: 15;
   position: absolute;
-  top: ${(props) => props.top}px;
-  left: ${(props) => props.left}px;
+  top: ${(props) => props.$top}px;
+  left: ${(props) => props.$left}px;
 `;
 
 const DropdownLoadingAnimationContainerStyled = styled.div`

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CardTitleStyled, CardTitleWrapperStyled } from "@/app/login/page";
 import { IToken } from "@/app/register/page";
 import Card from "@/ui/card";
 import LoadingAnimation from "@/ui/loading-animation";
@@ -17,6 +18,7 @@ const token = getCookie("access_token");
 export default function Page() {
   const [otp, setOTP] = useState<string>("");
   const [otpCode, setOTPCode] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const tryOTPLogin = async () => {
@@ -30,13 +32,17 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (!token) {
-      router.replace("/login");
-    }
-    const decodedToken: IToken = jwtDecode(token);
-    if (decodedToken.two_fa_complete) {
-      router.replace("/");
-    }
+    // if (!token) {
+    //   router.replace("/login");
+    // }
+    // try {
+    //   const decodedToken: IToken = jwtDecode(token);
+    //   if (decodedToken.two_fa_complete) {
+    //     router.replace("/");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }, []);
 
   return (
@@ -52,9 +58,6 @@ export default function Page() {
           />
           <CardTitleStyled>L.E.T</CardTitleStyled>
         </CardTitleWrapperStyled>
-        {/* <CardDescriptionStyled>
-          A minimalistic pong service
-        </CardDescriptionStyled> */}
         <OTPInputContainerStyled>
           <OTPInputStyled
             type="number"
@@ -65,45 +68,22 @@ export default function Page() {
         </OTPInputContainerStyled>
         <PillButton
           width="180px"
-          height="45px"
-          text="LOGIN"
+          height="55px"
+          text="Login"
           fontSize="2rem"
           fontWeight="800"
           fontStyle="italic"
           theme="purple"
-          onClick={() => tryOTPLogin()}
+          onClick={() => {
+            setIsLoading(true);
+            tryOTPLogin();
+          }}
+          isLoading={isLoading}
         />
       </>
     </Card>
   );
 }
-
-const CardTitleWrapperStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
-
-const CardTitleStyled = styled.div`
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--main-dark-purple);
-  font-style: italic;
-  margin-left: 3rem;
-`;
-
-const CardDescriptionStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 160px;
-  font-size: 1.25rem;
-  font-weight: 300;
-  color: var(--main-purple);
-  font-style: italic;
-  justify-content: center;
-  align-items: center;
-`;
 
 const OTPInputContainerStyled = styled.div`
   display: flex;
@@ -123,5 +103,5 @@ const OTPInputStyled = styled.input`
   font-style: italic;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 `;

@@ -171,7 +171,7 @@ export default function Page() {
       <ProfilePageStyled>
         <ProfileContainerStyled>
           <UserConfigAreaStyled>
-            <div className="content-start items-center overflow-y-auto">
+            <div className="flex flex-col content-center items-center overflow-y-auto h-full w-full">
               <UserInfoButtonStyled
                 onClick={() => {
                   openUserInfoCard();
@@ -214,7 +214,7 @@ export default function Page() {
                   />
                   <PillButton
                     width={"140px"}
-                    height={"30px"}
+                    height={"35px"}
                     theme={"purple"}
                     fontSize="1rem"
                     fontWeight="800"
@@ -226,7 +226,7 @@ export default function Page() {
                   />
                   <PillButton
                     width={"140px"}
-                    height={"30px"}
+                    height={"35px"}
                     theme={"gray"}
                     fontSize="1rem"
                     fontWeight="800"
@@ -238,7 +238,7 @@ export default function Page() {
                   />
                 </ButtonContainerStyled>
               </PropertyContainerWrapperStyled>
-              <TwoFAWrapperStyled>
+              <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
                   2-Factor Authentication
                 </PropertyTitleStyled>
@@ -250,14 +250,14 @@ export default function Page() {
                     onToggleChange={handleToggleChange}
                   />
                 </ToggleSwitchWrapperStyled>
-              </TwoFAWrapperStyled>
+              </PropertyContainerWrapperStyled>
               <ButtonGroupStyled>
                 <ButtonWrapperStyled>
                   <PillButton
                     width={"100px"}
                     height={"35px"}
                     theme={"purple"}
-                    fontSize="1.5rem"
+                    fontSize="1.25rem"
                     fontWeight="800"
                     fontStyle="italic"
                     text="Save"
@@ -327,10 +327,11 @@ const UserConfigAreaStyled = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  padding: 2.25rem;
+  padding: 1.75rem;
 
   @media (max-width: 610px) {
     border-radius: 0;
@@ -341,7 +342,7 @@ const PropertyContainerWrapperStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 150px;
   margin: 1rem 0 1rem 0;
@@ -350,7 +351,8 @@ const PropertyContainerWrapperStyled = styled.div`
     content: "";
     display: block;
     position: relative;
-    width: 290px;
+    /* width: 290px; */
+    width: 100%;
     height: 1px;
     top: 1rem;
     background-color: var(--line-color-light-gray);
@@ -372,10 +374,13 @@ const PropertyTitleStyled = styled.div<{ width: string }>`
 const ButtonContainerStyled = styled.div`
   display: flex;
   /* flex-direction: column; */
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-start;
   align-items: center;
   width: 300px;
-  height: 50px;
+  /* width: 100%; */
+  /* height: 50px; */
+  height: 100%;
   margin: 1rem 0;
 `;
 
@@ -387,7 +392,7 @@ const TwoFAWrapperStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 150px;
   margin: 1rem 0 1rem 0;
@@ -408,9 +413,11 @@ const ButtonGroupStyled = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 320px;
-  height: 50px;
-  margin: 1rem 0;
+  /* width: 320px; */
+  width: 100%;
+  /* height: 50px; */
+  height: 150px;
+  margin: 1.5rem 0 1rem;
 `;
 
 const ButtonWrapperStyled = styled.div`

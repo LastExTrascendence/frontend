@@ -11,7 +11,11 @@ export default function FriendSectionOnlineCount({
 }: {
   friendList: UserFriendListResponseDto;
 }) {
-  if (friendList === undefined || friendList === STATUS_400_BAD_REQUEST) {
+  if (
+    friendList === undefined ||
+    friendList === STATUS_400_BAD_REQUEST ||
+    friendList.length === 0
+  ) {
     return (
       <div className="flex justify-center items-center h-full text-white">
         <p>친구가 없어요!</p>
