@@ -28,10 +28,10 @@ export const axiosVerifyOTP = async (otp: string): Promise<any> => {
   }
 };
 
-const axiosLoginOTPURL = "/auth/otp/login";
-export const axiosLoginOTP = async (otp: string): Promise<any> => {
+const axiosOTPLoginURL = "/auth/otp/login";
+export const axiosOTPLogin = async (otp: string): Promise<any> => {
   try {
-    const response = await instance.post(axiosLoginOTPURL, {
+    const response = await instance.post(axiosOTPLoginURL, {
       otp,
     });
     return response;

@@ -65,7 +65,6 @@ export const TwoFAModal = ({
       setModalTitle("인증에 성공했습니다");
       setShowResponseModal(true);
       onVerificationSuccess();
-      // closeModal();
     } catch (error: any) {
       console.log(error);
       setIsOtpCodeValid(false);
@@ -166,8 +165,7 @@ const OtpCodeDescriptionStyled = styled.p`
   font-size: 1rem;
   font-weight: 400;
   /* color: var(--main-purple); */
-  /* font-style: italic; */
-  margin-bottom: 0.5rem;
+  font-style: italic;
 `;
 
 const OtpCodeInputStyled = styled.input<{ $isValid: boolean }>`
@@ -175,12 +173,10 @@ const OtpCodeInputStyled = styled.input<{ $isValid: boolean }>`
   height: 55px;
   border: 1px solid var(--main-purple);
   border-radius: 10px;
-  font-size: 1.25rem;
-  font-weight: 300;
+  font-size: 1rem;
+  font-weight: 400;
   color: var(--main-purple);
   font-style: italic;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-bottom: 1rem;
+  padding: 0 1rem;
   animation: ${(props) => (props.$isValid ? "none" : shakeAnimation)} 0.4s;
 `;

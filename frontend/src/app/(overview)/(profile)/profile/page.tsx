@@ -14,7 +14,6 @@ import InputContainer from "@/ui/input-container";
 import MultiToggleSwitch, { toggleItem } from "@/ui/multi-toggle-switch";
 import PillButton from "@/ui/pill-button";
 import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
-import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import {
   axiosMyProfileInfo,
@@ -401,6 +400,7 @@ const ToggleSwitchWrapperStyled = styled.div`
   width: 300px;
   height: 50px;
   margin: 1rem 0;
+  padding-left: 0.5rem;
   border-radius: 10px;
 `;
 

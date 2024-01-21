@@ -49,7 +49,7 @@ const OnlineCountTextWrapperStyled = styled.div`
 `;
 
 const OnlineCountTextStyled = styled.p`
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: var(--white);
   font-weight: 400;
 `;
