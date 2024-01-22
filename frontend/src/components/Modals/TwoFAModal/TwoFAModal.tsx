@@ -178,5 +178,6 @@ const OtpCodeInputStyled = styled.input<{ $isValid: boolean }>`
   color: var(--main-purple);
   font-style: italic;
   padding: 0 1rem;
+  margin-bottom: 0.5rem;
   animation: ${(props) => (props.$isValid ? "none" : shakeAnimation)} 0.4s;
 `;
