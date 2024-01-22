@@ -9,14 +9,13 @@ import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
 import { getCookie } from "@/api/cookie/cookies";
 
-const token = getCookie("access_token");
-
 export default function Page() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const url = `${process.env.BE_SERVER}/auth/login`;
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (token) {
       router.replace("/");
     }

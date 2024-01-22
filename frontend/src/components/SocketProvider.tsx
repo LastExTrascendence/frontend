@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 import { useRecoilValue } from "recoil";
 import io from "socket.io-client";
 import { myState } from "@/recoil/atom";
-import { getCookie } from "@/api/cookie/cookies";
 import UserSocketContextType from "@/types/user-socket.type";
+import { getCookie } from "@/api/cookie/cookies";
 
 const SocketContext = createContext<UserSocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => { },
-  exitQueue: () => { },
+  enterQueue: () => {},
+  exitQueue: () => {},
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -27,7 +27,6 @@ export default function SocketProvider({
   const [isConnected, setIsConnected] = useState(false);
   const myInfo = useRecoilValue(myState);
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(getCookie("access_token"));
 
   function CustomToast({ hostNickname, url }) {
     const [pathname, query] = url.split("?");
@@ -64,6 +63,7 @@ export default function SocketProvider({
   }, []);
 
   useEffect(() => {
+    const token = getCookie("access_token");
     const socketInstance = io(
       `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_USER_PORT}/user`,
       {

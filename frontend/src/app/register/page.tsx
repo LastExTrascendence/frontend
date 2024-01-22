@@ -15,8 +15,6 @@ import { UserStatus } from "@/types/enum/user.enum";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 
-const token = getCookie("access_token");
-
 export interface IToken {
   nickname: string | null;
   avatar: string;
@@ -133,6 +131,7 @@ export default function Page() {
   };
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (!token) {
       router.replace("/login");
     } else {

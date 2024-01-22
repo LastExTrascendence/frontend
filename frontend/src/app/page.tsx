@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-import styled from "styled-components";
 import Image from "next/image";
-import MainButtonList from "@/ui/mainpage/main-buttons";
-import LogoutIcon from "@/ui/icon/logout-icon";
-import InfoIcon from "@/ui/icon/info-icon";
-
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { myState } from "@/recoil/atom";
-import { getCookie } from "@/api/cookie/cookies";
+import InfoIcon from "@/ui/icon/info-icon";
+import LogoutIcon from "@/ui/icon/logout-icon";
+import MainButtonList from "@/ui/mainpage/main-buttons";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
+import { getCookie } from "@/api/cookie/cookies";
 
 const MainPageStyled = styled.main`
   width: 100%;
@@ -57,9 +55,9 @@ const ButtonGroupContainerStyled = styled.div`
 export default function Home() {
   const router = useRouter();
   const setMyInfo = useSetRecoilState(myState);
-  const token = getCookie("access_token");
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (!token) {
       router.replace("/login");
     } else {

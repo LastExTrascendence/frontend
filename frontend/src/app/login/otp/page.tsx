@@ -12,14 +12,13 @@ import PillButton from "@/ui/pill-button";
 import { axiosOTPLogin } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 
-const token = getCookie("access_token");
-
 export default function Page() {
   const [otpCode, setOTPCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const tryOTPLogin = async () => {
+    const token = getCookie("access_token");
     if (!otpCode || otpCode.length !== 6) return;
     try {
       await axiosOTPLogin(otpCode);
