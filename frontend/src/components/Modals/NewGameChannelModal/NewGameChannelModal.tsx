@@ -69,13 +69,13 @@ export default function NewGameChannelModal({
       {!showResponseModal && (
         <Modal
           type={ModalTypes.hasProceedBtn}
-          title={"New Game"}
+          // title={"New Game"}
           proceedBtnText={"Create"}
           cancleBtnText={"Cancel"}
           closeModal={closeModal}
           onClickProceed={tryCreateGame}
         >
-          <div className="relative flex h-full w-full flex-col items-start rounded-lg ">
+          <div className="relative flex h-full w-9/12 flex-col items-center rounded-lg ">
             <label className="relative mb-3 flex flex-col items-start justify-center">
               Game Name
               <input

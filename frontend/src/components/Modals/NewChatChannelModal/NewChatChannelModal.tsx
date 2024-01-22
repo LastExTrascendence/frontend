@@ -70,7 +70,7 @@ export default function NewChatChannelModal({
           closeModal={closeModal}
           onClickProceed={tryCreateChatChannel}
         >
-          <div className="relative flex h-full w-full flex-col items-start rounded-lg ">
+          <div className="relative flex h-full w-9/12 flex-col items-start rounded-lg ">
             <label className="relative mb-3 flex flex-col items-start justify-center">
               Channel Name
               <input

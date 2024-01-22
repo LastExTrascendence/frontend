@@ -79,7 +79,7 @@ export const TwoFAModal = ({
     <ModalPortal>
       {!showResponseModal && (
         <Modal
-          title="2-Factor Authentication"
+          // title="2-Factor Authentication"
           type={ModalTypes.hasProceedBtn}
           proceedBtnText="Verify"
           onClickProceed={tryVerifyOTP}
