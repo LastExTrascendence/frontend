@@ -12,8 +12,8 @@ import { getCookie } from "@/api/cookie/cookies";
 const SocketContext = createContext<UserSocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => {},
-  exitQueue: () => {},
+  enterQueue: () => { },
+  exitQueue: () => { },
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -85,7 +85,7 @@ export default function SocketProvider({
     return () => {
       socketInstance.disconnect();
     };
-  }, [myInfo.id, myInfo.nickname, token]);
+  }, [myInfo.id, myInfo.nickname]);
 
   const enterQueue = () => {
     if (socket) {

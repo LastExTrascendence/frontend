@@ -18,7 +18,6 @@ export default function Page() {
   const router = useRouter();
 
   const tryOTPLogin = async () => {
-    const token = getCookie("access_token");
     if (!otpCode || otpCode.length !== 6) return;
     try {
       await axiosOTPLogin(otpCode);
@@ -30,6 +29,7 @@ export default function Page() {
   };
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (!token) {
       router.replace("/login");
     }

@@ -20,6 +20,7 @@ export default function Page() {
       router.replace("/");
     }
   }, []);
+
   return (
     <Card width="360px" height="420px">
       <>
