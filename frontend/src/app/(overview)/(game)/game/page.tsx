@@ -10,81 +10,6 @@ import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameChannelListResponseDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
-export default function Page() {
-  const [searchInput, setSearchInput] = useState("");
-  const [showNewGameChannelModal, setShowNewGameChannelModal] =
-    useState<boolean>(false);
-  const [gameChannelList, setGameChannelList] =
-    useState<GameChannelListResponseDto>(undefined);
-
-  useEffect(() => {
-    getGameChannels();
-  }, []);
-
-  const getGameChannels = async () => {
-    try {
-      const response = await axiosGetGameChannels()
-        .then((res) => {
-          setTimeout(() => {
-            setGameChannelList(res.data);
-          }, 500);
-        })
-        .catch((err) => {
-          setTimeout(() => {
-            setGameChannelList(STATUS_400_BAD_REQUEST);
-          }, 500);
-        });
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  };
-
-  const toggleNewGameChannelModal = () => {
-    setShowNewGameChannelModal(!showNewGameChannelModal);
-  };
-
-  const handleCloseNewGameChannelModal = () => {
-    setShowNewGameChannelModal(false);
-  };
-
-  return (
-    <>
-      <GamePageStyled>
-        <TopSectionWrapperStyled>
-          <SearchBarWrapperStyled>
-            <SearchBarStyled
-              className="placeholder:text-stone-300"
-              placeholder="Search"
-              value={searchInput}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchInput(e.target.value)
-              }
-            />
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
-          </SearchBarWrapperStyled>
-          <PillButton
-            onClick={toggleNewGameChannelModal}
-            text="New"
-            width="100px"
-            height="35px"
-            fontWeight="800"
-            fontStyle="italic"
-            fontSize="1.5rem"
-            theme="purple"
-          />
-        </TopSectionWrapperStyled>
-        <GameChannelContainerStyled>
-          <GameList games={gameChannelList} />
-        </GameChannelContainerStyled>
-      </GamePageStyled>
-      {showNewGameChannelModal && (
-        <NewGameChannelModal closeModal={handleCloseNewGameChannelModal} />
-      )}
-    </>
-  );
-}
-
 const GamePageStyled = styled.div`
   width: 100%;
   height: 100%;
@@ -116,7 +41,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 100;
   color: var(--white);
   outline: none;
