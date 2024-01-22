@@ -41,7 +41,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 100;
   color: var(--white);
   outline: none;
@@ -67,13 +67,96 @@ export const GameChannelContainerStyled = styled.div`
   margin-bottom: 15px;
 `;
 
-const GameChannelHeaderStyled = styled.div`
-  width: 100%;
-  height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-color: var(--gray); */
-  color: var(--white);
-  /* border-bottom: 2px solid var(--line-color-gray); */
-`;
+export default function Page() {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [showNewGameChannelModal, setShowNewGameChannelModal] =
+    useState<boolean>(false);
+  const [gameChannelList, setGameChannelList] =
+    useState<GameChannelListResponseDto>(undefined);
+  const [filteredGameChannelList, setFilteredGameChannelList] =
+    useState<GameChannelListResponseDto>(gameChannelList);
+
+  const getGameChannels = async () => {
+    try {
+      const response = await axiosGetGameChannels()
+        .then((res) => {
+          setTimeout(() => {
+            setGameChannelList(res.data);
+          }, 500);
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            setGameChannelList(STATUS_400_BAD_REQUEST);
+          }, 500);
+        });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    getGameChannels();
+  }, []);
+
+  useEffect(() => {
+    if (!searchInput) {
+      setFilteredGameChannelList(gameChannelList);
+      return;
+    }
+
+    if (!gameChannelList || gameChannelList === STATUS_400_BAD_REQUEST) {
+      return;
+    }
+
+    const filtered = gameChannelList?.filter((channel: { title: string }) =>
+      channel.title.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+
+    setFilteredGameChannelList(filtered);
+  }, [searchInput, gameChannelList]);
+
+  const toggleNewGameChannelModal = () => {
+    setShowNewGameChannelModal(!showNewGameChannelModal);
+  };
+
+  const handleCloseNewGameChannelModal = () => {
+    setShowNewGameChannelModal(false);
+  };
+
+  return (
+    <>
+      <GamePageStyled>
+        <TopSectionWrapperStyled>
+          <SearchBarWrapperStyled>
+            <SearchBarStyled
+              className="placeholder:text-stone-300"
+              placeholder="Search Games"
+              value={searchInput}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchInput(e.target.value)
+              }
+            />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
+          </SearchBarWrapperStyled>
+          <PillButton
+            onClick={toggleNewGameChannelModal}
+            text="New"
+            width="100px"
+            height="35px"
+            fontWeight="800"
+            fontStyle="italic"
+            fontSize="1.5rem"
+            theme="purple"
+          />
+        </TopSectionWrapperStyled>
+        <GameChannelContainerStyled>
+          <GameList games={filteredGameChannelList} />
+        </GameChannelContainerStyled>
+      </GamePageStyled>
+      {showNewGameChannelModal && (
+        <NewGameChannelModal closeModal={handleCloseNewGameChannelModal} />
+      )}
+    </>
+  );
+}

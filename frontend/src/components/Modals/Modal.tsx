@@ -69,8 +69,8 @@ export default function Modal({
           {type === "hasProceedBtn" && (
             <ButtonWrapperStyled>
               <PillButton
-                width="120px"
-                height="40px"
+                width="220px"
+                height="60px"
                 onClick={closeModal}
                 fontSize="1.5rem"
                 fontStyle="italic"
@@ -79,8 +79,8 @@ export default function Modal({
                 theme="white"
               />
               <PillButton
-                width="120px"
-                height="40px"
+                width="220px"
+                height="60px"
                 onClick={(e: React.MouseEvent) => {
                   onClickProceed!(e);
                 }}
@@ -142,9 +142,9 @@ const ModalStyled = styled.div<{
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   border-radius: 4.5rem;
-  background: var(--light-gray);
+  /* background: var(--light-gray); */
 `;
 
 const ModalContentWrapperStyled = styled.div<{
@@ -154,13 +154,14 @@ const ModalContentWrapperStyled = styled.div<{
   width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   border-radius: 4rem;
+  border: 0.5rem solid var(--main-purple);
   background: var(--white);
-  box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25); */
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  padding: 1rem 0.75rem 2rem;
+  padding: 1rem 0rem;
 `;
 
 const ModalIconImgStyled = styled.img<{
@@ -204,7 +205,7 @@ const ModalTitleStyled = styled.h2`
 
 const ButtonWrapperStyled = styled.div`
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 `;
