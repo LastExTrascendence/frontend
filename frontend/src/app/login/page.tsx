@@ -54,19 +54,19 @@ export default function Page() {
   );
 }
 
-const CardTitleWrapperStyled = styled.div`
+export const CardTitleWrapperStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 `;
 
-const CardTitleStyled = styled.div`
+export const CardTitleStyled = styled.div`
   font-size: 3rem;
   font-weight: 800;
   color: var(--main-dark-purple);
   font-style: italic;
-  margin-left: 3rem;
+  margin-left: 1rem;
 `;
 
 const CardDescriptionStyled = styled.div`

@@ -41,7 +41,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 100;
   color: var(--white);
   outline: none;
@@ -73,7 +73,8 @@ export default function Page() {
     useState<boolean>(false);
   const [gameChannelList, setGameChannelList] =
     useState<GameChannelListResponseDto>(undefined);
-  const [filteredGameChannelList, setFilteredGameChannelList] = useState<GameChannelListResponseDto>(gameChannelList);
+  const [filteredGameChannelList, setFilteredGameChannelList] =
+    useState<GameChannelListResponseDto>(gameChannelList);
 
   const getGameChannels = async () => {
     try {
@@ -104,8 +105,12 @@ export default function Page() {
       return;
     }
 
-    const filtered = gameChannelList?.filter((channel: { title: string; }) =>
-      channel.title.toLowerCase().includes(searchInput.toLowerCase())
+    if (!gameChannelList || gameChannelList === STATUS_400_BAD_REQUEST) {
+      return;
+    }
+
+    const filtered = gameChannelList?.filter((channel: { title: string }) =>
+      channel.title.toLowerCase().includes(searchInput.toLowerCase()),
     );
 
     setFilteredGameChannelList(filtered);

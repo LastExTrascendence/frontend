@@ -17,11 +17,12 @@ import { getCookie } from "@/api/cookie/cookies";
 
 const token = getCookie("access_token");
 
-interface IToken {
+export interface IToken {
   nickname: string | null;
   avatar: string;
   email: string;
   two_fa: boolean;
+  two_fa_complete: boolean;
   status: UserStatus;
   intra_name: string;
   iat: number;

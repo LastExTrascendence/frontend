@@ -1,13 +1,13 @@
-import Link from "next/link"
-import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import GameInvite from "@/components/Game/GameInvite";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
 import useDebounce from "@/hooks/useDebounce";
-import GameInvite from "@/components/Game/GameInvite";
 
 export default function SearchUser({ placeholder }: { placeholder: string }) {
   const router = useRouter();
@@ -76,7 +76,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
   return (
     <div className="relative flex">
       <input
-        className="h-[40px] w-[260px] rounded-[15px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
+        className="h-[40px] w-[260px] rounded-[15px] bg-zinc-800 py-[9px] pl-10 text-xl font-thin text-white outline-none outline-2 placeholder:text-stone-300 "
         placeholder={placeholder}
         onChange={handleOnChange}
         maxLength={12}
@@ -87,8 +87,8 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
       {showDropdown && isLoading ? (
         <DropdownStyled
           id="search-result"
-          top={dropdownPosition.top}
-          left={dropdownPosition.left}
+          $top={dropdownPosition.top}
+          $left={dropdownPosition.left}
         >
           <DropdownLoadingAnimationContainerStyled>
             <LoadingAnimation />
@@ -99,8 +99,8 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
         searchResults.length > 0 && (
           <DropdownStyled
             id="search-result"
-            top={dropdownPosition.top}
-            left={dropdownPosition.left}
+            $top={dropdownPosition.top}
+            $left={dropdownPosition.left}
           >
             {searchResults.map((user: any) => (
               <DropdownItemStyled
@@ -131,20 +131,20 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                     </NameContainerStyled>
                   </Link>
                 </SearchItemRightStyled>
-                <InviteButtonStyled >
+                <InviteButtonStyled>
                   <GameInvite nickname={user.nickname} />
                 </InviteButtonStyled>
               </DropdownItemStyled>
             ))}
           </DropdownStyled>
         )
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 }
 
-const DropdownStyled = styled.div<{ top?: number; left?: number }>`
+const DropdownStyled = styled.div<{ $top?: number; $left?: number }>`
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,10 +156,10 @@ const DropdownStyled = styled.div<{ top?: number; left?: number }>`
   padding: 10px 0 10px 0;
   overflow-y: scroll;
   overflow-x: hidden;
-  z-index: 1;
+  z-index: 15;
   position: absolute;
-  top: ${(props) => props.top}px;
-  left: ${(props) => props.left}px;
+  top: ${(props) => props.$top}px;
+  left: ${(props) => props.$left}px;
 `;
 
 const DropdownLoadingAnimationContainerStyled = styled.div`
@@ -239,7 +239,7 @@ const IntraNameStyled = styled.div`
 `;
 
 const InviteButtonStyled = styled.button`
- background-color: var(--main-purple);
+  background-color: var(--main-purple);
   color: var(--white);
   padding: 10px 10px;
   border-radius: 5px;

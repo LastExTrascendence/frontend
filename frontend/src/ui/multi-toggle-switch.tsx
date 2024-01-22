@@ -12,6 +12,7 @@ interface MultiToggleSwitchProps<T> {
   setState: React.Dispatch<React.SetStateAction<T>>;
   toggleList: toggleItem[];
   width?: string;
+  onToggleChange?: (newState: T) => void;
 }
 
 const MultiToggleSwitch = <T,>({
@@ -19,16 +20,18 @@ const MultiToggleSwitch = <T,>({
   setState,
   toggleList,
   width,
+  onToggleChange,
 }: MultiToggleSwitchProps<T>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const buttons = wrapperRef.current?.querySelectorAll("button");
     buttons?.forEach((button) => {
-      if (button.className === initialState) {
-        button.style.color = "white";
-        button.style.backgroundColor = "var(--main-purple)";
-      }
+      button.style.color = "white";
+      button.style.backgroundColor =
+        button.className === initialState
+          ? "var(--main-purple)"
+          : "var(--light-gray)";
     });
   }, [initialState]);
 
@@ -38,11 +41,12 @@ const MultiToggleSwitch = <T,>({
     const buttons = wrapperRef.current?.querySelectorAll("button");
     buttons?.forEach((button) => {
       button.style.color = "white";
-      button.style.backgroundColor = "transparent";
+      button.style.backgroundColor = "var(--light-gray)";
     });
     target.style.color = "white";
     target.style.backgroundColor = "var(--main-purple)";
     setState(target.className as React.SetStateAction<T>);
+    if (onToggleChange) onToggleChange(target.className as T);
   }
 
   return (

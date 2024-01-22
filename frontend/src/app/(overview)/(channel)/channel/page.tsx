@@ -4,8 +4,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
-import PillButton from "@/ui/pill-button";
 import ChannelList from "@/ui/overview/channel/channel-list";
+import PillButton from "@/ui/pill-button";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { ChannelListResponseDto } from "@/types/interface/channel.interface";
 import { axiosGetChatChannels } from "@/api/axios/axios.custom";
@@ -41,7 +41,7 @@ const SearchBarStyled = styled.input`
   height: 40px;
   border-radius: 15px;
   background-color: var(--search-bar-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 100;
   color: var(--white);
   outline: none;
@@ -73,7 +73,8 @@ export default function Page() {
     useState<ChannelListResponseDto>(undefined);
   const [showNewChatChannelModal, setShowNewChannelModal] =
     useState<boolean>(false);
-  const [filteredChatChannelList, setFilteredChatChannelList] = useState<ChannelListResponseDto>(chatChannelList);
+  const [filteredChatChannelList, setFilteredChatChannelList] =
+    useState<ChannelListResponseDto>(chatChannelList);
 
   const getChatChannels = async () => {
     try {
@@ -104,8 +105,8 @@ export default function Page() {
       return;
     }
 
-    const filtered = chatChannelList?.filter((channel: { title: string; }) =>
-      channel.title.toLowerCase().includes(searchInput.toLowerCase())
+    const filtered = chatChannelList?.filter((channel: { title: string }) =>
+      channel.title.toLowerCase().includes(searchInput.toLowerCase()),
     );
 
     setFilteredChatChannelList(filtered);

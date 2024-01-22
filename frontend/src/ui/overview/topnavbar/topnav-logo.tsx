@@ -2,12 +2,13 @@ import Image from "next/image";
 import { useMenu } from "@/hooks/useMenu";
 
 export default function TopNavLogo() {
-  const { toggleSideNav } = useMenu();
+  const { toggleSideNav, closeUserInfoCard } = useMenu();
 
   return (
     <div
       className="relative items-center justify-center rounded-md"
       onClick={() => {
+        closeUserInfoCard();
         toggleSideNav();
       }}
     >

@@ -51,9 +51,9 @@ export default function ChannelList({
             </RowStyled>
           ))
         ) : (
-          <RowStyled className="channel">
+          <div className="flex justify-center items-center h-full w-full text-xl">
             <div>채널을 생성해주세요!</div>
-          </RowStyled>
+          </div>
         )}
       </TableBody>
     </ChannelListContainerStyled>

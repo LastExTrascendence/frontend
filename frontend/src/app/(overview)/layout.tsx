@@ -17,7 +17,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SideNav />
           <FriendSection />
         </div>
-        <MenuBackgroundStyled id="menuBackground" onClick={closeAll} />
+        <BackgroundStyled id="background" onClick={closeAll} />
+        <MainSectionBackgroundStyled
+          id="mainSectionBackground"
+          onClick={closeAll}
+        />
         {children}
       </MainSectionStyled>
     </>
@@ -31,6 +35,10 @@ const MainSectionStyled = styled.main`
   overflow: hidden;
 `;
 
-const MenuBackgroundStyled = styled.div`
+const BackgroundStyled = styled.div`
+  position: none;
+`;
+
+const MainSectionBackgroundStyled = styled.div`
   position: none;
 `;

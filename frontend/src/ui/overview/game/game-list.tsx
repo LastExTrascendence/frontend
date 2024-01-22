@@ -41,7 +41,7 @@ export default function GameList({
         <CellHeaderStyled>Status</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games !== STATUS_400_BAD_REQUEST ? (
+        {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
           games.map((game: any) => (
             <RowStyled
               key={game.id}
@@ -62,9 +62,9 @@ export default function GameList({
             </RowStyled>
           ))
         ) : (
-          <RowStyled className="channel">
+          <div className="flex justify-center items-center h-full w-full text-xl">
             <div>게임을 생성해주세요!</div>
-          </RowStyled>
+          </div>
         )}
       </TableBody>
     </ChannelListContainerStyled>

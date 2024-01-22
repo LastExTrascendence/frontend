@@ -192,7 +192,7 @@ const FriendButtonStyled = styled.button`
   /* right: 4%; */
   /* margin: 1rem; */
   position: fixed;
-  padding-left: 12rem;
+  margin-left: 12rem;
   cursor: pointer;
 `;
 

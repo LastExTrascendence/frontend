@@ -29,7 +29,7 @@ export default function Record({
         <CellHeaderStyled>Date</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games !== STATUS_400_BAD_REQUEST ? (
+        {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
           games.map((game: any, idx: number) => (
             <RowStyled key={idx} onClick={() => {}} className="channel">
               <CellStyled className="align-center">{game.nickname}</CellStyled>
@@ -44,7 +44,9 @@ export default function Record({
             </RowStyled>
           ))
         ) : (
-          <RowStyled>전적이 없어요!</RowStyled>
+          <div className="flex justify-center items-center h-full w-full text-xl">
+            <div>전적이 없어요!</div>
+          </div>
         )}
       </TableBody>
     </ChannelListContainerStyled>

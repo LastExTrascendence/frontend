@@ -30,7 +30,7 @@ export default function NewChatChannelModal({
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
 
   const tryCreateChatChannel = async (event: React.MouseEvent) => {
-    if (!title) return;
+    if (!title || Number(maxUser) < 2 || Number(maxUser) > 42) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
       closeModal();
@@ -64,13 +64,13 @@ export default function NewChatChannelModal({
       {!showResponseModal && (
         <Modal
           type={ModalTypes.hasProceedBtn}
-          title={"New Channel"}
+          // title={"New Channel"}
           proceedBtnText={"Create"}
           cancleBtnText={"Cancel"}
           closeModal={closeModal}
           onClickProceed={tryCreateChatChannel}
         >
-          <div className="relative flex h-full w-full flex-col items-start rounded-lg ">
+          <div className="relative flex h-full w-9/12 flex-col items-start rounded-lg ">
             <label className="relative mb-3 flex flex-col items-start justify-center">
               Channel Name
               <input
@@ -111,13 +111,13 @@ export default function NewChatChannelModal({
               </label>
             </div>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Max User
+              Maximum no. of Users
               <input
                 type="number"
-                name="chat"
+                name="maxUser"
                 className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
-                min={2}
-                max={42}
+                // max={42}
+                // min={2}
                 onChange={(e) => setMaxUser(e.target.value)}
               />
             </label>

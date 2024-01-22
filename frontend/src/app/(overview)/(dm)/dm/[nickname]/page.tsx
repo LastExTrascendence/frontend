@@ -3,11 +3,11 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import DMChat from "@/ui/overview/dm/dm-chat";
 import UserInfoCard, { UserInfoButtonStyled } from "@/ui/user-info-card";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import { axiosGetUserProfileByNickname } from "@/api/axios/axios.custom";
 import { useMenu } from "@/hooks/useMenu";
-import DMChat from "@/ui/overview/dm/dm-chat";
 
 const DMPageContainerStyled = styled.div`
   width: 100%;
@@ -92,10 +92,7 @@ export default function DM({ params }: { params: { nickname: string } }) {
           </UserInfoButtonStyled>
           <DMChat nickname={params.nickname} />
         </DMAreaStyled>
-        <UserInfoCard
-          userInfo={userInfo}
-          updateUserInfo={setUpdateUserInfo}
-        />
+        <UserInfoCard userInfo={userInfo} updateUserInfo={setUpdateUserInfo} />
       </DMPageContentWrapperStyled>
     </DMPageContainerStyled>
   );
