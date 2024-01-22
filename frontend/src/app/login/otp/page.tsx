@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { CardTitleStyled, CardTitleWrapperStyled } from "@/app/login/page";
 import { IToken } from "@/app/register/page";
 import Card from "@/ui/card";
-import LoadingAnimation from "@/ui/loading-animation";
 import PillButton from "@/ui/pill-button";
 import { axiosOTPLogin } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
@@ -16,7 +15,6 @@ import { getCookie } from "@/api/cookie/cookies";
 const token = getCookie("access_token");
 
 export default function Page() {
-  const [otp, setOTP] = useState<string>("");
   const [otpCode, setOTPCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -25,24 +23,25 @@ export default function Page() {
     if (!otpCode || otpCode.length !== 6) return;
     try {
       await axiosOTPLogin(otpCode);
+      router.replace("/");
     } catch (error) {
       console.log(error);
-      setOTPCode("");
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // if (!token) {
-    //   router.replace("/login");
-    // }
-    // try {
-    //   const decodedToken: IToken = jwtDecode(token);
-    //   if (decodedToken.two_fa_complete) {
-    //     router.replace("/");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    if (!token) {
+      router.replace("/login");
+    }
+    try {
+      const decodedToken: IToken = jwtDecode(token);
+      if (decodedToken.two_fa_complete) {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
