@@ -1,5 +1,9 @@
 import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
+import { useSocket } from "@/components/SocketProvider";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -10,7 +14,10 @@ import useDebounce from "@/hooks/useDebounce";
 import GameInvite from "@/components/Game/GameInvite";
 
 export default function SearchUser({ placeholder }: { placeholder: string }) {
-  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { socket, isConnected } = useSocket();
+  const myInfo = useRecoilValue(myState);
   const { debounce } = useDebounce();
   const searchBarRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +80,18 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     setShowDropdown(true);
   };
 
+  const handleInviteClick = (nickname) => {
+    const currentUrl = `${pathname}?${searchParams}`;
+
+    if (isConnected && socket) {
+      socket.emit("gameInvite", {
+        userId: myInfo.id,
+        inviteUserNick: nickname,
+        url: currentUrl,
+      });
+    }
+  };
+
   return (
     <div className="relative flex">
       <input
@@ -124,15 +143,15 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                   </Link>
                 </UserImageContainerStyled>
                 <SearchItemRightStyled>
-                  <Link href={`/dm/${user.nickname}`}>
+                  <Link href={`/profile/${user.nickname}`}>
                     <NameContainerStyled>
                       <MemberNameStyled>{user.nickname}</MemberNameStyled>
                       <IntraNameStyled>{user.intra_name}</IntraNameStyled>
                     </NameContainerStyled>
                   </Link>
                 </SearchItemRightStyled>
-                <InviteButtonStyled >
-                  <GameInvite nickname={user.nickname} />
+                <InviteButtonStyled onClick={() => handleInviteClick(user.nickname)}>
+                  <GameInvite />
                 </InviteButtonStyled>
               </DropdownItemStyled>
             ))}
@@ -191,6 +210,7 @@ const UserImageContainerStyled = styled.div`
   align-items: center;
   justify-content: center;
   margin-left: 5px;
+  margin-right: 5px;
   cursor: pointer;
   img {
     width: 20px;
