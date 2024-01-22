@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,11 +14,28 @@ import InfoHeader from "@/ui/overview/game/info-header";
 import UserList from "@/ui/overview/game/user-list";
 import PillButton from "@/ui/pill-button";
 import { ChatAttendees } from "@/types/interface/chat.interface";
+import { GameEndData, GameChannelListDto } from "@/types/interface/game.interface";
 import useGameChannelHandler from "@/hooks/useGameChannelHandler";
 import useGameEnter from "@/hooks/useGameEnter";
 import { useMenu } from "@/hooks/useMenu";
-import useUserListComposer from "@/hooks/useUserListComposer";
-import useUserListListener from "@/hooks/useUserListListener";
+import ModalPortal from "@/components/Modals/ModalPortal";
+import Modal, { ModalTypes } from "@/components/Modals/Modal";
+import GameEndModal from "@/ui/overview/game/modal-game-end";
+import useGameInfoListner from "@/hooks/useGameInfoListener";
+import { GameMode, GameType } from "@/types/enum/game.enum";
+
+const gameEndDataMock: GameEndData = {
+  winUserNick: "chanheki",
+  loseUserNick: "yemoin",
+  playTime: "3:30",
+  homeScore: "5",
+  awayScore: "2",
+};
+
+const gameInfoMock: GameChannelListDto = {
+  mode: GameMode.NORMAL,
+  type: GameType.NORMAL
+};
 
 export default function Page({ params }: { params: { id: string } }) {
   const myInfo = useRecoilValue(myState);
@@ -31,20 +47,23 @@ export default function Page({ params }: { params: { id: string } }) {
   const name = searchParams.get("name");
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGameStart, setIsGameStart] = useState<boolean>(false);
+  const [gameEndData, setGameEndData] = useState<GameEndData | null>(gameEndDataMock);
+  const [showGameEndModal, setShowGameEndModal] = useState(true);
+  const [gameInfo, setGameInfo] = useState<GameChannelListDto>(gameInfoMock);
 
   const { closeAll } = useMenu();
 
   const gameStartHandler = () => {
-    if (!gameSocket) return;
-    if (!isGameConnected) return;
-    if (myRole === "CREATOR") {
-      //&& isReady) {
+    if (!gameSocket || !isGameConnected) return;
+    if (myRole === "CREATOR" //) {
+      && isReady) {
       gameSocket.emit("pressStart", {
         myId: myInfo.id,
         gameId: params.id,
         title: name,
       });
     } else {
+      // isReady ? setIsReady(false) : setIsReady(true);
       gameSocket.emit("pressReady", {
         myId: myInfo.id,
         gameId: params.id,
@@ -56,24 +75,26 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     if (!gameSocket) return;
     if (isGameConnected) {
-      const gameReadyHandler = () => {
-        isReady ? setIsReady(false) : setIsReady(true);
+      const gameReadyOnHandler = () => {
+        setIsReady(true);
       };
-      gameSocket.on("readyOn", gameReadyHandler);
-      gameSocket.on("readyOff", gameReadyHandler);
+      const gameReadyOffHandler = () => {
+        setIsReady(false);
+      };
+      gameSocket.on("readyOn", gameReadyOnHandler);
+      gameSocket.on("readyOff", gameReadyOffHandler);
 
       return () => {
-        gameSocket.off("readyOn", gameReadyHandler);
-        gameSocket.off("readyOff", gameReadyHandler);
+        gameSocket.off("readyOn", gameReadyOnHandler);
+        gameSocket.off("readyOff", gameReadyOffHandler);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   useEffect(() => {
     if (!gameSocket) return;
     if (isGameConnected) {
       const gameStartRedirect = () => {
-        // router.push(`/game/${params.id}/play?id=${params.id}&name=${name}`);
         closeAll();
         setIsGameStart(true);
       };
@@ -83,14 +104,17 @@ export default function Page({ params }: { params: { id: string } }) {
         gameSocket.off("gameStart", gameStartRedirect);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
+
 
   useEffect(() => {
     if (!gameSocket) return;
     if (isGameConnected) {
-      const gameEndLogic = () => {
+      const gameEndLogic = (data) => {
+        setGameEndData(data);
         setIsGameStart(false);
-
+        setIsReady(false);
+        setShowGameEndModal(true);
       };
       gameSocket.on("gameEnd", gameEndLogic);
 
@@ -100,24 +124,32 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [gameSocket, isGameConnected]);
 
+  const quitRoom = () => {
+    setShowGameEndModal(false);
+    // router.push("/game");
+  }
+
+  // const ReGame = () => {
+  //   setShowGameEndModal(false);
+  // }
+
+  useGameInfoListner(gameSocket, isGameConnected, setGameInfo);
   useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
   useGameEnter(gameSocket, isGameConnected, myInfo.id, name);
 
   return (
     <div className="flex flex-col h-full w-full items-center justify-center content-center">
       <div
-        className={`relative ${
-          isGameStart
-            ? "opacity-100 translate-y-0 max-h-[350px]"
-            : "max-h-[0px] opacity-0 translate-y-10"
-        } transition-all duration-1000 ease-in-out z-0 mb-3`}
+        className={`relative ${isGameStart
+          ? "opacity-100 translate-y-0 max-h-[350px]"
+          : "max-h-[0px] opacity-0 translate-y-10"
+          } transition-all duration-1000 ease-in-out z-0 mb-3`}
       >
         <GamePlay myRole={myRole} id={params.id} isGameStart={isGameStart} />
       </div>
       <div
-        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${
-          isGameStart ? "mt-8" : "mt-4"
-        } p-12 flex max-h-[1833px] min-h-[700px] w-full min-w-[400px] flex-row content-center items-start z-9`}
+        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${isGameStart ? "mt-8" : "mt-4"
+          } p-12 flex max-h-[1833px] min-h-[700px] w-full min-w-[400px] flex-row content-center items-start z-9`}
       >
         <GameChat name={name} />
         <div className="hidden flex-col h-full min-w-[400px] shrink-0 max-w-[600px] bg-userInfoColor md:block items-start content-center">
@@ -132,11 +164,11 @@ export default function Page({ params }: { params: { id: string } }) {
             />
             <div className={isGameStart ? "hidden" : "flex flex-col "}>
               <GrowBlank />
-              <GameInfo isGameStart={isGameStart} />
+              <GameInfo gameInfo={gameInfo} />
               <PillButton
                 width="320px"
                 height="100px"
-                theme="purple"
+                theme={isReady ? "darkpurple" : "purple"}
                 fontSize="3rem"
                 fontStyle="extra-bold"
                 text={myRole === "CREATOR" ? "Start" : "Ready"}
@@ -146,6 +178,21 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+
+      {showGameEndModal && (
+        <ModalPortal>
+          <Modal
+            type={ModalTypes.noBtn}
+            title="Game Result"
+            proceedBtnText="Re Game"
+            cancleBtnText="Quit Room"
+            closeModal={quitRoom}
+          // onClickProceed={ReGame}
+          >
+            <GameEndModal data={gameEndData} />
+          </Modal>
+        </ModalPortal>
+      )}
     </div>
   );
 }
