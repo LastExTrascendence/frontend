@@ -37,7 +37,6 @@ export default function NewGameChannelModal({
   const [password, setPassword] = useState("");
   const [gameType, setGameType] = useState(GameType.NORMAL);
   const [gameMode, setGameMode] = useState(GameMode.NORMAL);
-  const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
 
   const tryCreateGame = async (event: React.MouseEvent) => {
@@ -97,11 +96,10 @@ export default function NewGameChannelModal({
               />
             </label>
             <div
-              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${
-                channelPolicy === ChannelPolicy.PRIVATE
+              className={`relative overflow-hidden transition-all duration-500 ease-in-out ${channelPolicy === ChannelPolicy.PRIVATE
                   ? "mb-3 max-h-40"
                   : "max-h-0"
-              }`}
+                }`}
             >
               <label className="flex flex-col items-start justify-center">
                 Password

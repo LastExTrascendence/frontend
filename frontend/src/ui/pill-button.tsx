@@ -63,8 +63,8 @@ const PillButtonStyled = styled.button<{
   font-style: ${(props) => props.$fontStyle};
   border: none;
   cursor: pointer;
-  transition: 0.3s;
   margin: 0 0.5rem;
+  transition: background-color 0.5s ease, color 0.5s ease;
 
   &:disabled {
     opacity: 0.5;
@@ -78,6 +78,12 @@ const PillButtonStyled = styled.button<{
     props.theme === "purple" &&
     css`
       background-color: var(--main-purple);
+      color: var(--white);
+    `}
+  ${(props) =>
+    props.theme === "darkpurple" &&
+    css`
+      background-color: var(--main-dark-purple);
       color: var(--white);
     `}
   ${(props) =>

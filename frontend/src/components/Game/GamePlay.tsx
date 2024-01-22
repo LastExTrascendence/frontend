@@ -158,7 +158,7 @@ export default function GamePlay({
     } else if (countdown === 0) {
       // 카운트다운이 0이 되면 loopPosition 이벤트 발생
       if (myRole === "CREATOR") {
-        gameSocket.emit("loopPosition", { gameId: id });
+        gameSocket.emit("loopPosition", { gameId: id, title: name });
       }
       clearTimeout(timer);
     }
