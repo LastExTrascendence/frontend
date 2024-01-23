@@ -23,6 +23,11 @@ export default function UserInfoCard({
   userInfo,
   updateUserInfo,
 }: UserInfoCardProps) {
+  const myInfo = useRecoilValue(myState);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
+
   if (userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST) {
     return (
       <UserInfoAreaStyled id="userInfoCard">
@@ -32,11 +37,6 @@ export default function UserInfoCard({
       </UserInfoAreaStyled>
     );
   }
-
-  const myInfo = useRecoilValue(myState);
-  const [modalTitle, setModalTitle] = useState<string>("");
-  const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
-  const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
 
   const tryAddFriend = async () => {
     try {
