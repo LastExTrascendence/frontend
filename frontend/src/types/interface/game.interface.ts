@@ -102,3 +102,19 @@ export interface PaddleProps {
   height: number;
   color: string;
 };
+
+/**
+ * @description 게임 끝날때 필요한 요소들
+ * @param {string} winUserNick - 승리한 유저 닉네임
+ * @param {string} loseUserNick - 패배한 유저 닉네임
+ * @param {string} playTime - 플레이 시간
+ * @param {string} homeScore - 홈팀 점수
+ * @param {string} awayScore - 어웨이팀 점수
+ */
+export interface GameEndData {
+  winUserNick: string,
+  loseUserNick: string,
+  playTime: string,
+  homeScore: string,
+  awayScore: string,
+};

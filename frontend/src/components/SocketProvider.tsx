@@ -128,6 +128,7 @@ export default function SocketProvider({
     if (!socket) {
       return;
     }
+
     socket.on(
       "invitedUser",
       async ({ hostNickname, url }: { hostNickname: string; url: string }) => {
@@ -139,7 +140,7 @@ export default function SocketProvider({
     return () => {
       socket.off("invitedUser");
     };
-  }, [socket]);
+  }, [socket, isConnected]);
 
   return (
     <SocketContext.Provider
