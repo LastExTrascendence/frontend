@@ -1,6 +1,9 @@
 import axios from "axios";
 import Router from "next/router";
-import { STATUS_401_UNAUTHORIZED } from "@/types/constants/status-code";
+import {
+  STATUS_401_UNAUTHORIZED,
+  STATUS_403_FORBIDDEN,
+} from "@/types/constants/status-code";
 import { getCookie, removeCookie } from "@/api/cookie/cookies";
 
 const instance = axios.create({
@@ -18,12 +21,13 @@ instance.interceptors.request.use(async (config: any) => {
 });
 
 instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     console.log("error", error);
-    if (error.response?.status === STATUS_401_UNAUTHORIZED) {
+    if (
+      error.response?.status === STATUS_401_UNAUTHORIZED ||
+      error.response?.status === STATUS_403_FORBIDDEN
+    ) {
       removeCookie("access_token", {
         path: "/",
         domain: `${process.env.FE_DOMAIN}`,

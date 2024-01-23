@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-import styled from "styled-components";
 import Image from "next/image";
-import MainButtonList from "@/ui/mainpage/main-buttons";
-import LogoutIcon from "@/ui/icon/logout-icon";
-import InfoIcon from "@/ui/icon/info-icon";
-
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { myState } from "@/recoil/atom";
-import { getCookie } from "@/api/cookie/cookies";
+import InfoIcon from "@/ui/icon/info-icon";
+import LogoutIcon from "@/ui/icon/logout-icon";
+import MainButtonList from "@/ui/mainpage/main-buttons";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
+import { getCookie } from "@/api/cookie/cookies";
 
 const MainPageStyled = styled.main`
   width: 100%;
@@ -57,24 +55,27 @@ const ButtonGroupContainerStyled = styled.div`
 export default function Home() {
   const router = useRouter();
   const setMyInfo = useSetRecoilState(myState);
-  const token = getCookie("access_token");
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (!token) {
+      // 토큰이 없으면 로그인 페이지로 이동
       router.replace("/login");
     } else {
-      getMyInfo();
-    }
-  }, []);
+      // 토큰이 있으면 사용자 정보를 가져오고, 이를 상태에 설정
+      const fetchMyInfo = async () => {
+        try {
+          const { data: userInfo } = await axiosMyInfo();
+          setMyInfo(userInfo);
+        } catch (error) {
+          console.error(error);
+          // 에러 처리 로직 (예: 로그인 페이지로 리다이렉트)
+        }
+      };
 
-  const getMyInfo = async () => {
-    try {
-      const { data: userInfo } = await axiosMyInfo();
-      setMyInfo(userInfo);
-    } catch (error) {
-      console.log(error);
+      fetchMyInfo();
     }
-  };
+  }, [router, setMyInfo]); // 의존성 배열에 router와 setMyInfo 추가
 
   return (
     <MainPageStyled>

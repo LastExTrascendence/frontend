@@ -29,7 +29,7 @@ export default function SearchGame({ placeholder }: { placeholder: string }) {
   return (
     <div className="relative flex h-full flex-1 flex-shrink-0">
       <input
-        className="block h-4/5 min-h-[60px] w-2/5 min-w-[100px] rounded-[20px] bg-zinc-800 py-[9px] pl-10 text-2xl font-thin text-white outline-none outline-2 placeholder:text-stone-300"
+        className="block h-4/5 min-h-[60px] w-2/5 min-w-[100px] rounded-[20px] bg-zinc-800 py-[9px] pl-10 text-xl font-thin text-white outline-none outline-2 placeholder:text-stone-300"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

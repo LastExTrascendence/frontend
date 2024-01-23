@@ -1,11 +1,10 @@
-import styled, { keyframes } from "styled-components";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { useSocket } from "@/components/SocketProvider";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
-import { useSocket } from "@/components/SocketProvider";
-import { useState, useEffect } from 'react';
-import Image from "next/image";
-
 
 const slideDown = keyframes`
   from {
@@ -16,7 +15,9 @@ const slideDown = keyframes`
   }
 `;
 
-const QueueStatusContainer = styled.div`
+const QueueStatusContainer = styled.div<{
+  $isVisible: boolean;
+}>`
   position: fixed;
   top: 0;
   left: 50%;
@@ -25,7 +26,7 @@ const QueueStatusContainer = styled.div`
   height: 100px;
   background: #2d2d2d;
   border-radius: 10px;
-  display: ${({ isVisible }) => isVisible ? 'flex' : 'none'};
+  display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
   justify-content: space-around;
   align-items: center;
   padding: 0 20px;
@@ -111,18 +112,18 @@ function MainButtonList() {
     } else {
       router.push(href);
     }
-  }
+  };
 
   const cancelHandler = () => {
     exitQueue();
     setIsQueueConnected(false);
-  }
+  };
 
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (isQueueConnected) {
       interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer + 1);
+        setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
     } else {
       setTimer(0);
@@ -132,14 +133,16 @@ function MainButtonList() {
   }, [isQueueConnected]);
 
   const formattedTimer = () => {
-    const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
-    const seconds = (timer % 60).toString().padStart(2, '0');
+    const minutes = Math.floor(timer / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (timer % 60).toString().padStart(2, "0");
     return `${minutes}:${seconds}`;
   };
 
   return (
     <>
-      <QueueStatusContainer isVisible={isQueueConnected}>
+      <QueueStatusContainer $isVisible={isQueueConnected}>
         <StatusText>Looking for game...</StatusText>
         <TimerText>{formattedTimer()}</TimerText>
         <CancelButton onClick={cancelHandler}>

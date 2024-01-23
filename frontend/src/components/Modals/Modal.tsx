@@ -64,23 +64,29 @@ export default function Modal({
           {icon && (
             <ModalIconImgStyled src={icon} $iconScaleEffect={iconScaleEffect} />
           )}
-          <H2Styled>{title}</H2Styled>
+          <ModalTitleStyled>{title}</ModalTitleStyled>
           {children}
           {type === "hasProceedBtn" && (
             <ButtonWrapperStyled>
               <PillButton
-                width="120px"
-                height="40px"
+                width="220px"
+                height="60px"
                 onClick={closeModal}
+                fontSize="1.5rem"
+                fontStyle="italic"
+                fontWeight="800"
                 text={cancleBtnText || "취소"}
                 theme="white"
               />
               <PillButton
-                width="120px"
-                height="40px"
+                width="220px"
+                height="60px"
                 onClick={(e: React.MouseEvent) => {
                   onClickProceed!(e);
                 }}
+                fontSize="1.5rem"
+                fontStyle="italic"
+                fontWeight="800"
                 text={proceedBtnText || "확인"}
                 theme="purple"
               />
@@ -136,9 +142,9 @@ const ModalStyled = styled.div<{
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   border-radius: 4.5rem;
-  background: var(--light-gray);
+  /* background: var(--light-gray); */
 `;
 
 const ModalContentWrapperStyled = styled.div<{
@@ -148,13 +154,14 @@ const ModalContentWrapperStyled = styled.div<{
   width: ${(props) => props.$width};
   height: ${(props) => props.$height};
   border-radius: 4rem;
+  border: 0.5rem solid var(--main-purple);
   background: var(--white);
-  box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0px 0.25rem 0.25rem 0px rgba(0, 0, 0, 0.25); */
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  padding: 1rem 0.5rem 2rem;
+  padding: 1rem 0rem;
 `;
 
 const ModalIconImgStyled = styled.img<{
@@ -186,18 +193,19 @@ export const DetailStyled = styled.p`
   white-space: break-spaces;
 `;
 
-const H2Styled = styled.h2`
-  font-weight: 500;
-  font-size: 1.25rem;
+const ModalTitleStyled = styled.h2`
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1.5rem;
   line-height: 1.75rem;
   white-space: break-spaces;
   margin-bottom: 1rem;
-  /* color: var(--main-purple); */
+  color: var(--main-purple);
 `;
 
 const ButtonWrapperStyled = styled.div`
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 `;

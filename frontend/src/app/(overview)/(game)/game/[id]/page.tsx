@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
@@ -42,7 +41,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const [myRole, setMyRole] = useState<string>("USER");
   const [userList, setUserList] = useState<ChatAttendees[]>();
   const { gameSocket, isGameConnected, setGameId, setUserId } = useGameSocket();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -98,14 +96,13 @@ export default function Page({ params }: { params: { id: string } }) {
         closeAll();
         setIsGameStart(true);
       };
-      gameSocket.on("gameStart", gameStartRedirect);
+      gameSocket.on("gameStart", gameStartLogic);
 
       return () => {
-        gameSocket.off("gameStart", gameStartRedirect);
+        gameSocket.off("gameStart", gameStartLogic);
       };
     }
   }, [gameSocket, isGameConnected]);
-
 
   useEffect(() => {
     if (!gameSocket) return;

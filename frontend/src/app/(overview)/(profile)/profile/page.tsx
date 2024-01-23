@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
 import {
@@ -26,7 +26,7 @@ export enum TwoFAType {
   OFF = "OFF",
 }
 
-const toggleList: toggleItem[] = [
+const twoFAToggleList: toggleItem[] = [
   { name: "On", key: TwoFAType.ON },
   { name: "Off", key: TwoFAType.OFF },
 ];
@@ -34,14 +34,15 @@ const toggleList: toggleItem[] = [
 export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
-  const [avatar, setAvatar] = useState<Blob>();
-  const [myInfo, setMyInfo] = useRecoilState(myState);
+  const [avatar, setAvatar] = useState<string>("");
+  const setMyInfo = useSetRecoilState(myState);
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
   const [showTwoFAModal, setShowTwoFAModal] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
   const { openUserInfoCard } = useMenu();
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function Page() {
 
   const updateMyInfo = async (
     newNickname: string,
-    newAvatar: any,
+    newAvatar: string,
     two_fa: boolean,
   ) => {
     try {
@@ -64,7 +65,9 @@ export default function Page() {
         nickname: newNickname,
         avatar: newAvatar,
       }));
+      setModalTitle("수정되었습니다");
     } catch (err: any) {
+      console.log("error", err);
       setModalTitle("프로필 수정에 실패했습니다");
       setHasErrorOnResponse(true);
     } finally {
@@ -78,6 +81,8 @@ export default function Page() {
 
       setTimeout(() => {
         setUserInfo(userProfileInfo);
+        setNickname(userProfileInfo.nickname);
+        setTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -86,8 +91,70 @@ export default function Page() {
     }
   };
 
+  const convertBase64 = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        if (fileReader.result !== null) {
+          resolve(fileReader.result as string);
+        } else {
+          reject(new Error("파일 읽기에 실패했습니다"));
+        }
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target);
+    if (!e || !e.target || !e.target.files) return;
+    const file = e.target.files[0];
+    try {
+      const fileSize = file.size / 1024 ** 2;
+      if (fileSize > 1.37) {
+        throw new Error("1MB 이하의\n파일을 선택해주세요");
+      }
+      const base64 = await convertBase64(file);
+      console.log(base64);
+      setAvatar(base64);
+      setModalTitle("파일 업로드에 성공했습니다");
+    } catch (err: any) {
+      if (err.message) {
+        setModalTitle(err.message);
+      } else {
+        setModalTitle("파일 업로드에 실패했습니다");
+      }
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
+
+  const handleChangeAvatar = async () => {
+    const imageUploadInput = document.getElementById(
+      "imageUploadInput",
+    ) as HTMLInputElement;
+    if (!imageUploadInput) return;
+    imageUploadInput.click();
+  };
+
+  const handleToggleChange = (newState: TwoFAType) => {
+    if (newState === TwoFAType.ON) {
+      setShowTwoFAModal(true);
+    } else {
+      setIsOtpVerified(false);
+    }
+    setTwoFA(newState);
+  };
+
   const handleCloseTwoFAModal = () => {
     setShowTwoFAModal(false);
+    if (!isOtpVerified) {
+      setTwoFA(TwoFAType.OFF);
+    }
   };
 
   const handleCloseResponseModal = () => {
@@ -95,12 +162,16 @@ export default function Page() {
     setHasErrorOnResponse(false);
   };
 
+  const handleVerifySuccess = () => {
+    setIsOtpVerified(true);
+  };
+
   return (
     <>
       <ProfilePageStyled>
         <ProfileContainerStyled>
           <UserConfigAreaStyled>
-            <div className="content-start items-center overflow-y-auto">
+            <div className="flex flex-col content-center items-center overflow-y-auto h-full w-full">
               <UserInfoButtonStyled
                 onClick={() => {
                   openUserInfoCard();
@@ -133,60 +204,62 @@ export default function Page() {
                   Avatar
                 </PropertyTitleStyled>
                 <ButtonContainerStyled>
-                  <PillButton
-                    width={"140px"}
-                    height={"30px"}
-                    theme={"purple"}
-                    fontSize="1rem"
-                    text="Change Avatar"
-                    onClick={() => {
-                      console.log("click");
+                  <ImageUploadInputStyled
+                    id="imageUploadInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      handleImageUpload(e);
                     }}
                   />
                   <PillButton
                     width={"140px"}
-                    height={"30px"}
+                    height={"35px"}
+                    theme={"purple"}
+                    fontSize="1rem"
+                    fontWeight="800"
+                    fontStyle="italic"
+                    text="Change Avatar"
+                    onClick={(e) => {
+                      handleChangeAvatar();
+                    }}
+                  />
+                  <PillButton
+                    width={"140px"}
+                    height={"35px"}
                     theme={"gray"}
                     fontSize="1rem"
+                    fontWeight="800"
+                    fontStyle="italic"
                     text="Remove Avatar"
                     onClick={() => {
-                      console.log("click");
+                      setAvatar("");
                     }}
                   />
                 </ButtonContainerStyled>
               </PropertyContainerWrapperStyled>
-              <TwoFAWrapperStyled>
+              <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
                   2-Factor Authentication
                 </PropertyTitleStyled>
                 <ToggleSwitchWrapperStyled>
                   <MultiToggleSwitch
-                    toggleList={toggleList}
+                    toggleList={twoFAToggleList}
                     initialState={twoFA}
                     setState={setTwoFA}
+                    onToggleChange={handleToggleChange}
                   />
                 </ToggleSwitchWrapperStyled>
-              </TwoFAWrapperStyled>
+              </PropertyContainerWrapperStyled>
               <ButtonGroupStyled>
                 <ButtonWrapperStyled>
                   <PillButton
                     width={"100px"}
-                    height={"30px"}
-                    theme={"lightgray"}
-                    fontSize="1rem"
-                    text="Reset"
-                    onClick={() => {
-                      setNickname(myInfo.nickname);
-                      setAvatar(undefined);
-                    }}
-                  />
-                </ButtonWrapperStyled>
-                <ButtonWrapperStyled>
-                  <PillButton
-                    width={"100px"}
-                    height={"30px"}
+                    height={"35px"}
                     theme={"purple"}
-                    fontSize="1rem"
+                    fontSize="1.25rem"
+                    fontWeight="800"
+                    fontStyle="italic"
                     text="Save"
                     onClick={() => {
                       updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON);
@@ -199,7 +272,12 @@ export default function Page() {
           <UserInfoCard userInfo={userInfo} />
         </ProfileContainerStyled>
       </ProfilePageStyled>
-      {showTwoFAModal && <TwoFAModal closeModal={handleCloseTwoFAModal} />}
+      {showTwoFAModal && (
+        <TwoFAModal
+          closeModal={handleCloseTwoFAModal}
+          onVerificationSuccess={handleVerifySuccess}
+        />
+      )}
       {showResponseModal &&
         (hasErrorOnResponse ? (
           <FailResponseModal
@@ -249,10 +327,11 @@ const UserConfigAreaStyled = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  padding: 2.25rem;
+  padding: 1.75rem;
 
   @media (max-width: 610px) {
     border-radius: 0;
@@ -263,7 +342,7 @@ const PropertyContainerWrapperStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 150px;
   margin: 1rem 0 1rem 0;
@@ -272,7 +351,8 @@ const PropertyContainerWrapperStyled = styled.div`
     content: "";
     display: block;
     position: relative;
-    width: 290px;
+    /* width: 290px; */
+    width: 100%;
     height: 1px;
     top: 1rem;
     background-color: var(--line-color-light-gray);
@@ -294,18 +374,25 @@ const PropertyTitleStyled = styled.div<{ width: string }>`
 const ButtonContainerStyled = styled.div`
   display: flex;
   /* flex-direction: column; */
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-start;
   align-items: center;
   width: 300px;
-  height: 50px;
+  /* width: 100%; */
+  /* height: 50px; */
+  height: 100%;
   margin: 1rem 0;
+`;
+
+const ImageUploadInputStyled = styled.input`
+  display: none;
 `;
 
 const TwoFAWrapperStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 150px;
   margin: 1rem 0 1rem 0;
@@ -318,6 +405,7 @@ const ToggleSwitchWrapperStyled = styled.div`
   width: 300px;
   height: 50px;
   margin: 1rem 0;
+  padding-left: 0.5rem;
   border-radius: 10px;
 `;
 
@@ -325,9 +413,11 @@ const ButtonGroupStyled = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 320px;
-  height: 50px;
-  margin: 1rem 0;
+  /* width: 320px; */
+  width: 100%;
+  /* height: 50px; */
+  height: 150px;
+  margin: 1.5rem 0 1rem;
 `;
 
 const ButtonWrapperStyled = styled.div`

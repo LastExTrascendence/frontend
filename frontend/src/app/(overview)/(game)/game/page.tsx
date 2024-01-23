@@ -10,16 +10,71 @@ import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameChannelListResponseDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
 
+const GamePageStyled = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TopSectionWrapperStyled = styled.div`
+  width: calc(100% - 30px);
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+`;
+
+const SearchBarWrapperStyled = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const SearchBarStyled = styled.input`
+  width: 260px;
+  height: 40px;
+  border-radius: 15px;
+  background-color: var(--search-bar-color);
+  font-size: 1.25rem;
+  font-weight: 100;
+  color: var(--white);
+  outline: none;
+  border: none;
+  padding-left: 2rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: 200;
+    width: 160px;
+  }
+`;
+
+export const GameChannelContainerStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 30px);
+  height: calc(100% - 15px - 70px);
+  border-radius: 20px;
+  background-color: var(--gray);
+  margin-bottom: 15px;
+`;
+
 export default function Page() {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const [showNewGameChannelModal, setShowNewGameChannelModal] =
     useState<boolean>(false);
   const [gameChannelList, setGameChannelList] =
     useState<GameChannelListResponseDto>(undefined);
-
-  useEffect(() => {
-    getGameChannels();
-  }, []);
+  const [filteredGameChannelList, setFilteredGameChannelList] =
+    useState<GameChannelListResponseDto>(gameChannelList);
 
   const getGameChannels = async () => {
     try {
@@ -39,6 +94,27 @@ export default function Page() {
       throw error;
     }
   };
+
+  useEffect(() => {
+    getGameChannels();
+  }, []);
+
+  useEffect(() => {
+    if (!searchInput) {
+      setFilteredGameChannelList(gameChannelList);
+      return;
+    }
+
+    if (!gameChannelList || gameChannelList === STATUS_400_BAD_REQUEST) {
+      return;
+    }
+
+    const filtered = gameChannelList?.filter((channel: { title: string }) =>
+      channel.title.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+
+    setFilteredGameChannelList(filtered);
+  }, [searchInput, gameChannelList]);
 
   const toggleNewGameChannelModal = () => {
     setShowNewGameChannelModal(!showNewGameChannelModal);
@@ -75,7 +151,7 @@ export default function Page() {
           />
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
-          <GameList games={gameChannelList} />
+          <GameList games={filteredGameChannelList} />
         </GameChannelContainerStyled>
       </GamePageStyled>
       {showNewGameChannelModal && (
@@ -84,71 +160,3 @@ export default function Page() {
     </>
   );
 }
-
-const GamePageStyled = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TopSectionWrapperStyled = styled.div`
-  width: calc(100% - 30px);
-  height: 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.5rem;
-`;
-
-const SearchBarWrapperStyled = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-const SearchBarStyled = styled.input`
-  width: 260px;
-  height: 40px;
-  border-radius: 15px;
-  background-color: var(--search-bar-color);
-  font-size: 1.5rem;
-  font-weight: 100;
-  color: var(--white);
-  outline: none;
-  border: none;
-  padding-left: 2rem;
-
-  @media screen and (max-width: 768px) {
-    font-size: 1rem;
-    font-weight: 200;
-    width: 160px;
-  }
-`;
-
-export const GameChannelContainerStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  width: calc(100% - 30px);
-  height: calc(100% - 15px - 70px);
-  border-radius: 20px;
-  background-color: var(--gray);
-  margin-bottom: 15px;
-`;
-
-const GameChannelHeaderStyled = styled.div`
-  width: 100%;
-  height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-color: var(--gray); */
-  color: var(--white);
-  /* border-bottom: 2px solid var(--line-color-gray); */
-`;

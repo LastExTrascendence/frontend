@@ -9,18 +9,18 @@ import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
 import { getCookie } from "@/api/cookie/cookies";
 
-const token = getCookie("access_token");
-
 export default function Page() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const url = `${process.env.BE_SERVER}/auth/login`;
 
   useEffect(() => {
+    const token = getCookie("access_token");
     if (token) {
       router.replace("/");
     }
   }, []);
+
   return (
     <Card width="360px" height="420px">
       <>
@@ -54,19 +54,19 @@ export default function Page() {
   );
 }
 
-const CardTitleWrapperStyled = styled.div`
+export const CardTitleWrapperStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 `;
 
-const CardTitleStyled = styled.div`
+export const CardTitleStyled = styled.div`
   font-size: 3rem;
   font-weight: 800;
   color: var(--main-dark-purple);
   font-style: italic;
-  margin-left: 3rem;
+  margin-left: 1rem;
 `;
 
 const CardDescriptionStyled = styled.div`

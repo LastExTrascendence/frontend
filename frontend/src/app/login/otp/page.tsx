@@ -1,58 +1,48 @@
 "use client";
 
+import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
-import qrcode from "qrcode";
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { CardTitleStyled, CardTitleWrapperStyled } from "@/app/login/page";
+import { IToken } from "@/app/register/page";
 import Card from "@/ui/card";
-import LoadingAnimation from "@/ui/loading-animation";
 import PillButton from "@/ui/pill-button";
-import { axiosGenerateOTP, axiosVerifyOTP } from "@/api/axios/axios.custom";
+import { axiosOTPLogin } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 
-// const token = getCookie("access_token");
-
 export default function Page() {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [otp, setOTP] = useState<string>("");
   const [otpCode, setOTPCode] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const tryGenerateOTP = async () => {
+  const tryOTPLogin = async () => {
+    if (!otpCode || otpCode.length !== 6) return;
     try {
-      const response = await axiosGenerateOTP();
-      qrcode.toDataURL(response.data, (err: any, url: any) => {
-        setTimeout(() => {
-          setOTP(url);
-        }, 500);
-      });
-      // setOTP(response.data);
+      await axiosOTPLogin(otpCode);
+      router.replace("/");
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
-  const tryVerifyOTP = async () => {
-    if (!otpCode) return;
-    try {
-      await axiosVerifyOTP(otpCode);
-    } catch (error) {
-      console.log(error);
-      setOTPCode("");
-    }
-  };
-
-  // const url = `${process.env.BE_SERVER}/auth/login`;
-
-  //   const router = useRouter();
   useEffect(() => {
-    tryGenerateOTP();
-    // if (token) {
-    //   router.replace("/");
-    // }
+    const token = getCookie("access_token");
+    if (!token) {
+      router.replace("/login");
+    }
+    try {
+      const decodedToken: IToken = jwtDecode(token);
+      if (decodedToken.two_fa_complete) {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
+
   return (
     <Card width="360px" height="420px">
       <>
@@ -66,60 +56,32 @@ export default function Page() {
           />
           <CardTitleStyled>L.E.T</CardTitleStyled>
         </CardTitleWrapperStyled>
-        <CardDescriptionStyled>
-          {otp ? (
-            <Image src={`${otp}`} alt="OTP" width={150} height={150} />
-          ) : (
-            <LoadingAnimation />
-          )}
-        </CardDescriptionStyled>
         <OTPInputContainerStyled>
           <OTPInputStyled
-            type="text"
+            type="number"
             placeholder="Enter OTP"
             value={otpCode}
             onChange={(e) => setOTPCode(e.target.value)}
           />
         </OTPInputContainerStyled>
         <PillButton
-          width="240px"
+          width="180px"
           height="55px"
-          text="Proceed"
-          fontWeight="200"
+          text="Login"
+          fontSize="2rem"
+          fontWeight="800"
           fontStyle="italic"
           theme="purple"
-          onClick={() => tryVerifyOTP()}
+          onClick={() => {
+            setIsLoading(true);
+            tryOTPLogin();
+          }}
+          isLoading={isLoading}
         />
       </>
     </Card>
   );
 }
-
-const CardTitleWrapperStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
-
-const CardTitleStyled = styled.div`
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--main-dark-purple);
-  font-style: italic;
-  margin-left: 3rem;
-`;
-
-const CardDescriptionStyled = styled.div`
-  display: flex;
-  height: 160px;
-  font-size: 1.25rem;
-  font-weight: 300;
-  color: var(--main-purple);
-  font-style: italic;
-  justify-content: center;
-  align-items: center;
-`;
 
 const OTPInputContainerStyled = styled.div`
   display: flex;
@@ -139,5 +101,5 @@ const OTPInputStyled = styled.input`
   font-style: italic;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 `;
