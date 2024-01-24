@@ -11,8 +11,8 @@ import { getCookie } from "@/api/cookie/cookies";
 const GameSocketContext = createContext<GameSocketContextType>({
   gameSocket: null,
   isGameConnected: false,
-  setGameId: () => {},
-  setUserId: () => {},
+  setGameId: () => { },
+  setUserId: () => { },
 });
 
 export const useGameSocket = () => useContext(GameSocketContext);
@@ -36,7 +36,7 @@ export default function GameSocketProvider({
 
     gameSocket.on("disconnect", async () => {
       setGameIsConnected(false);
-      // await router.replace("/game");
+      router.replace("/game");
     });
   }, [gameSocket]);
 

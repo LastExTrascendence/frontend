@@ -116,10 +116,10 @@ export default function GamePlay({
       activeKeys.add(event.key);
       switch (event.key) {
         case "ArrowUp":
-          gameKeyDown(gameSocket, playInfo.team, "ArrowUp");
+          gameKeyDown(gameSocket, id, playInfo.team, "ArrowUp");
           break;
         case "ArrowDown":
-          gameKeyDown(gameSocket, playInfo.team, "ArrowDown");
+          gameKeyDown(gameSocket, id, playInfo.team, "ArrowDown");
           break;
         default:
           break;
@@ -131,10 +131,10 @@ export default function GamePlay({
       activeKeys.delete(event.key);
       switch (event.key) {
         case "ArrowUp":
-          gameKeyUp(gameSocket, playInfo.team, "ArrowUp");
+          gameKeyUp(gameSocket, id, playInfo.team, "ArrowUp");
           break;
         case "ArrowDown":
-          gameKeyUp(gameSocket, playInfo.team, "ArrowDown");
+          gameKeyUp(gameSocket, id, playInfo.team, "ArrowDown");
           break;
         default:
           break;
@@ -173,7 +173,7 @@ export default function GamePlay({
         gameSocket.off("score");
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   useEffect(() => {
     if (!gameSocket) return;
@@ -188,7 +188,7 @@ export default function GamePlay({
         gameSocket.off("play", playInfoInitialize);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   return (
     <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">

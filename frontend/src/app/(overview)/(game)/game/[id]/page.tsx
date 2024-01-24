@@ -110,6 +110,7 @@ export default function Page({ params }: { params: { id: string } }) {
         setIsGameStart(false);
         setIsReady(false);
         setShowGameEndModal(true);
+        gameSocket.emit("gameFinish", { gameId: params.id, title: name });
       };
       gameSocket.on("gameEnd", gameEndLogic);
 
