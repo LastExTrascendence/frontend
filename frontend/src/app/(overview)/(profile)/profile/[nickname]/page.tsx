@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ChatChannelContainerStyled } from "@/app/(overview)/(channel)/channel/page";
@@ -54,11 +55,7 @@ export default function Page({ params }: { params: { nickname: string } }) {
   const [gameStats, setGameStats] = useState<GameStatsResponseDto>(undefined);
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
   const { openUserInfoCard } = useMenu();
-
-  useEffect(() => {
-    getGameRecord();
-    getGameStats();
-  }, []);
+  const router = useRouter();
 
   useEffect(() => {
     if (updateUserInfo) {
@@ -66,6 +63,11 @@ export default function Page({ params }: { params: { nickname: string } }) {
       setUpdateUserInfo(false);
     }
   }, [updateUserInfo]);
+
+  useEffect(() => {
+    getGameRecord();
+    getGameStats();
+  }, []);
 
   const getUserProfileInfo = async () => {
     try {
@@ -75,8 +77,12 @@ export default function Page({ params }: { params: { nickname: string } }) {
       setTimeout(() => {
         setUserInfo(userProfileInfo);
       }, 500);
-    } catch (error) {
-      // console.log(error);
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        alert("존재하지 않는 유저입니다.");
+        router.back();
+      }
+      console.log(error);
     }
   };
 

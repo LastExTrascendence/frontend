@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DMChat from "@/ui/overview/dm/dm-chat";
@@ -50,6 +51,7 @@ export const DMAreaStyled = styled.div`
 `;
 
 export default function DM({ params }: { params: { nickname: string } }) {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserCardInfoResponseDto>(undefined);
   const { openUserInfoCard } = useMenu();
   const [updateUserInfo, setUpdateUserInfo] = useState<boolean>(true);
@@ -62,7 +64,11 @@ export default function DM({ params }: { params: { nickname: string } }) {
       setTimeout(() => {
         setUserInfo(userProfileInfo);
       }, 300);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        alert("존재하지 않는 유저입니다.");
+        router.back();
+      }
       console.log(error);
     }
   };
