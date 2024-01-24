@@ -41,7 +41,7 @@ export default function GameList({
         <CellHeaderStyled>Status</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
+        {games !== STATUS_400_BAD_REQUEST && games.length !== 0 ? (
           games.map((game: any) => (
             <RowStyled
               key={game.id}

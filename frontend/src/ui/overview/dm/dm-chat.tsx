@@ -1,13 +1,12 @@
 "use client";
 
-import styled from "styled-components";
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { myState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
-import { Message } from "@/types/interface/dm.interface"
-import useDMListener from "@/hooks/useDMListener";
 import MessageInput from "@/ui/overview/channel/message-input";
+import useDMListener from "@/hooks/useDMListener";
 import useGetRedis from "@/hooks/useGetRedis";
 
 const DMHistoryContainerStyled = styled.div`
@@ -52,7 +51,7 @@ export default function DMChat({ nickname }: { nickname: string }) {
   useDMListener(socket, setMessages);
   useGetRedis(socket, myInfo.beforeUserNick, myInfo.id, nickname);
 
-  const updateBeforeUserNick = (newNick) => {
+  const updateBeforeUserNick = (newNick: string) => {
     setMyInfo((prevMyInfo) => ({
       ...prevMyInfo,
       beforeUserNick: newNick,
@@ -74,7 +73,7 @@ export default function DMChat({ nickname }: { nickname: string }) {
       receiver: nickname,
       content: message,
     });
-  }
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -83,6 +82,7 @@ export default function DMChat({ nickname }: { nickname: string }) {
   useEffect(() => {
     updateBeforeUserNick(nickname);
   }, [nickname]);
+
   return (
     <>
       <DMHistoryContainerStyled ref={messagesContainerRef}>
@@ -100,10 +100,7 @@ export default function DMChat({ nickname }: { nickname: string }) {
           </DMContentStyled>
         ))}
       </DMHistoryContainerStyled>
-      <MessageInput
-        sendMessage={sendMessage}
-        name={name}
-      />
+      <MessageInput sendMessage={sendMessage} name={nickname} />
     </>
   );
 }

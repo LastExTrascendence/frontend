@@ -29,7 +29,7 @@ export default function ChannelList({
         <CellHeaderStyled>Type</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {chats !== STATUS_400_BAD_REQUEST ? (
+        {chats !== STATUS_400_BAD_REQUEST && chats.length !== 0 ? (
           chats.map((chat: any) => (
             <RowStyled
               key={chat.id}
