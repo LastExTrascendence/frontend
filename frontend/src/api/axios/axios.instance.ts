@@ -32,8 +32,14 @@ instance.interceptors.response.use(
         path: "/",
         domain: `${process.env.FE_DOMAIN}`,
       });
-      Router.push("/login"); // SPA 방식 리디렉션 (CSR)
-      // window.location.href = "/login";
+
+      // 클라이언트 사이드 SPA 방식 리디렉션 (CSR)
+      // if (typeof window !== "undefined") {
+      //   Router.push("/login");
+      // }
+
+      // server side 리디렉션
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   },

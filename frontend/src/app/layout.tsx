@@ -29,14 +29,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <StyledComponentsRegistry>
-          <ProtectedRouted>
-            <RecoilRootProvider>
+          <RecoilRootProvider>
+            <ProtectedRouted>
               <SocketProvider>
                 <ToastContainerProvider />
                 {children}
               </SocketProvider>
-            </RecoilRootProvider>
-          </ProtectedRouted>
+            </ProtectedRouted>
+          </RecoilRootProvider>
         </StyledComponentsRegistry>
         <ModalPortalProvider />
       </body>
