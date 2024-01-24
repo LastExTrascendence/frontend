@@ -1,16 +1,127 @@
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { myState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import GameInvite from "@/components/Game/GameInvite";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
 import useDebounce from "@/hooks/useDebounce";
+
+const DropdownStyled = styled.div<{ $top?: number; $left?: number }>`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 50%; */
+  min-width: 260px;
+  height: 160px;
+  background-color: var(--search-bar-color);
+  border-radius: 20px;
+  padding: 10px 0 10px 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 15;
+  position: absolute;
+  top: ${(props) => props.$top}px;
+  left: ${(props) => props.$left}px;
+`;
+
+const DropdownLoadingAnimationContainerStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const DropdownItemStyled = styled.div`
+  height: 50px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 5px 0px 5px 0px;
+  /* padding-bottom: 5px; */
+  border-radius: 15px;
+  background: var(--gray);
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const UserImageContainerStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+  img {
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 100%;
+    border: 1px solid var(--transparent);
+    /* margin-right: 5px; */
+  }
+`;
+
+const SearchItemRightStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* cursor: pointer; */
+`;
+
+const NameContainerStyled = styled.div`
+  width: 100%;
+  font-weight: 500;
+  padding-left: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer;
+`;
+
+const MemberNameStyled = styled.div`
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: var(--white);
+`;
+
+const IntraNameStyled = styled.div`
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--light-gray);
+  transition: all 0.3s ease;
+  &:hover {
+    color: var(--white);
+  }
+`;
+
+const InviteButtonStyled = styled.button`
+  background-color: var(--main-purple);
+  color: var(--white);
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--main-dark-purple);
+  }
+`;
 
 export default function SearchUser({ placeholder }: { placeholder: string }) {
   const pathname = usePathname();
@@ -27,6 +138,18 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     top: 0,
     left: 0,
   });
+  const [inviteViewArea, setInviteViewArea] = useState<boolean>(false);
+  const [pathnameRegex, query] = pathname.split("?");
+
+  useEffect(() => {
+    console.log(pathnameRegex, query)
+    const gamePathRegex = /^\/game\/\d+$/;
+    if (!gamePathRegex.test(pathnameRegex)) {
+      setInviteViewArea(true);
+    } else {
+      setInviteViewArea(false);
+    }
+  }, [pathname, pathnameRegex]);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -149,9 +272,10 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                     </NameContainerStyled>
                   </Link>
                 </SearchItemRightStyled>
-                <InviteButtonStyled onClick={() => handleInviteClick(user.nickname)}>
-                  <GameInvite />
-                </InviteButtonStyled>
+                {!inviteViewArea &&
+                  <InviteButtonStyled onClick={() => handleInviteClick(user.nickname)}>
+                    <GameInvite />
+                  </InviteButtonStyled>}
               </DropdownItemStyled>
             ))}
           </DropdownStyled>
@@ -160,114 +284,3 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     </div>
   );
 }
-
-const DropdownStyled = styled.div<{ $top?: number; $left?: number }>`
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* width: 50%; */
-  min-width: 260px;
-  height: 160px;
-  background-color: var(--search-bar-color);
-  border-radius: 20px;
-  padding: 10px 0 10px 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  z-index: 15;
-  position: absolute;
-  top: ${(props) => props.$top}px;
-  left: ${(props) => props.$left}px;
-`;
-
-const DropdownLoadingAnimationContainerStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`;
-
-const DropdownItemStyled = styled.div`
-  height: 50px;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  width: 90%;
-  margin: 5px 0px 5px 0px;
-  /* padding-bottom: 5px; */
-  border-radius: 15px;
-  background: var(--gray);
-  transition: all 0.3s ease;
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const UserImageContainerStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 5px;
-  margin-right: 5px;
-  cursor: pointer;
-  img {
-    width: 20px;
-    height: 20px;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 100%;
-    border: 1px solid var(--transparent);
-    /* margin-right: 5px; */
-  }
-`;
-
-const SearchItemRightStyled = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  /* cursor: pointer; */
-`;
-
-const NameContainerStyled = styled.div`
-  width: 100%;
-  font-weight: 500;
-  padding-left: 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer;
-`;
-
-const MemberNameStyled = styled.div`
-  cursor: pointer;
-  font-size: 1.3rem;
-  color: var(--white);
-`;
-
-const IntraNameStyled = styled.div`
-  cursor: pointer;
-  font-size: 1rem;
-  color: var(--light-gray);
-  transition: all 0.3s ease;
-  &:hover {
-    color: var(--white);
-  }
-`;
-
-const InviteButtonStyled = styled.button`
-  background-color: var(--main-purple);
-  color: var(--white);
-  padding: 10px 10px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: var(--main-dark-purple);
-  }
-`;
