@@ -11,5 +11,6 @@ export default function ToastContainerProvider() {
     theme="dark"
     transition={Bounce}
     closeOnClick
+    closeButton={false}
   />
 }
