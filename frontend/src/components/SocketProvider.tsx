@@ -12,8 +12,8 @@ import { getCookie } from "@/api/cookie/cookies";
 const SocketContext = createContext<UserSocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => {},
-  exitQueue: () => {},
+  enterQueue: () => { },
+  exitQueue: () => { },
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -114,7 +114,7 @@ export default function SocketProvider({
     socket.on(
       "gameMatch",
       async ({ gameId, title }: { gameId: string; title: string }) => {
-        await router.replace(`/game/${gameId}?name=${title}`);
+        router.push(`/game/${gameId}?name=${title}`);
       },
     );
 
