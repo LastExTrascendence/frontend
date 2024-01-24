@@ -53,15 +53,13 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const gameStartHandler = () => {
     if (!gameSocket || !isGameConnected) return;
-    if (myRole === "CREATOR" //) {
-      && isReady) {
+    if (myRole === "CREATOR" && isReady) {
       gameSocket.emit("pressStart", {
         myId: myInfo.id,
         gameId: params.id,
         title: name,
       });
     } else {
-      // isReady ? setIsReady(false) : setIsReady(true);
       gameSocket.emit("pressReady", {
         myId: myInfo.id,
         gameId: params.id,
@@ -179,7 +177,6 @@ export default function Page({ params }: { params: { id: string } }) {
             proceedBtnText="Re Game"
             cancleBtnText="Quit Room"
             closeModal={closeGameEndModal}
-          // onClickProceed={ReGame}
           >
             <GameEndModal data={gameEndData} />
           </Modal>
