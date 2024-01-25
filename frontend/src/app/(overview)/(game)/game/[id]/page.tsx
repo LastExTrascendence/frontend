@@ -46,22 +46,20 @@ export default function Page({ params }: { params: { id: string } }) {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGameStart, setIsGameStart] = useState<boolean>(false);
   const [gameEndData, setGameEndData] = useState<GameEndData | null>(gameEndDataMock);
-  const [showGameEndModal, setShowGameEndModal] = useState(true);
+  const [showGameEndModal, setShowGameEndModal] = useState(false);
   const [gameInfo, setGameInfo] = useState<GameChannelListDto>(gameInfoMock);
 
   const { closeAll } = useMenu();
 
   const gameStartHandler = () => {
     if (!gameSocket || !isGameConnected) return;
-    if (myRole === "CREATOR" //) {
-      && isReady) {
+    if (myRole === "CREATOR" && isReady) {
       gameSocket.emit("pressStart", {
         myId: myInfo.id,
         gameId: params.id,
         title: name,
       });
     } else {
-      // isReady ? setIsReady(false) : setIsReady(true);
       gameSocket.emit("pressReady", {
         myId: myInfo.id,
         gameId: params.id,
@@ -92,7 +90,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     if (!gameSocket) return;
     if (isGameConnected) {
-      const gameStartRedirect = () => {
+      const gameStartLogic = () => {
         closeAll();
         setIsGameStart(true);
       };
@@ -112,6 +110,7 @@ export default function Page({ params }: { params: { id: string } }) {
         setIsGameStart(false);
         setIsReady(false);
         setShowGameEndModal(true);
+        gameSocket.emit("gameFinish", { gameId: params.id, title: name });
       };
       gameSocket.on("gameEnd", gameEndLogic);
 
@@ -121,14 +120,9 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [gameSocket, isGameConnected]);
 
-  const quitRoom = () => {
+  const closeGameEndModal = () => {
     setShowGameEndModal(false);
-    // router.push("/game");
   }
-
-  // const ReGame = () => {
-  //   setShowGameEndModal(false);
-  // }
 
   useGameInfoListner(gameSocket, isGameConnected, setGameInfo);
   useGameChannelHandler(myInfo.id, params.id, setUserId, setGameId);
@@ -183,8 +177,7 @@ export default function Page({ params }: { params: { id: string } }) {
             title="Game Result"
             proceedBtnText="Re Game"
             cancleBtnText="Quit Room"
-            closeModal={quitRoom}
-          // onClickProceed={ReGame}
+            closeModal={closeGameEndModal}
           >
             <GameEndModal data={gameEndData} />
           </Modal>

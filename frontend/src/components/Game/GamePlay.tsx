@@ -116,10 +116,10 @@ export default function GamePlay({
       activeKeys.add(event.key);
       switch (event.key) {
         case "ArrowUp":
-          gameKeyDown(gameSocket, playInfo.team, "ArrowUp");
+          gameKeyDown(gameSocket, id, playInfo.team, "ArrowUp");
           break;
         case "ArrowDown":
-          gameKeyDown(gameSocket, playInfo.team, "ArrowDown");
+          gameKeyDown(gameSocket, id, playInfo.team, "ArrowDown");
           break;
         default:
           break;
@@ -131,10 +131,10 @@ export default function GamePlay({
       activeKeys.delete(event.key);
       switch (event.key) {
         case "ArrowUp":
-          gameKeyUp(gameSocket, playInfo.team, "ArrowUp");
+          gameKeyUp(gameSocket, id, playInfo.team, "ArrowUp");
           break;
         case "ArrowDown":
-          gameKeyUp(gameSocket, playInfo.team, "ArrowDown");
+          gameKeyUp(gameSocket, id, playInfo.team, "ArrowDown");
           break;
         default:
           break;
@@ -156,10 +156,7 @@ export default function GamePlay({
       // 1초마다 카운트다운 감소
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
-      // 카운트다운이 0이 되면 loopPosition 이벤트 발생
-      if (myRole === "CREATOR") {
-        gameSocket.emit("loopPosition", { gameId: id, title: name });
-      }
+      gameSocket.emit("loopPosition", { gameId: id, title: name, myRole });
       clearTimeout(timer);
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
@@ -176,7 +173,7 @@ export default function GamePlay({
         gameSocket.off("score");
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   useEffect(() => {
     if (!gameSocket) return;
@@ -191,7 +188,7 @@ export default function GamePlay({
         gameSocket.off("play", playInfoInitialize);
       };
     }
-  }, [isGameConnected]);
+  }, [gameSocket, isGameConnected]);
 
   return (
     <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">
