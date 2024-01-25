@@ -8,12 +8,13 @@ import io from "socket.io-client";
 import { myState } from "@/recoil/atom";
 import { UserSocketContextType } from "@/types/type/user-socket.type";
 import { getCookie } from "@/api/cookie/cookies";
+import GameInviteToast from "@/ui/toast/game-invite-toast";
 
 const SocketContext = createContext<UserSocketContextType>({
   socket: null,
   isConnected: false,
-  enterQueue: () => {},
-  exitQueue: () => {},
+  enterQueue: () => { },
+  exitQueue: () => { },
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -27,36 +28,6 @@ export default function SocketProvider({
   const [isConnected, setIsConnected] = useState(false);
   const myInfo = useRecoilValue(myState);
   const router = useRouter();
-
-  function CustomToast({
-    hostNickname,
-    url,
-  }: {
-    hostNickname: string;
-    url: string;
-  }) {
-    const [pathname, query] = url.split("?");
-
-    let name: string | null = "";
-    if (query) {
-      const params = new URLSearchParams(query);
-      if (params.has("name")) {
-        name = params.get("name");
-      }
-    }
-    return (
-      <div>
-        {hostNickname} 님께서 {name}방으로 초대했습니다.
-        <button
-          onClick={() => {
-            router.push(url);
-          }}
-        >
-          수락
-        </button>
-      </div>
-    );
-  }
 
   useEffect(() => {
     if (!socket) {
@@ -114,7 +85,7 @@ export default function SocketProvider({
     socket.on(
       "gameMatch",
       async ({ gameId, title }: { gameId: string; title: string }) => {
-        await router.replace(`/game/${gameId}?name=${title}`);
+        router.push(`/game/${gameId}?name=${title}`);
       },
     );
 
@@ -133,7 +104,7 @@ export default function SocketProvider({
       "invitedUser",
       async ({ hostNickname, url }: { hostNickname: string; url: string }) => {
         const notify = () =>
-          toast(<CustomToast hostNickname={hostNickname} url={url} />);
+          toast(<GameInviteToast hostNickname={hostNickname} url={url} />);
         notify();
       },
     );

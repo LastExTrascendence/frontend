@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   },
   description: "The Last Ex Transcendence with App Router.",
   metadataBase: new URL("https://github.com/LastExTrascendence/frontend"),
+  icons: {
+    icon: "/LET.ico/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -29,14 +32,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <StyledComponentsRegistry>
-          <ProtectedRouted>
-            <RecoilRootProvider>
+          <RecoilRootProvider>
+            <ProtectedRouted>
               <SocketProvider>
                 <ToastContainerProvider />
                 {children}
               </SocketProvider>
-            </RecoilRootProvider>
-          </ProtectedRouted>
+            </ProtectedRouted>
+          </RecoilRootProvider>
         </StyledComponentsRegistry>
         <ModalPortalProvider />
       </body>

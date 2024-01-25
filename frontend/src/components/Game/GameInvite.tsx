@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function GameInvite({ nickname }: { nickname: string }) {
+export default function GameInvite() {
   const iconColor = "var(--light-gray)";
 
   return (
