@@ -28,7 +28,7 @@ export default function ChannelUserList({ name, myInfo }: { name: string, myInfo
     <div className="mt-10 flex flex-col space-y-4">
       {userList &&
         userList.map((user) => (
-          <div key={user.id} className="flex items-center space-x-4">
+          <div key={user.id + user} className="flex items-center space-x-4">
             <Image
               className={
                 user.role === "CREATOR"
