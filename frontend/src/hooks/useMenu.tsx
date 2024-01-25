@@ -2,6 +2,7 @@ export const useMenu = () => {
   const closeAll = () => {
     closeSideNav();
     closeUserInfoCard();
+    closeChannelInfoCard();
   };
 
   const toggleSideNav = () => {
@@ -48,6 +49,21 @@ export const useMenu = () => {
     }
   };
 
+  const openChannelInfoCard = () => {
+    document.getElementById("channelInfoCard")?.classList.add("on");
+    document.getElementById("mainSectionBackground")?.classList.add("on");
+  };
+
+  const closeChannelInfoCard = () => {
+    if (
+      document.getElementById("channelInfoCard")?.classList.contains("on") ===
+      true
+    ) {
+      document.getElementById("channelInfoCard")?.classList.remove("on");
+      document.getElementById("mainSectionBackground")?.classList.remove("on");
+    }
+  };
+
   return {
     closeAll,
     toggleSideNav,
@@ -55,5 +71,7 @@ export const useMenu = () => {
     closeSideNav,
     openUserInfoCard,
     closeUserInfoCard,
+    openChannelInfoCard,
+    closeChannelInfoCard,
   };
 };

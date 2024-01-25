@@ -1,12 +1,12 @@
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
-import { useSocket } from "@/components/SocketProvider";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import GameInvite from "@/components/Game/GameInvite";
+import { useSocket } from "@/components/SocketProvider";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
@@ -149,7 +149,9 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                     </NameContainerStyled>
                   </Link>
                 </SearchItemRightStyled>
-                <InviteButtonStyled onClick={() => handleInviteClick(user.nickname)}>
+                <InviteButtonStyled
+                  onClick={() => handleInviteClick(user.nickname)}
+                >
                   <GameInvite />
                 </InviteButtonStyled>
               </DropdownItemStyled>
