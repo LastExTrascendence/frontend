@@ -7,7 +7,7 @@ const ChannelInfoHeaderStyled = styled.div`
   font-size: 2.25rem; /* 36px */
   line-height: 2.5rem; /* 40px */
   color: var(--white);
-  margin: 1rem 0;
+  margin: 1rem 0 0.5rem;
 
   &::after {
     content: "";
