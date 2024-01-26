@@ -229,7 +229,7 @@ export const axiosCreateGame = async (
 };
 
 const axiosPostEnterGameURL = "/game/enter";
-export const axiosEnterPrivateChannel = async (
+export const axiosEnterPrivateGame = async (
   gameId: number,
   password: string | null,
   myInfoId: number,
@@ -268,6 +268,25 @@ export const axiosCreateChatChannel = async (
       channelData,
     );
     return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const axiosPostEnterChannelURL = "/channel/enter";
+export const axiosEnterPrivateChannel = async (
+  channelId: number,
+  password: string | null,
+  myInfoId: number,
+): Promise<any> => {
+  try {
+    const response = await instance.post(axiosPostEnterChannelURL, {
+      channelId,
+      password,
+      myInfoId,
+    });
+    return response;
   } catch (error) {
     console.log(error);
     throw error;
