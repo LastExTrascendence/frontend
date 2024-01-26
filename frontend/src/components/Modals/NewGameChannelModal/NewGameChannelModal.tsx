@@ -51,7 +51,7 @@ export default function NewGameChannelModal({
         gameType,
         gameMode,
       );
-      router.push(`/game/${game.data.id}?name=${title}`);
+      router.push(`/game/${game.data.id}?name=${title}&type=${gameType}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);

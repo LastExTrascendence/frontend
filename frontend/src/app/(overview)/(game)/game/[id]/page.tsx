@@ -54,7 +54,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const gameStartHandler = () => {
     if (!gameSocket || !isGameConnected) return;
-    if (myRole === "CREATOR" && (type === "single" || isReady)) {
+    console.log("gameStartHandler", myRole, type, isReady);
+    if (myRole === "CREATOR" && (type?.toLowerCase() === "single" || isReady)) {
       gameSocket.emit("pressStart", {
         myId: myInfo.id,
         gameId: params.id,
