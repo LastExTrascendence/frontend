@@ -10,7 +10,7 @@ export default function useTokenValidator({ setIsClient }: { setIsClient: any })
     const token = getCookie("access_token");
     setIsClient(true);
 
-    if (!token && pathname !== "/login" && pathname !== "/login/otp") {
+    if (!token && pathname !== "/login" && pathname !== "/login/otp" && pathname !== "/register") {
       router.push("/login");
     }
   }, [pathname, router]);
