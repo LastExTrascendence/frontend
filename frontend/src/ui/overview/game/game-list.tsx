@@ -10,7 +10,7 @@ import {
   GameChannelListDto,
   GameRecordListResponseDto,
 } from "@/types/interface/game.interface";
-import PrivateChannelModal from "@/components/Modals/PrivateChannelModal/PrivateChannelModal";
+import PrivateGameModal from "@/components/Modals/PrivateGameModal/PrivateGameModal";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
 
@@ -90,17 +90,17 @@ export default function GameList({
   const [gameId, setGameId] = useState<number | null>(null);
   const [title, setTitle] = useState<string>("");
 
-  const [showPrivateGameChannelModal, setShowPrivateGameChannelModal] =
+  const [showPrivateGameModal, setShowPrivateGameModal] =
     useState<boolean>(false);
 
   const router = useRouter();
 
-  const togglePrivateGameChannelModal = () => {
-    setShowPrivateGameChannelModal(!showPrivateGameChannelModal);
+  const togglePrivateGameModal = () => {
+    setShowPrivateGameModal(!showPrivateGameModal);
   }
 
-  const handleClosePrivateGameChannelModal = () => {
-    setShowPrivateGameChannelModal(false);
+  const handleClosePrivateGameModal = () => {
+    setShowPrivateGameModal(false);
   }
 
   function gameEnterLogic(gameId, gameTitle, gameType) {
@@ -108,7 +108,7 @@ export default function GameList({
     setTitle(gameTitle);
 
     if (gameType === ChannelPolicy.PRIVATE) {
-      togglePrivateGameChannelModal();
+      togglePrivateGameModal();
     } else {
       router.push(`/game/${gameId}?name=${gameTitle}`);
     }
@@ -150,8 +150,8 @@ export default function GameList({
           </div>
         )}
       </TableBody>
-      {showPrivateGameChannelModal && (
-        <PrivateChannelModal closeModal={handleClosePrivateGameChannelModal} channelId={gameId} myInfoId={myInfo.id} title={title} />
+      {showPrivateGameModal && (
+        <PrivateGameModal closeModal={handleClosePrivateGameModal} gameId={gameId} myInfoId={myInfo.id} title={title} />
       )}
     </ChannelListContainerStyled>
   );
