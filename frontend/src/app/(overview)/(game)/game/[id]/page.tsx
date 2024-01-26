@@ -43,6 +43,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { gameSocket, isGameConnected, setGameId, setUserId } = useGameSocket();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
+  const type = searchParams.get("type");
   const [isReady, setIsReady] = useState<boolean>(false);
   const [isGameStart, setIsGameStart] = useState<boolean>(false);
   const [gameEndData, setGameEndData] = useState<GameEndData | null>(gameEndDataMock);
@@ -53,7 +54,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const gameStartHandler = () => {
     if (!gameSocket || !isGameConnected) return;
-    if (myRole === "CREATOR" && isReady) {
+    if (myRole === "CREATOR" && (type === "single" || isReady)) {
       gameSocket.emit("pressStart", {
         myId: myInfo.id,
         gameId: params.id,
