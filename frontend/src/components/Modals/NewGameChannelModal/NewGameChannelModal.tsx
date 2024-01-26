@@ -80,7 +80,7 @@ export default function NewGameChannelModal({
               <input
                 type="text"
                 name="game"
-                className="mt-2 rounded bg-buttonColor p-2 text-white focus:outline-none focus:ring-2"
+                className="mt-2 h-12 rounded bg-buttonColor px-4 py-3 text-lg text-white focus:outline-none focus:ring-2"
                 maxLength={20}
                 minLength={1}
                 onChange={(e) => setTitle(e.target.value)}
@@ -97,8 +97,8 @@ export default function NewGameChannelModal({
             </label>
             <div
               className={`relative overflow-hidden transition-all duration-500 ease-in-out ${channelPolicy === ChannelPolicy.PRIVATE
-                  ? "mb-3 max-h-40"
-                  : "max-h-0"
+                ? "mb-3 max-h-40"
+                : "max-h-0"
                 }`}
             >
               <label className="flex flex-col items-start justify-center">

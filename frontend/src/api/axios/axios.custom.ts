@@ -228,6 +228,25 @@ export const axiosCreateGame = async (
   }
 };
 
+const axiosPostEnterGameURL = "/game/enter";
+export const axiosEnterPrivateChannel = async (
+  gameId: number,
+  password: string | null,
+  myInfoId: number,
+): Promise<any> => {
+  try {
+    const response = await instance.post(axiosPostEnterGameURL, {
+      gameId,
+      password,
+      myInfoId,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const axiosGetChatChannelsURL = "/channel";
 export const axiosGetChatChannels = async (): Promise<any> => {
   try {

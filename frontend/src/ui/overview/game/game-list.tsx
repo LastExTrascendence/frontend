@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import LoadingAnimation from "@/ui/loading-animation";
@@ -9,67 +10,9 @@ import {
   GameChannelListDto,
   GameRecordListResponseDto,
 } from "@/types/interface/game.interface";
-
-const gameEnterLogic = (room: GameChannelListDto) => {
-  if (room.channelPolicy === ChannelPolicy.PRIVATE) {
-    const password = prompt("비밀번호를 입력해주세요");
-    if (password !== room.password) {
-      alert("비밀번호가 틀렸습니다");
-      return;
-    }
-  }
-  const router = useRouter();
-  router.push(`/game/${game.id}/play?name=${game.name}`);
-};
-
-export default function GameList({
-  games,
-}: {
-  games: GameRecordListResponseDto;
-}) {
-  if (games === undefined) return <LoadingAnimation />;
-
-  const router = useRouter();
-
-  return (
-    <ChannelListContainerStyled>
-      <TableHeader>
-        <CellHeaderStyled>Game</CellHeaderStyled>
-        <CellHeaderStyled>Creator</CellHeaderStyled>
-        <CellHeaderStyled>Users</CellHeaderStyled>
-        <CellHeaderStyled>Type</CellHeaderStyled>
-        <CellHeaderStyled>Status</CellHeaderStyled>
-      </TableHeader>
-      <TableBody>
-        {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
-          games.map((game: any) => (
-            <RowStyled
-              key={game.id}
-              onClick={() => {
-                router.push(`/game/${game.id}?name=${game.title}`);
-              }}
-              className="channel"
-            >
-              <CellStyled>{game.title}</CellStyled>
-              <CellStyled>{game.creator.nickname}</CellStyled>
-              <CellStyled className="align-center">
-                {game.cur_user + " / 2"}
-              </CellStyled>
-              <CellStyled className="align-center">{game.gameType}</CellStyled>
-              <CellStyled className="align-center">
-                {game.gameStatus}
-              </CellStyled>
-            </RowStyled>
-          ))
-        ) : (
-          <div className="flex justify-center items-center h-full w-full text-xl">
-            <div>게임을 생성해주세요!</div>
-          </div>
-        )}
-      </TableBody>
-    </ChannelListContainerStyled>
-  );
-}
+import PrivateChannelModal from "@/components/Modals/PrivateChannelModal/PrivateChannelModal";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
 
 export const ChannelListContainerStyled = styled.div`
   border-radius: 20px;
@@ -132,3 +75,84 @@ export const CellStyled = styled.div`
     text-align: center;
   }
 `;
+
+
+export default function GameList({
+  games,
+  // gameEnterLogic,
+}: {
+  games: GameRecordListResponseDto;
+  // gameEnterLogic: (id: number, title: string, gameType: string) => void;
+}) {
+  if (games === undefined) return <LoadingAnimation />;
+
+  const myInfo = useRecoilValue(myState);
+  const [gameId, setGameId] = useState<number | null>(null);
+  const [title, setTitle] = useState<string>("");
+
+  const [showPrivateGameChannelModal, setShowPrivateGameChannelModal] =
+    useState<boolean>(false);
+
+  const router = useRouter();
+
+  const togglePrivateGameChannelModal = () => {
+    setShowPrivateGameChannelModal(!showPrivateGameChannelModal);
+  }
+
+  const handleClosePrivateGameChannelModal = () => {
+    setShowPrivateGameChannelModal(false);
+  }
+
+  function gameEnterLogic(gameId, gameTitle, gameType) {
+    setGameId(gameId);
+    setTitle(gameTitle);
+
+    if (gameType === ChannelPolicy.PRIVATE) {
+      togglePrivateGameChannelModal();
+    } else {
+      router.push(`/game/${gameId}?name=${gameTitle}`);
+    }
+  };
+  return (
+    <ChannelListContainerStyled>
+      <TableHeader>
+        <CellHeaderStyled>Game</CellHeaderStyled>
+        <CellHeaderStyled>Creator</CellHeaderStyled>
+        <CellHeaderStyled>Users</CellHeaderStyled>
+        <CellHeaderStyled>Type</CellHeaderStyled>
+        <CellHeaderStyled>Status</CellHeaderStyled>
+      </TableHeader>
+      <TableBody>
+        {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
+          games.map((game: any) => (
+            <RowStyled
+              key={game.id}
+              onClick={() => {
+                gameEnterLogic(game.id, game.title, game.channelPolicy);
+                // router.push(`/game/${game.id}?name=${game.title}`);
+              }}
+              className="channel"
+            >
+              <CellStyled>{game.title}</CellStyled>
+              <CellStyled>{game.creator.nickname}</CellStyled>
+              <CellStyled className="align-center">
+                {game.cur_user + " / 2"}
+              </CellStyled>
+              <CellStyled className="align-center">{game.gameType}</CellStyled>
+              <CellStyled className="align-center">
+                {game.gameStatus}
+              </CellStyled>
+            </RowStyled>
+          ))
+        ) : (
+          <div className="flex justify-center items-center h-full w-full text-xl">
+            <div>게임을 생성해주세요!</div>
+          </div>
+        )}
+      </TableBody>
+      {showPrivateGameChannelModal && (
+        <PrivateChannelModal closeModal={handleClosePrivateGameChannelModal} channelId={gameId} myInfoId={myInfo.id} title={title} />
+      )}
+    </ChannelListContainerStyled>
+  );
+}
