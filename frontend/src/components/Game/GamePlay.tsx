@@ -177,7 +177,7 @@ export default function GamePlay({
 
   useEffect(() => {
     if (!gameSocket) return;
-    if (isGameConnected) {
+    if (isGameConnected && isGameStart) {
       const playInfoInitialize = (data: PlayInfoProps) => {
         setPlayInfo(data);
       };
@@ -188,7 +188,7 @@ export default function GamePlay({
         gameSocket.off("play", playInfoInitialize);
       };
     }
-  }, [gameSocket, isGameConnected]);
+  }, [gameSocket, isGameConnected, isGameStart]);
 
   return (
     <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">
