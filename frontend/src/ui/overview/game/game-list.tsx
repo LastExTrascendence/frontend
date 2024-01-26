@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
@@ -11,8 +13,6 @@ import {
   GameRecordListResponseDto,
 } from "@/types/interface/game.interface";
 import PrivateGameModal from "@/components/Modals/PrivateGameModal/PrivateGameModal";
-import { useRecoilValue } from "recoil";
-import { myState } from "@/recoil/atom";
 
 export const ChannelListContainerStyled = styled.div`
   border-radius: 20px;
@@ -86,14 +86,12 @@ export default function GameList({
 }) {
   if (games === undefined) return <LoadingAnimation />;
 
+  const router = useRouter();
   const myInfo = useRecoilValue(myState);
   const [gameId, setGameId] = useState<number | null>(null);
   const [title, setTitle] = useState<string>("");
-
   const [showPrivateGameModal, setShowPrivateGameModal] =
     useState<boolean>(false);
-
-  const router = useRouter();
 
   const togglePrivateGameModal = () => {
     setShowPrivateGameModal(!showPrivateGameModal);
@@ -113,6 +111,7 @@ export default function GameList({
       router.push(`/game/${gameId}?name=${gameTitle}&type=${gameType}`);
     }
   };
+
   return (
     <ChannelListContainerStyled>
       <TableHeader>
