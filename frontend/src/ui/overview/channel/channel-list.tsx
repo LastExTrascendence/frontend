@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
+import { myState } from "@/recoil/atom";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { ChannelListResponseDto } from "@/types/interface/channel.interface";
@@ -10,6 +15,8 @@ import {
   TableBody,
   TableHeader,
 } from "../game/game-list";
+import PrivateChannelModal from "@/components/Modals/PrivateChannelModal/PrivateChannelModal";
+import { ChannelPolicy } from "@/types/enum/channel.enum";
 
 export default function ChannelList({
   chats,
@@ -19,7 +26,30 @@ export default function ChannelList({
   if (chats === undefined) return <LoadingAnimation />;
 
   const router = useRouter();
+  const myInfo = useRecoilValue(myState);
+  const [channelId, setChannelId] = useState<number | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [showPrivateChannelModal, setShowPrivateChannelModal] =
+    useState<boolean>(false);
 
+  const togglePrivateChannelModal = () => {
+    setShowPrivateChannelModal(!showPrivateChannelModal);
+  }
+
+  const handleClosePrivateChannelModal = () => {
+    setShowPrivateChannelModal(false);
+  }
+
+  function channelEnterLogic(channelId, channelTitle, channelType) {
+    setChannelId(channelId);
+    setTitle(channelTitle);
+
+    if (channelType === ChannelPolicy.PRIVATE) {
+      togglePrivateChannelModal();
+    } else {
+      router.push(`/channel/${channelId}?name=${channelTitle}&type=${channelType}`);
+    }
+  };
   return (
     <ChannelListContainerStyled>
       <TableHeader>
@@ -34,7 +64,8 @@ export default function ChannelList({
             <RowStyled
               key={chat.id}
               onClick={() => {
-                router.push(`/channel/${chat.id}?name=${chat.title}`);
+                channelEnterLogic(chat.id, chat.title, chat.channelPolicy);
+                // router.push(`/channel/${chat.id}?name=${chat.title}`);
               }}
               className="channel"
             >
@@ -56,6 +87,9 @@ export default function ChannelList({
           </div>
         )}
       </TableBody>
+      {showPrivateChannelModal && (
+        <PrivateChannelModal closeModal={handleClosePrivateChannelModal} channelId={channelId} myInfoId={myInfo.id} title={title} />
+      )}
     </ChannelListContainerStyled>
   );
 }

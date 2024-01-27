@@ -23,7 +23,7 @@ export default function PrivateChannelModal({
         password,
         myInfoId,
       );
-      router.push(`/game/${channelId}?name=${title}`);
+      router.push(`/channel/${channelId}?name=${title}`);
     } catch (error: any) {
       console.log(error);
       // 추가적인 에러 처리
