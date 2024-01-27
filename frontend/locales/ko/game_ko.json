@@ -25,5 +25,7 @@
   "NORMAL": "일반",
   "SINGLE": "1인용",
   "start": "시작",
-  "ready": "준비"
+  "ready": "준비",
+  "enterPassword": "비밀번호 입력",
+  "enter": "입장"
 }

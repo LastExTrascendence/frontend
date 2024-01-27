@@ -1,4 +1,5 @@
 import Link from "next/link";
+import i18n from "i18next";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -13,10 +14,20 @@ import ProfileImage from "@/ui/profile-image";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 
+export enum LanguageType {
+  EN = "en",
+  KO = "ko",
+  FR = "fr",
+}
+
 export default function FriendSectionMyStatus() {
   const router = useRouter();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const token = getCookie("access_token");
+
+  const handleLanguage = (selectedLang: LanguageType): void => {
+    i18n.changeLanguage(selectedLang);
+  };
 
   useEffect(() => {
     if (!token) {
@@ -30,6 +41,8 @@ export default function FriendSectionMyStatus() {
     try {
       const { data: userInfo } = await axiosMyInfo();
       setMyInfo(userInfo);
+      handleLanguage(userInfo.language as LanguageType ?? "en");
+
     } catch (error) {
       console.log(error);
     }

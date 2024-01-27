@@ -13,5 +13,7 @@
   "password" : "Mot de passe",
   "public": "Public",
   "private": "Privé",
-  "maxUser": "Nombre maximum d'utilisateurs"
+  "maxUser": "Nombre maximum d'utilisateurs",
+  "enterPassword": "Entrez le mot de passe",
+  "enter": "Entrer"
 }

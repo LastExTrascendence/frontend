@@ -13,5 +13,7 @@
   "channelPolicy": "Channel Policy",
   "public": "Public",
   "private": "Private",
-  "maxUser": "Maximum no. of Users"
+  "maxUser": "Maximum no. of Users",
+  "enterPassword": "Enter Password",
+  "enter": "Enter"
 }

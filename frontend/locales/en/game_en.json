@@ -25,5 +25,7 @@
   "NORMAL": "Normal",
   "SINGLE": "Single",
   "start": "Start",
-  "ready": "Ready"
+  "ready": "Ready",
+  "enterPassword": "Enter Password",
+  "enter": "Enter"
 }
