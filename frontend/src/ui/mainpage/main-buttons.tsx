@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { useSocket } from "@/components/SocketProvider";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
+import { useTranslation } from "react-i18next";
 
 const slideDown = keyframes`
   from {
@@ -75,34 +76,35 @@ const ButtonDescriptionStyled = styled.p`
   }
 `;
 
-const buttons: MainButtonItemProps[] = [
-  {
-    href: "/quickstart",
-    title: "Quick Start",
-    description: "Quickly join queue for 1:1 match",
-  },
-  {
-    href: "/game",
-    title: "Game",
-    description: "Create or join a game",
-  },
-  {
-    href: "/channel",
-    title: "Channel",
-    description: "Create or join a channel",
-  },
-  {
-    href: "/profile",
-    title: "Profile",
-    description: "View or change my settings",
-  },
-];
-
 function MainButtonList() {
   const router = useRouter();
   const { enterQueue, exitQueue } = useSocket();
   const [isQueueConnected, setIsQueueConnected] = useState(false);
   const [timer, setTimer] = useState(0);
+  const { t } = useTranslation('common');
+
+  const buttons: MainButtonItemProps[] = [
+    {
+      href: "/quickstart",
+      title: t("quickStart"),
+      description: t("quickStartDescription"),
+    },
+    {
+      href: "/game",
+      title: t("game"),
+      description: t("gameDescription"),
+    },
+    {
+      href: "/channel",
+      title: t("channel"),
+      description: t("channelDescription"),
+    },
+    {
+      href: "/profile",
+      title: t("profile"),
+      description: t("profileDescription"),
+    },
+  ];
 
   const onClickHandler = (href: string) => {
     if (isQueueConnected) return;
@@ -143,7 +145,7 @@ function MainButtonList() {
   return (
     <>
       <QueueStatusContainer $isVisible={isQueueConnected}>
-        <StatusText>Looking for game...</StatusText>
+        <StatusText>{t("lookingForGame")}</StatusText>
         <TimerText>{formattedTimer()}</TimerText>
         <CancelButton onClick={cancelHandler}>
           <Image src="/symbols_cancel.svg" alt="close" width={40} height={40} />

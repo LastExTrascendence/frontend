@@ -1,7 +1,9 @@
 "use client";
 
+import i18n from "i18next";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { myState } from "@/recoil/atom";
@@ -31,6 +33,18 @@ const twoFAToggleList: toggleItem[] = [
   { name: "Off", key: TwoFAType.OFF },
 ];
 
+export enum LanguageType {
+  EN = "en",
+  KO = "ko",
+  FR = "fr",
+}
+
+const languageList: toggleItem[] = [
+  { name: "EN", key: LanguageType.EN },
+  { name: "KO", key: LanguageType.KO },
+  { name: "FR", key: LanguageType.FR },
+];
+
 export const convertBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -50,6 +64,7 @@ export const convertBase64 = async (file: File): Promise<string> => {
 
 export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
+  const [language, setLanguage] = useState<LanguageType>(LanguageType.EN);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
   const setMyInfo = useSetRecoilState(myState);
@@ -61,6 +76,7 @@ export default function Page() {
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const { openUserInfoCard } = useMenu();
+  const { t } = useTranslation("profile");
 
   useEffect(() => {
     if (updateUserInfo) {
@@ -73,14 +89,16 @@ export default function Page() {
     newNickname: string,
     newAvatar: string,
     two_fa: boolean,
+    newLanguage: LanguageType,
   ) => {
     try {
-      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa);
+      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa, newLanguage);
       setUpdateUserInfo(true);
       setMyInfo((prevInfo) => ({
         ...prevInfo,
         nickname: newNickname,
         avatar: newAvatar,
+        language: newLanguage,
       }));
       setModalTitle("수정되었습니다");
     } catch (err: any) {
@@ -100,6 +118,7 @@ export default function Page() {
         setUserInfo(userProfileInfo);
         setNickname(userProfileInfo.nickname);
         setTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
+        setLanguage(userProfileInfo.language ?? LanguageType.EN);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -164,6 +183,10 @@ export default function Page() {
     setIsOtpVerified(true);
   };
 
+  const handleLanguage = (selectedLang: LanguageType): void => {
+    i18n.changeLanguage(selectedLang);
+  };
+
   return (
     <>
       <ProfilePageStyled>
@@ -184,10 +207,10 @@ export default function Page() {
               </UserInfoButtonStyled>
               <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
-                  Nickname
+                  {t("nickname")}
                 </PropertyTitleStyled>
                 <InputContainer
-                  placeholder="Nickname"
+                  placeholder={t("nickname")}
                   width={"300px"}
                   height={"50px"}
                   borderRadius={"10px"}
@@ -199,7 +222,7 @@ export default function Page() {
               </PropertyContainerWrapperStyled>
               <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
-                  Avatar
+                  {t("avatar")}
                 </PropertyTitleStyled>
                 <ButtonContainerStyled>
                   <ImageUploadInputStyled
@@ -217,7 +240,7 @@ export default function Page() {
                     fontSize="1rem"
                     fontWeight="800"
                     fontStyle="italic"
-                    text="Change Avatar"
+                    text={t("changeAvatar")}
                     onClick={(e) => {
                       handleChangeAvatar();
                     }}
@@ -229,7 +252,7 @@ export default function Page() {
                     fontSize="1rem"
                     fontWeight="800"
                     fontStyle="italic"
-                    text="Remove Avatar"
+                    text={t("removeAvatar")}
                     onClick={() => {
                       setAvatar("");
                     }}
@@ -238,7 +261,7 @@ export default function Page() {
               </PropertyContainerWrapperStyled>
               <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
-                  2-Factor Authentication
+                  {t("2-FactorAuthentication")}
                 </PropertyTitleStyled>
                 <ToggleSwitchWrapperStyled>
                   <MultiToggleSwitch
@@ -246,6 +269,19 @@ export default function Page() {
                     initialState={twoFA}
                     setState={setTwoFA}
                     onToggleChange={handleToggleChange}
+                  />
+                </ToggleSwitchWrapperStyled>
+              </PropertyContainerWrapperStyled>
+              <PropertyContainerWrapperStyled>
+                <PropertyTitleStyled width={"300px"}>
+                  {t("language")}
+                </PropertyTitleStyled>
+                <ToggleSwitchWrapperStyled>
+                  <MultiToggleSwitch
+                    toggleList={languageList}
+                    initialState={language}
+                    setState={setLanguage}
+                    onToggleChange={handleLanguage}
                   />
                 </ToggleSwitchWrapperStyled>
               </PropertyContainerWrapperStyled>
@@ -258,9 +294,9 @@ export default function Page() {
                     fontSize="1.25rem"
                     fontWeight="800"
                     fontStyle="italic"
-                    text="Save"
+                    text={t("save")}
                     onClick={() => {
-                      updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON);
+                      updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON, language);
                     }}
                   />
                 </ButtonWrapperStyled>

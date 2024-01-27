@@ -68,12 +68,14 @@ export const axiosUpdateMyProfile = async (
   nickname: string,
   avatar: string,
   two_fa: boolean,
+  language: string,
 ): Promise<any> => {
   try {
     const response = await instance.post(axiosUpdateMyProfileURL, {
       nickname,
       avatar,
       two_fa,
+      language,
     });
     return response;
   } catch (error) {

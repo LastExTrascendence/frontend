@@ -1,0 +1,11 @@
+{
+  "new": "Nouveau",
+  "channel": "Chaîne",
+  "creator": "Créateur",
+  "users": "Utilisateurs",
+  "type": "Type",
+  "channelEmpty": "Aucun message dans cette chaîne",
+  "searchChannels": "Rechercher des chaînes",
+  "create": "Créer",
+  "cancel": "Annuler"
+}

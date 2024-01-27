@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { myState } from "@/recoil/atom";
@@ -23,13 +24,14 @@ import { getCookie } from "@/api/cookie/cookies";
 
 export interface IToken {
   id: number;
-  nickname: string | null;
+  nickname: string;
   avatar: string;
   email: string;
   two_fa: boolean;
   two_fa_complete: boolean;
   status: UserStatus;
   intra_name: string;
+  language: string;
   iat: number;
   exp: number;
 }

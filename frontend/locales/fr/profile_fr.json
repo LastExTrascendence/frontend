@@ -1,0 +1,19 @@
+{
+  "nickname": "Pseudonyme",
+  "avatar":"Avatar",
+  "changeAvatar": "Changer d'avatar",
+  "removeAvatar": "Supprimer l'avatar",
+  "2-FactorAuthentication": "Authentification à 2 facteurs",
+  "save": "Enregistrer",
+  "language": "Paramètres de langue",
+  "totalGames" : "Total de parties",
+  "wins" : "Victoires",
+  "losses" : "Défaites",
+  "emptyRecord" : "Aucun enregistrement",
+  "player": "Joueur",
+  "result": "Résultat",
+  "type": "Type",
+  "mode": "Mode",
+  "date": "Date"
+}
+

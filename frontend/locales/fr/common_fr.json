@@ -1,0 +1,19 @@
+{
+  "startPage": "Vous êtes vraiment mauvais à ça.",
+  "quickStart": "Rapide",
+  "game": "Jeu",
+  "channel": "Chaîne",
+  "profile": "Profil",
+  "logout": "Déconnexion",
+  "info": "Info",
+  "lookingForGame": "Recherche d'un jeu",
+  "quickStartDescription": "Rejoignez rapidement la file d'attente pour un match en 1 contre 1",
+  "gameDescription": "Créez ou rejoignez un jeu",
+  "channelDescription": "Créez ou rejoignez une chaîne",
+  "profileDescription": "Affichez ou modifiez les paramètres",
+  "online": "En ligne",
+  "home": "Accueil",
+  "games": "Jeux",
+  "channels": "Chaînes",
+  "searchUser" : "Rechercher un utilisateur"
+}

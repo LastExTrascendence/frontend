@@ -1,0 +1,13 @@
+{
+  "new": "Nouveau",
+  "single": "Simple",
+  "game": "Jeu",
+  "creator": "Créateur",
+  "users": "Utilisateurs",
+  "type": "Type",
+  "status": "Statut",
+  "gameEmpty": "Il n'y a pas encore de jeu",
+  "searchGames": "Rechercher des jeux",
+  "create": "Créer",
+  "cancel": "Annuler"
+}

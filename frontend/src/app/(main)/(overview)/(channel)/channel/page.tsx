@@ -2,6 +2,7 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import NewChatChannelModal from "@/components/Modals/NewChatChannelModal/NewChatChannelModal";
 import ChannelList from "@/ui/overview/channel/channel-list";
@@ -75,6 +76,7 @@ export default function Page() {
     useState<boolean>(false);
   const [filteredChatChannelList, setFilteredChatChannelList] =
     useState<ChannelListResponseDto>(chatChannelList);
+  const { t } = useTranslation("channel");
 
   const getChatChannels = async () => {
     try {
@@ -127,7 +129,7 @@ export default function Page() {
           <SearchBarWrapperStyled>
             <SearchBarStyled
               className="placeholder:text-stone-300"
-              placeholder="Search Channels"
+              placeholder={t("searchChannels")}
               value={searchInput}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchInput(e.target.value)
@@ -137,7 +139,7 @@ export default function Page() {
           </SearchBarWrapperStyled>
           <PillButton
             onClick={toggleNewChannelModal}
-            text="New"
+            text={t("new")}
             width="100px"
             height="35px"
             fontWeight="800"

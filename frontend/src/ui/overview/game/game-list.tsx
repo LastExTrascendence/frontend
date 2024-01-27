@@ -13,6 +13,7 @@ import {
   GameRecordListResponseDto,
 } from "@/types/interface/game.interface";
 import PrivateGameModal from "@/components/Modals/PrivateGameModal/PrivateGameModal";
+import { useTranslation } from "react-i18next";
 
 export const ChannelListContainerStyled = styled.div`
   border-radius: 20px;
@@ -88,6 +89,7 @@ export default function GameList({
   const [title, setTitle] = useState<string>("");
   const [showPrivateGameModal, setShowPrivateGameModal] =
     useState<boolean>(false);
+  const { t } = useTranslation('game');
 
   if (games === undefined) return <LoadingAnimation />;
 
@@ -113,11 +115,11 @@ export default function GameList({
   return (
     <ChannelListContainerStyled>
       <TableHeader>
-        <CellHeaderStyled>Game</CellHeaderStyled>
-        <CellHeaderStyled>Creator</CellHeaderStyled>
-        <CellHeaderStyled>Users</CellHeaderStyled>
-        <CellHeaderStyled>Type</CellHeaderStyled>
-        <CellHeaderStyled>Status</CellHeaderStyled>
+        <CellHeaderStyled>{t("game")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("creator")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("users")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("type")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("status")}</CellHeaderStyled>
       </TableHeader>
       <TableBody>
         {games !== STATUS_400_BAD_REQUEST && games.length > 0 ? (
@@ -143,7 +145,7 @@ export default function GameList({
           ))
         ) : (
           <div className="flex justify-center items-center h-full w-full text-xl">
-            <div>게임을 생성해주세요!</div>
+            <div>{t("gameEmpty")}</div>
           </div>
         )}
       </TableBody>

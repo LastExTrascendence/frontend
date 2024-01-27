@@ -1,9 +1,9 @@
 import IconContainer from "@/ui/icon/icon-container";
+import { useTranslation } from "react-i18next";
 
 export default function InfoIcon() {
-  const onClickInfo = (): void => {
-    // TODO: show info modal
-  };
+  const { t } = useTranslation();
+
   return (
     <IconContainer
       width={40}
@@ -11,8 +11,7 @@ export default function InfoIcon() {
       iconPath="/info.svg"
       iconColor="var(--light-gray)"
       fontColor="var(--light-gray)"
-      text="Info"
-      onClick={onClickInfo}
+      text={t("info")}
     />
   );
 }

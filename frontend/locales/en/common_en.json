@@ -1,0 +1,19 @@
+{
+  "startPage": "L.E.T",
+  "quickStart": "Quick Start",
+  "game": "Game",
+  "channel": "Channel",
+  "profile": "Profile",
+  "logout": "Logout",
+  "info": "Info",
+  "lookingForGame": "Looking for game...",
+  "quickStartDescription": "Quickly join queue for 1:1 match",
+  "gameDescription": "Create or join a game",
+  "channelDescription": "Create or join a channel",
+  "profileDescription": "View or change my settings",
+  "online": "Online",
+  "home": "Home",
+  "games": "Games",
+  "channels": "Channels",
+  "searchUser" : "Search User"
+}

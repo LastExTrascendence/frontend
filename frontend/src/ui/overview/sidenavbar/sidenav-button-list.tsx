@@ -3,28 +3,30 @@ import styled from "styled-components";
 import IconContainer from "@/ui/icon/icon-container";
 import { SideButtonProps } from "@/types/interface/button.interface";
 import { useMenu } from "@/hooks/useMenu";
-
-const buttons: SideButtonProps[] = [
-  {
-    text: "Home",
-    iconPath: "/home.svg",
-    href: "/",
-  },
-  {
-    text: "Games",
-    iconPath: "/tabletennis.svg",
-    href: "/game",
-  },
-  {
-    text: "Channel",
-    iconPath: "/chat.svg",
-    href: "/channel",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const SideNavButtonList = () => {
   const router = useRouter();
   const { closeAll } = useMenu();
+  const { t } = useTranslation('common');
+
+  const buttons: SideButtonProps[] = [
+    {
+      text: t("home"),
+      iconPath: "/home.svg",
+      href: "/",
+    },
+    {
+      text: t("games"),
+      iconPath: "/tabletennis.svg",
+      href: "/game",
+    },
+    {
+      text: t("channels"),
+      iconPath: "/chat.svg",
+      href: "/channel",
+    },
+  ];
 
   return (
     <>

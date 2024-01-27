@@ -1,9 +1,12 @@
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import SearchUser from "@/components/SearchUser";
 import TopNavLogo from "./topnav-logo";
 import TopNavTextLogo from "./topnav-textlogo";
 
 export default function Topnav() {
+  const { t } = useTranslation("common");
+
   return (
     <TopNavStyled>
       <SideBarSectionStyled>
@@ -16,7 +19,7 @@ export default function Topnav() {
       </SideBarSectionStyled>
       <MainSectionStyled>
         <SearchBarWrapperStyled>
-          <SearchUser placeholder="Search User" />
+          <SearchUser placeholder={t("searchUser")} />
         </SearchBarWrapperStyled>
       </MainSectionStyled>
     </TopNavStyled>

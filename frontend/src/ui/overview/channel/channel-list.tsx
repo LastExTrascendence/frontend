@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
 import LoadingAnimation from "@/ui/loading-animation";
@@ -29,6 +30,7 @@ export default function ChannelList({
   const [title, setTitle] = useState<string>("");
   const [showPrivateChannelModal, setShowPrivateChannelModal] =
     useState<boolean>(false);
+  const { t } = useTranslation('channel');
 
   if (chats === undefined) return <LoadingAnimation />;
 
@@ -54,10 +56,10 @@ export default function ChannelList({
   return (
     <ChannelListContainerStyled>
       <TableHeader>
-        <CellHeaderStyled>Channel</CellHeaderStyled>
-        <CellHeaderStyled>Creator</CellHeaderStyled>
-        <CellHeaderStyled>Users</CellHeaderStyled>
-        <CellHeaderStyled>Type</CellHeaderStyled>
+        <CellHeaderStyled>{t('channel')}</CellHeaderStyled>
+        <CellHeaderStyled>{t('creator')}</CellHeaderStyled>
+        <CellHeaderStyled>{t('users')}</CellHeaderStyled>
+        <CellHeaderStyled>{t('type')}</CellHeaderStyled>
       </TableHeader>
       <TableBody>
         {chats !== STATUS_400_BAD_REQUEST ? (
@@ -84,7 +86,7 @@ export default function ChannelList({
           ))
         ) : (
           <div className="flex justify-center items-center h-full w-full text-xl">
-            <div>채널을 생성해주세요!</div>
+            <div>{t("channelEmpty")}</div>
           </div>
         )}
       </TableBody>

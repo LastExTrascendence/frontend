@@ -1,0 +1,18 @@
+{
+  "nickname": "별칭",
+  "avatar":"꾸밈새",
+  "changeAvatar": "꾸밈새 변경",
+  "removeAvatar": "꾸밈새 삭제",
+  "2-FactorAuthentication": "이중보안",
+  "save": "저장",
+  "language": "언어 설정",
+  "totalGames" : "총 게임 수",
+  "wins" : "승리 수",
+  "losses" : "패배 수",
+  "emptyRecord" : "전적이 없어요!",
+  "player": "플레이어",
+  "result": "결과",
+  "type": "타입",
+  "mode": "모드",
+  "date": "날짜"
+}
