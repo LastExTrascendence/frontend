@@ -149,8 +149,8 @@ export default function Page({ params }: { params: { id: string } }) {
     <div className="flex flex-col h-full w-full items-center justify-center content-center">
       <div
         className={`relative ${isGameStart
-            ? "opacity-100 translate-y-0 max-h-[350px]"
-            : "max-h-[0px] opacity-0 translate-y-10"
+          ? "opacity-100 translate-y-0 max-h-[350px]"
+          : "max-h-[0px] opacity-0 translate-y-10"
           } transition-all duration-1000 ease-in-out z-0 mb-3`}
       >
         <GamePlay myRole={myRole} id={params.id} isGameStart={isGameStart} />

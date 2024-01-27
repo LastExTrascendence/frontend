@@ -39,7 +39,7 @@ export default function NewChatChannelModal({
       closeModal();
       const channelData: ChatCreateProps = {
         id: 0,
-        title: title,
+        title: encodeURIComponent(title),
         channelPolicy: channelPolicy,
         password: channelPolicy === ChannelPolicy.PRIVATE ? password : null,
         creatorId: myInfo.id,
@@ -50,7 +50,7 @@ export default function NewChatChannelModal({
       const responseChannelData: ChatCreateProps =
         await axiosCreateChatChannel(channelData);
 
-      router.push(`/channel/${responseChannelData.id}?name=${title}`);
+      router.push(`/channel/${responseChannelData.id}?name=${encodeURIComponent(title)}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
