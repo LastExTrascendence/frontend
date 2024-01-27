@@ -72,7 +72,7 @@ export default function NewGameChannelModal({
         <Modal
           type={ModalTypes.hasProceedBtn}
           proceedBtnText={t("create")}
-          cancleBtnText={t("cancel")}
+          cancelBtnText={t("cancel")}
           closeModal={closeModal}
           onClickProceed={tryCreateGame}
         >

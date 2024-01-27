@@ -181,7 +181,7 @@ export default function Page({ params }: { params: { id: string } }) {
             type={ModalTypes.noBtn}
             title="Game Result"
             proceedBtnText="Re Game"
-            cancleBtnText="Quit Room"
+            cancelBtnText="Quit Room"
             closeModal={closeGameEndModal}
           >
             <GameEndModal data={gameEndData} />

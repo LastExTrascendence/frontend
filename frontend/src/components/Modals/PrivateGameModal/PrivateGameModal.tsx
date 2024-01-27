@@ -35,7 +35,7 @@ export default function PrivateGameModal({
       <Modal
         type={ModalTypes.hasProceedBtn}
         proceedBtnText="Enter"
-        cancleBtnText="Cancel"
+        cancelBtnText="Cancel"
         closeModal={closeModal}
         onClickProceed={tryEnterPrivateGame}
       >

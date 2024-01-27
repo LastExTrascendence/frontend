@@ -68,8 +68,8 @@ export default function NewChatChannelModal({
         <Modal
           type={ModalTypes.hasProceedBtn}
           // title={"New Channel"}
-          proceedBtnText={"Create"}
-          cancleBtnText={"Cancel"}
+          proceedBtnText={t("create")}
+          cancelBtnText={t("cancel")}
           closeModal={closeModal}
           onClickProceed={tryCreateChatChannel}
         >

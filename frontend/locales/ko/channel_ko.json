@@ -7,7 +7,7 @@
   "channelEmpty": "채팅이 없어요!",
   "searchChannels": "채널 검색",
   "create": "생성",
-  "cancle": "취소",
+  "cancel": "취소",
   "channelName" : "채널 이름",
   "channelPolicy" : "채널 유형",
   "password" : "비밀번호",

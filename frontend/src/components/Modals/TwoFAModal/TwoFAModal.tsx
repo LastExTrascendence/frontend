@@ -83,7 +83,7 @@ export const TwoFAModal = ({
           type={ModalTypes.hasProceedBtn}
           proceedBtnText="Verify"
           onClickProceed={tryVerifyOTP}
-          cancleBtnText="Cancel"
+          cancelBtnText="Cancel"
           closeModal={closeModal}
         >
           <TwoFAModalWrapperStyled>

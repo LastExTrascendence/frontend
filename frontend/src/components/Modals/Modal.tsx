@@ -22,7 +22,7 @@ export enum ModalTypes {
  * @param children Modal 내부 content
  * @param proceedBtnText 확인버튼 텍스트 (기본값: 확인)
  * @param onClickProceed 확인버튼 클릭 시 동작 함수
- * @param cancleBtnText 취소버튼 텍스트 (기본값: 취소)
+ * @param cancelBtnText 취소버튼 텍스트 (기본값: 취소)
  * @param closeModal 모달 닫는 함수
  */
 export interface IModalContents {
@@ -33,7 +33,7 @@ export interface IModalContents {
   children?: React.ReactElement;
   proceedBtnText?: string;
   onClickProceed?: ((e: React.MouseEvent) => Promise<void>) | null;
-  cancleBtnText?: string;
+  cancelBtnText?: string;
   closeModal: React.MouseEventHandler;
 }
 
@@ -45,7 +45,7 @@ export default function Modal({
   children,
   proceedBtnText,
   onClickProceed,
-  cancleBtnText,
+  cancelBtnText,
   closeModal,
 }: IModalContents) {
   return (
@@ -75,7 +75,7 @@ export default function Modal({
                 fontSize="1.5rem"
                 fontStyle="italic"
                 fontWeight="800"
-                text={cancleBtnText || "취소"}
+                text={cancelBtnText || "취소"}
                 theme="white"
               />
               <PillButton

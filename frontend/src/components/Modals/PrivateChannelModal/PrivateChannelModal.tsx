@@ -35,7 +35,7 @@ export default function PrivateChannelModal({
       <Modal
         type={ModalTypes.hasProceedBtn}
         proceedBtnText="Enter"
-        cancleBtnText="Cancel"
+        cancelBtnText="Cancel"
         closeModal={closeModal}
         onClickProceed={tryEnterPrivateChannel}
       >
