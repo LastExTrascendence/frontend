@@ -19,6 +19,7 @@
   "private": "Private",
   "normal": "Normal",
   "speed": "Speed",
+  "SPEED": "Speed",
   "ladder": "Ladder",
   "mode": "Mode",
   "NORMAL": "Normal",
