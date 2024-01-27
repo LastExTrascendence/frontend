@@ -1,7 +1,10 @@
+import Translator from "@/language/Translator";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
+import { languageState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
@@ -75,34 +78,35 @@ const ButtonDescriptionStyled = styled.p`
   }
 `;
 
-const buttons: MainButtonItemProps[] = [
-  {
-    href: "/quickstart",
-    title: "Quick Start",
-    description: "Quickly join queue for 1:1 match",
-  },
-  {
-    href: "/game",
-    title: "Game",
-    description: "Create or join a game",
-  },
-  {
-    href: "/channel",
-    title: "Channel",
-    description: "Create or join a channel",
-  },
-  {
-    href: "/profile",
-    title: "Profile",
-    description: "View or change my settings",
-  },
-];
-
 function MainButtonList() {
   const router = useRouter();
   const { enterQueue, exitQueue } = useSocket();
   const [isQueueConnected, setIsQueueConnected] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [language] = useRecoilState(languageState);
+
+  const buttons: MainButtonItemProps[] = [
+    {
+      href: "/quickstart",
+      title: language.quickStart,
+      description: "Quickly join queue for 1:1 match",
+    },
+    {
+      href: "/game",
+      title: language.game,
+      description: "Create or join a game",
+    },
+    {
+      href: "/channel",
+      title: language.chat,
+      description: "Create or join a channel",
+    },
+    {
+      href: "/profile",
+      title: language.profile,
+      description: "View or change my settings",
+    },
+  ];
 
   const onClickHandler = (href: string) => {
     if (isQueueConnected) return;
