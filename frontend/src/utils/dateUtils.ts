@@ -10,7 +10,7 @@ export const getFormattedDate = (date: Date) => {
 export const getNDaysAgoString = (date: Date) => {
   const today = new Date();
   const diff = today.getTime() - date.getTime();
-  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+  const diffDays = Math.floor(diff / (1000 * 3600 * 24));
   return diffDays === 0
     ? "today"
     : diffDays === 1

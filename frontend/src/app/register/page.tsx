@@ -1,12 +1,14 @@
 "use client";
 
+import createConfetti from "canvas-confetti";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { myState } from "@/recoil/atom";
+import { convertBase64 } from "@/app/(main)/(overview)/(profile)/profile/page";
 import {
   FailResponseModal,
   SuccessResponseModal,
@@ -87,7 +89,6 @@ export default function Page() {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
-  const [base64Image, setBase64Image] = useState<string>("");
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
   const [myInfo, setMyInfo] = useRecoilState(myState);
   const [modalTitle, setModalTitle] = useState<string>("");
@@ -112,6 +113,15 @@ export default function Page() {
     try {
       await axiosCreateUser(data);
       updateMyInfo(nickname, avatar);
+      createConfetti({
+        angle: 90,
+        gravity: 0.5,
+        origin: { x: 0.5, y: 0.8 },
+        particleCount: 400,
+        spread: 150,
+      });
+
+      setModalTitle("회원가입에 성공했습니다!");
       setTimeout(() => {
         router.replace("/");
       }, 4000);
@@ -120,16 +130,17 @@ export default function Page() {
       prevStep();
       prevStep();
       setModalTitle(
-        error.response.data.message || "알 수 없는 오류가 발생했습니다.",
+        error.response.data
+          ? error.response.data.message
+          : "알 수 없는 오류가 발생했습니다.",
       );
       setHasErrorOnResponse(true);
-      setShowResponseModal(true);
       // throw error;
+    } finally {
+      setShowResponseModal(true);
     }
   };
 
-  // check nickname is valid
-  // must be 3 ~ 16 characters, only alphabet, number, underscore, hyphen
   const checkNickname = (nickname: string) => {
     const regExp = /^[a-zA-Z0-9_-]{4,16}$/;
     return regExp.test(nickname);
@@ -144,6 +155,37 @@ export default function Page() {
         setIsValid(true);
       }, 500);
     }
+  };
+
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e || !e.target || !e.target.files) return;
+    const file = e.target.files[0];
+    try {
+      const fileSize = file.size / 1024 ** 2;
+      if (fileSize > 1.37) {
+        throw new Error("1MB 이하의\n파일을 선택해주세요");
+      }
+      const base64 = await convertBase64(file);
+      setAvatar(base64);
+      setModalTitle("파일 업로드에 성공했습니다");
+    } catch (err: any) {
+      if (err.message) {
+        setModalTitle(err.message);
+      } else {
+        setModalTitle("파일 업로드에 실패했습니다");
+      }
+      setHasErrorOnResponse(true);
+    } finally {
+      setShowResponseModal(true);
+    }
+  };
+
+  const handleChangeAvatar = async () => {
+    const imageUploadInput = document.getElementById(
+      "imageUploadInput",
+    ) as HTMLInputElement;
+    if (!imageUploadInput) return;
+    imageUploadInput.click();
   };
 
   const handleCloseResponseModal = () => {
@@ -166,11 +208,6 @@ export default function Page() {
       }
     }
   }, []);
-  // if (avatar) {
-  //   encodeFileToBase64(avatar).then((base64Image) => {
-  //     setBase64Image({ image: avatar, url: base64Image });
-  //   });
-  // }
 
   return (
     <>
@@ -218,7 +255,21 @@ export default function Page() {
           {currentStep === UserRegisterCard.Avatar && (
             <Card title="아바타를 선택해주세요">
               <>
-                <ProfileImage showBorder={true} borderRadius={40} />
+                <ImageUploadInputStyled
+                  id="imageUploadInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    handleImageUpload(e);
+                  }}
+                />
+                <ProfileImageWrapperStyled
+                  onClick={(e) => {
+                    handleChangeAvatar();
+                  }}
+                >
+                  <ProfileImage showBorder={true} borderRadius={40} />
+                </ProfileImageWrapperStyled>
                 <PillButton
                   text="돌아가기"
                   width="260px"
@@ -241,7 +292,10 @@ export default function Page() {
           )}
           {currentStep === UserRegisterCard.Welcome && (
             <Card title="Welcome!">
-              <h1></h1>
+              <ProfileInfoWrapperStyled>
+                <ProfileImage showBorder={true} borderRadius={40} />
+                <NicknameContainerStyled>{nickname}</NicknameContainerStyled>
+              </ProfileInfoWrapperStyled>
             </Card>
           )}
         </RegisterCardsWrapperStyled>
@@ -297,6 +351,13 @@ const RegisterTitleStyled = styled.div`
   margin-left: 25px;
 `;
 
+const RegisterCardsWrapperStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
 const InputContainerStyled = styled.div<{ $isValid: boolean }>`
   display: flex;
   align-items: center;
@@ -311,6 +372,7 @@ const InputContainerStyled = styled.div<{ $isValid: boolean }>`
     font-size: 1.75rem;
     padding: 0 1rem;
     border-radius: 20px;
+    margin-top: 2rem;
   }
   input::placeholder {
     color: var(--main-purple);
@@ -319,9 +381,46 @@ const InputContainerStyled = styled.div<{ $isValid: boolean }>`
   }
 `;
 
-const RegisterCardsWrapperStyled = styled.div`
+const ImageUploadInputStyled = styled.input`
+  display: none;
+`;
+
+const ProfileImageWrapperStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  pointer-events: none;
+
+  // put upload icon on the left side of the image
+  &::after {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: url("/upload.svg") no-repeat center;
+    background-size: 50%;
+    transform: translateX(150%);
+    /* opacity: 0.6; */
+    z-index: 10;
+    pointer-events: initial;
+    cursor: pointer;
+  }
+`;
+
+const ProfileInfoWrapperStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const NicknameContainerStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
+  color: var(--main-purple);
+  font-size: 1.75rem;
 `;
