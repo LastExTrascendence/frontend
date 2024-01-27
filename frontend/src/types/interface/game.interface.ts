@@ -45,10 +45,12 @@ export type GameStatsResponseDto =
   | typeof STATUS_400_BAD_REQUEST;
 
 export interface GameStatsDto {
-  win: number;
-  lose: number;
-  winRate: number;
-  total: number;
+  longestGame: number;
+  shortestGame: number;
+  averageGameTime: number;
+  totalPointScored: number;
+  averageScorePerGame: number;
+  averageScorePerWin: number;
 }
 
 /**
@@ -61,7 +63,7 @@ export interface CanvasProps {
   map: string;
   width: number;
   height: number;
-};
+}
 
 /**
  * @description 게임에 필요한 요소들
@@ -74,7 +76,7 @@ export interface GameProps extends CanvasProps {
   ball: BallProps;
   leftPaddle: PaddleProps;
   rightPaddle: PaddleProps;
-};
+}
 
 /**
  * @description 게임에 필요한 요소들
@@ -85,7 +87,7 @@ export interface BallProps {
   x: number;
   y: number;
   size: number;
-};
+}
 
 /**
  * @description 게임에 필요한 요소들
@@ -101,7 +103,7 @@ export interface PaddleProps {
   width: number;
   height: number;
   color: string;
-};
+}
 
 /**
  * @description 게임 끝날때 필요한 요소들
@@ -112,9 +114,9 @@ export interface PaddleProps {
  * @param {string} awayScore - 어웨이팀 점수
  */
 export interface GameEndData {
-  winUserNick: string,
-  loseUserNick: string,
-  playTime: string,
-  homeScore: string,
-  awayScore: string,
-};
+  winUserNick: string;
+  loseUserNick: string;
+  playTime: string;
+  homeScore: string;
+  awayScore: string;
+}

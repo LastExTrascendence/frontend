@@ -35,7 +35,7 @@ export default function GameChat({ name }: { name: string }) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-chatColor p-9">
+    <div className="flex h-full w-full flex-col bg-chatColor p-4 rounded-[20px] ">
       <div className="w-full content-start items-center overflow-y-scroll">
         {messages.map((message, index) => (
           <MessageItem key={index} message={message} />

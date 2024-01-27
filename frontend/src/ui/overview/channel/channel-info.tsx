@@ -3,7 +3,7 @@ import ChannelInfoHeader from "@/ui/overview/channel/channel-info-header";
 import ChannelUserList from "@/ui/overview/channel/channel-user-list";
 import { UserInfoDto } from "@/types/interface/user.interface";
 
-const ChannelInfoAreaStyled = styled.div`
+export const ChannelInfoAreaStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
