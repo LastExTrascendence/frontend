@@ -95,15 +95,13 @@ export default function GamePlay({
 
   useEffect(() => {
     if (!gameSocket) return;
-    if (isGameStart) {
-      const loopGameData = (data: GameDataProps) => {
-        setGameData(data);
-      };
-      gameSocket.on("loopGameData", loopGameData);
 
-      return () => {
-        gameSocket.off("loopGameData", loopGameData);
-      };
+    const loopGameData = (data: GameDataProps) => {
+      setGameData(data);
+    };
+
+    if (isGameStart) {
+      gameSocket.on("loopGameData", loopGameData);
     } else {
       setGameData({
         x: 256,
@@ -112,7 +110,13 @@ export default function GamePlay({
         r: 100,
       });
       setScore([0, 0]);
+      if (countdown === 0)
+        setCountdown(3);
     }
+
+    return () => {
+      gameSocket.off("loopGameData", loopGameData);
+    };
   }, [isGameStart]);
 
   useEffect(() => {
@@ -122,7 +126,6 @@ export default function GamePlay({
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       gameSocket.emit("loopPosition", { gameId: id, title: name, myRole });
-      clearTimeout(timer);
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [isGameStart, countdown]);
