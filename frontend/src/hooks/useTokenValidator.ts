@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { myState } from "@/recoil/atom";
-import { getCookie } from "@/api/cookie/cookies";
 import { IToken } from "@/app/register/page";
+import { getCookie } from "@/api/cookie/cookies";
 
-export default function useTokenValidator({ setIsClient }: { setIsClient: any }) {
+export default function useTokenValidator({
+  setIsClient,
+}: {
+  setIsClient: any;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [myInfo, setMyInfo] = useRecoilState(myState);
@@ -26,21 +30,24 @@ export default function useTokenValidator({ setIsClient }: { setIsClient: any })
         }
 
         if (myInfo.id === 0) {
-          setMyInfo(prevInfo => ({
+          setMyInfo((prevInfo) => ({
             ...prevInfo,
             id: decodedToken.id,
-            nickname: decodedToken.nickname
+            nickname: decodedToken.nickname,
+            language: decodedToken.language,
           }));
         }
-
       } catch (error) {
         // 토큰 검증 실패
         console.error("Token validation failed:", error);
         router.push("/login");
       }
-    } else if (pathname !== "/login" && pathname !== "/login/otp" && pathname !== "/register") {
+    } else if (
+      pathname !== "/login" &&
+      pathname !== "/login/otp" &&
+      pathname !== "/register"
+    ) {
       router.push("/login");
     }
   }, [pathname, router]);
-
 }

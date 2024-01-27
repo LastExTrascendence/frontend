@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { myState } from "@/recoil/atom";
@@ -20,17 +21,17 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { UserStatus } from "@/types/enum/user.enum";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
-import { useTranslation } from "react-i18next";
 
 export interface IToken {
   id: number;
-  nickname: string | null;
+  nickname: string;
   avatar: string;
   email: string;
   two_fa: boolean;
   two_fa_complete: boolean;
   status: UserStatus;
   intra_name: string;
+  language: string;
   iat: number;
   exp: number;
 }
