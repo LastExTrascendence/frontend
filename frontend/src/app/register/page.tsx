@@ -18,6 +18,7 @@ import { UserRegisterDataDto } from "@/types/dto/user.dto";
 import { UserStatus } from "@/types/enum/user.enum";
 import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
+import { useTranslation } from "react-i18next";
 
 export interface IToken {
   id: number;

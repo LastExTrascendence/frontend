@@ -1,9 +1,18 @@
 {
-  "new":"New",
-  "single":"Single",
-  "game": "Game",
-  "creator": "Creator",
-  "users": "Users",
+  "nickname": "Nickname",
+  "avatar":"Avatar",
+  "changeAvatar": "Change Avatar",
+  "removeAvatar": "Remove Avatar",
+  "2-FactorAuthentication": "2-Factor Authentication",
+  "save": "Save",
+  "language": "Language Settings",
+  "totalGames" : "Toal Games",
+  "wins" : "Wins",
+  "losses" : "Losses",
+  "emptyRecord" : "There is no record!",
+  "player": "Player",
+  "result": "Result",
   "type": "Type",
-  "status": "Status"
+  "mode": "Mode",
+  "date": "Date"
 }

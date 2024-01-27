@@ -13,6 +13,7 @@ import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import { axiosAddFriend, axiosRemoveFriend } from "@/api/axios/axios.custom";
 import { getFormattedDate } from "@/utils/dateUtils";
+import { useTranslation } from "react-i18next";
 
 interface UserInfoCardProps {
   userInfo: UserCardInfoResponseDto;
@@ -27,6 +28,7 @@ export default function UserInfoCard({
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
+  const { t } = useTranslation('profile');
 
   if (userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST) {
     return (
@@ -109,15 +111,15 @@ export default function UserInfoCard({
           </UserInfoDetailWrapperStyled>
           <UserGameRecordCardStyled>
             <RecordWrapperStyled>
-              <RecordTextStyled>Total Games</RecordTextStyled>
+              <RecordTextStyled>{t("totalGames")}</RecordTextStyled>
               <RecordTextStyled>{userInfo.games}</RecordTextStyled>
             </RecordWrapperStyled>
             <RecordWrapperStyled>
-              <RecordTextStyled>Wins</RecordTextStyled>
+              <RecordTextStyled>{t("wins")}</RecordTextStyled>
               <RecordTextStyled>{userInfo.wins}</RecordTextStyled>
             </RecordWrapperStyled>
             <RecordWrapperStyled>
-              <RecordTextStyled>Loses</RecordTextStyled>
+              <RecordTextStyled>{t("losses")}</RecordTextStyled>
               <RecordTextStyled>{userInfo.loses}</RecordTextStyled>
             </RecordWrapperStyled>
           </UserGameRecordCardStyled>
