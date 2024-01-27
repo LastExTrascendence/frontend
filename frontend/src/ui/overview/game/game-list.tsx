@@ -79,19 +79,17 @@ export const CellStyled = styled.div`
 
 export default function GameList({
   games,
-  // gameEnterLogic,
 }: {
   games: GameRecordListResponseDto;
-  // gameEnterLogic: (id: number, title: string, gameType: string) => void;
 }) {
-  if (games === undefined) return <LoadingAnimation />;
-
   const router = useRouter();
   const myInfo = useRecoilValue(myState);
   const [gameId, setGameId] = useState<number | null>(null);
   const [title, setTitle] = useState<string>("");
   const [showPrivateGameModal, setShowPrivateGameModal] =
     useState<boolean>(false);
+
+  if (games === undefined) return <LoadingAnimation />;
 
   const togglePrivateGameModal = () => {
     setShowPrivateGameModal(!showPrivateGameModal);

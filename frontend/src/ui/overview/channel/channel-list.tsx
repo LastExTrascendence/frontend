@@ -23,14 +23,14 @@ export default function ChannelList({
 }: {
   chats: ChannelListResponseDto;
 }) {
-  if (chats === undefined) return <LoadingAnimation />;
-
   const router = useRouter();
   const myInfo = useRecoilValue(myState);
   const [channelId, setChannelId] = useState<number | null>(null);
   const [title, setTitle] = useState<string>("");
   const [showPrivateChannelModal, setShowPrivateChannelModal] =
     useState<boolean>(false);
+
+  if (chats === undefined) return <LoadingAnimation />;
 
   const togglePrivateChannelModal = () => {
     setShowPrivateChannelModal(!showPrivateChannelModal);
@@ -50,6 +50,7 @@ export default function ChannelList({
       router.push(`/channel/${channelId}?name=${channelTitle}&type=${channelType}`);
     }
   };
+
   return (
     <ChannelListContainerStyled>
       <TableHeader>
