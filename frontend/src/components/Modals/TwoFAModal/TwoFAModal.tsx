@@ -61,7 +61,7 @@ export const TwoFAModal = ({
     }
     try {
       const response = await axiosVerifyOTP(otpCode);
-      console.log(response);
+      // console.log(response);
       setModalTitle("인증에 성공했습니다");
       setShowResponseModal(true);
       onVerificationSuccess();

@@ -4,7 +4,7 @@ export default function muteUser(
   myId: number,
   userNickname: string,
 ) {
-  console.log("mute user");
+  // console.log("mute user");
   socket.emit("muteUser", {
     title,
     userId: myId,

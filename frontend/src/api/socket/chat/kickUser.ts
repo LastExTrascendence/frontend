@@ -4,6 +4,6 @@ export default function kickUser(
   myId: number,
   userNickname: string,
 ) {
-  console.log("kick user");
+  // console.log("kick user");
   socket.emit("kickUser", { title, userId: myId, kickNick: userNickname });
 }

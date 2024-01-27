@@ -102,7 +102,7 @@ export default function GameList({
   }
 
   function gameEnterLogic(gameId, gameTitle, gamePolicy) {
-    console.log(gameId, gameTitle, gamePolicy);
+    // console.log(gameId, gameTitle, gamePolicy);
 
     setGameId(gameId);
     setTitle(gameTitle);
