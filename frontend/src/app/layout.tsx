@@ -7,6 +7,7 @@ import StyledComponentsRegistry from "@/lib/registry";
 import ProtectedRouted from "@/components/ProtectedRoute";
 import ModalPortalProvider from "@/components/ModalPortalProvider";
 import ToastContainerProvider from "@/components/ToastContainerProvider";
+import I18NProvider from "@/components/I18nProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ export default function RootLayout({
           <RecoilRootProvider>
             <ProtectedRouted>
               <ToastContainerProvider />
-              {children}
+              <I18NProvider>{children}</I18NProvider>
             </ProtectedRouted>
           </RecoilRootProvider>
         </StyledComponentsRegistry>

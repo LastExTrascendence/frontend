@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserFriendListResponseDto } from "@/types/dto/user.dto";
 import { UserInfoDto } from "@/types/interface/user.interface";
+import { useTranslation } from "react-i18next";
 
 function FriendSectionOnlineCount({
   friendList,
 }: {
   friendList: UserFriendListResponseDto;
 }) {
+  const { t } = useTranslation("common");
   if (friendList === undefined || friendList === STATUS_400_BAD_REQUEST) {
     return <></>;
   }
@@ -20,7 +22,7 @@ function FriendSectionOnlineCount({
     <OnlineCountContainerStyled>
       <OnlineCountTextWrapperStyled>
         <OnlineCountTextStyled>
-          Online ({onlineCount}/{friendList.length})
+          {t("online")} ({onlineCount}/{friendList.length})
         </OnlineCountTextStyled>
       </OnlineCountTextWrapperStyled>
     </OnlineCountContainerStyled>

@@ -10,6 +10,7 @@ import useCreateSingleGame from "@/hooks/useCreateSingleGame";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameChannelListResponseDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
+import { useTranslation } from "react-i18next";
 
 const GamePageStyled = styled.div`
   width: 100%;
@@ -83,6 +84,7 @@ export default function Page() {
   const [filteredGameChannelList, setFilteredGameChannelList] =
     useState<GameChannelListResponseDto>(gameChannelList);
   const createSingleGame = useCreateSingleGame();
+  const { t } = useTranslation("game");
 
   const handleCreateSingleGame = async () => {
     try {
@@ -147,7 +149,7 @@ export default function Page() {
           <SearchBarWrapperStyled>
             <SearchBarStyled
               className="placeholder:text-stone-300"
-              placeholder="Search Games"
+              placeholder={t("searchGames")}
               value={searchInput}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchInput(e.target.value)
@@ -158,7 +160,7 @@ export default function Page() {
           <ButtonWrapperStyled>
             <PillButton
               onClick={handleCreateSingleGame}
-              text="Single"
+              text={t("single")}
               width="100px"
               height="35px"
               fontWeight="800"
@@ -168,7 +170,7 @@ export default function Page() {
             />
             <PillButton
               onClick={toggleNewGameChannelModal}
-              text="New"
+              text={t("new")}
               width="100px"
               height="35px"
               fontWeight="800"

@@ -9,6 +9,7 @@ import MultiToggleSwitch from "@/ui/multi-toggle-switch";
 import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { GameMode, GameType } from "@/types/enum/game.enum";
 import { axiosCreateGame } from "@/api/axios/axios.custom";
+import { useTranslation } from "react-i18next";
 
 const ChannelPolicyList = [
   { name: "Public", key: ChannelPolicy.PUBLIC },
@@ -38,6 +39,7 @@ export default function NewGameChannelModal({
   const [gameType, setGameType] = useState(GameType.NORMAL);
   const [gameMode, setGameMode] = useState(GameMode.NORMAL);
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const { t } = useTranslation("game");
 
   const tryCreateGame = async (event: React.MouseEvent) => {
     if (!title) return;
@@ -68,9 +70,8 @@ export default function NewGameChannelModal({
       {!showResponseModal && (
         <Modal
           type={ModalTypes.hasProceedBtn}
-          // title={"New Game"}
-          proceedBtnText={"Create"}
-          cancleBtnText={"Cancel"}
+          proceedBtnText={t("create")}
+          cancleBtnText={t("cancel")}
           closeModal={closeModal}
           onClickProceed={tryCreateGame}
         >

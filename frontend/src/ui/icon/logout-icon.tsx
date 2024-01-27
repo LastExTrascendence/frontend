@@ -1,9 +1,11 @@
 import { useRouter } from "next/navigation";
 import IconContainer from "@/ui/icon/icon-container";
 import { removeCookie } from "@/api/cookie/cookies";
+import { useTranslation } from "react-i18next";
 
 export default function LogoutIcon() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const onClickLogout = (): void => {
     // if (process.env.IS_LOCAL) {
@@ -21,7 +23,7 @@ export default function LogoutIcon() {
       iconPath="/logout.svg"
       iconColor="var(--light-gray)"
       fontColor="var(--light-gray)"
-      text="Logout"
+      text={t("logout")}
       onClick={onClickLogout}
     />
   );
