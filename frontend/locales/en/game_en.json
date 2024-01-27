@@ -9,5 +9,20 @@
   "gameEmpty": "There is no game yet",
   "searchGames": "Search Games",
   "create": "Create",
-  "cancle": "Cancle"
+  "cancel": "Cancel",
+  "password" : "Password",
+  "gameName": "Game Name",
+  "gamePolicy": "Game Policy",
+  "gameType": "Game Type",
+  "gameMode": "Game Mode",
+  "public": "Public",
+  "private": "Private",
+  "normal": "Normal",
+  "speed": "Speed",
+  "ladder": "Ladder",
+  "mode": "Mode",
+  "NORMAL": "Normal",
+  "SINGLE": "Single",
+  "start": "Start",
+  "ready": "Ready"
 }

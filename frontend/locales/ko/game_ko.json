@@ -9,5 +9,20 @@
   "gameEmpty": "게임이 없어요!",
   "searchGames": "게임 검색",
   "create": "생성",
-  "cancle": "취소"
+  "cancel": "취소",
+  "password" : "비밀번호",
+  "gameName": "게임명",
+  "gamePolicy": "게임 정책",
+  "gameType": "게임 유형",
+  "gameMode": "게임 모드",
+  "public": "공개",
+  "private": "비공개",
+  "normal": "일반",
+  "speed": "스피드",
+  "ladder": "레더",
+  "mode": "모드",
+  "NORMAL": "일반",
+  "SINGLE": "1인용",
+  "start": "시작",
+  "ready": "준비"
 }

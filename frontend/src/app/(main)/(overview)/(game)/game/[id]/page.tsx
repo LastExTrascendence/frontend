@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -51,6 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [gameInfo, setGameInfo] = useState<GameChannelListDto>(gameInfoMock);
 
   const { closeAll } = useMenu();
+  const { t } = useTranslation("game");
 
   const gameStartHandler = () => {
     if (!gameSocket || !isGameConnected) return;
@@ -165,7 +167,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 theme={isReady ? "darkpurple" : "purple"}
                 fontSize="3rem"
                 fontStyle="extra-bold"
-                text={myRole === "CREATOR" ? "Start" : "Ready"}
+                text={myRole === "CREATOR" ? t("start") : t("ready")}
                 onClick={gameStartHandler}
               />
             </div>

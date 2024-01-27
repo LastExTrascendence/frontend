@@ -9,5 +9,21 @@
   "gameEmpty": "Il n'y a pas encore de jeu",
   "searchGames": "Rechercher des jeux",
   "create": "Créer",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "password" : "Mot de passe",
+  "gameName": "Nom du jeu",
+  "gamePolicy": "Politique du jeu",
+  "gameType": "Type de jeu",
+  "gameMode": "Mode de jeu",
+  "public": "Public",
+  "private": "Privé",
+  "normal": "Normal",
+  "speed": "Rapide",
+  "ladder": "Échelle",
+  "mode": "Mode",
+  "NORMAL": "Normal",
+  "SINGLE": "Simple",
+  "start": "Démarrer",
+  "ready": "Prêt"
 }
+
