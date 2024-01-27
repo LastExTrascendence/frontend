@@ -142,7 +142,6 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
   const [pathnameRegex, query] = pathname.split("?");
 
   useEffect(() => {
-    console.log(pathnameRegex, query);
     const gamePathRegex = /^\/game\/\d+$/;
     if (!gamePathRegex.test(pathnameRegex)) {
       setInviteViewArea(true);

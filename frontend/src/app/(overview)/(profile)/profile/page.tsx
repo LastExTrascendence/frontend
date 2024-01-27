@@ -67,8 +67,8 @@ export default function Page() {
       }));
       setModalTitle("수정되었습니다");
     } catch (err: any) {
-      console.log("error", err);
-      setModalTitle("프로필 수정에 실패했습니다");
+      setModalTitle(err.response.data.message || "프로필 수정에 실패했습니다");
+      setNickname("");
       setHasErrorOnResponse(true);
     } finally {
       setShowResponseModal(true);
@@ -109,7 +109,6 @@ export default function Page() {
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
     if (!e || !e.target || !e.target.files) return;
     const file = e.target.files[0];
     try {
@@ -118,7 +117,6 @@ export default function Page() {
         throw new Error("1MB 이하의\n파일을 선택해주세요");
       }
       const base64 = await convertBase64(file);
-      console.log(base64);
       setAvatar(base64);
       setModalTitle("파일 업로드에 성공했습니다");
     } catch (err: any) {
