@@ -31,6 +31,23 @@ const twoFAToggleList: toggleItem[] = [
   { name: "Off", key: TwoFAType.OFF },
 ];
 
+export const convertBase64 = async (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      if (fileReader.result !== null) {
+        resolve(fileReader.result as string);
+      } else {
+        reject(new Error("파일 읽기에 실패했습니다"));
+      }
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
+
 export default function Page() {
   const [twoFA, setTwoFA] = useState<TwoFAType>(TwoFAType.OFF);
   const [nickname, setNickname] = useState<string>("");
@@ -89,23 +106,6 @@ export default function Page() {
       setHasErrorOnResponse(true);
       setShowResponseModal(true);
     }
-  };
-
-  const convertBase64 = async (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        if (fileReader.result !== null) {
-          resolve(fileReader.result as string);
-        } else {
-          reject(new Error("파일 읽기에 실패했습니다"));
-        }
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -384,16 +384,6 @@ const ButtonContainerStyled = styled.div`
 
 const ImageUploadInputStyled = styled.input`
   display: none;
-`;
-
-const TwoFAWrapperStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* align-items: center; */
-  width: 100%;
-  height: 150px;
-  margin: 1rem 0 1rem 0;
 `;
 
 const ToggleSwitchWrapperStyled = styled.div`
