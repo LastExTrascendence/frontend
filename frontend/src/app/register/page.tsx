@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { myState } from "@/recoil/atom";
+import {
+  FailResponseModal,
+  SuccessResponseModal,
+} from "@/components/Modals/ResponseModal/ResponseModal";
 import Card from "@/ui/card";
 import PillButton from "@/ui/pill-button";
 import ProfileImage from "@/ui/profile-image";
@@ -81,9 +85,12 @@ export default function Page() {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [nickname, setNickname] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
-  const [base64Image, setBase64Image] = useState<{ image: File; url: any }>();
+  const [base64Image, setBase64Image] = useState<string>("");
   const { currentStep, nextStep, prevStep } = useRegistrationSteps();
   const [myInfo, setMyInfo] = useRecoilState(myState);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const router = useRouter();
 
   // 상태 업데이트
@@ -106,9 +113,16 @@ export default function Page() {
       setTimeout(() => {
         router.replace("/");
       }, 4000);
-    } catch (error) {
-      router.replace("/login");
-      throw error;
+    } catch (error: any) {
+      // router.replace("/login");
+      prevStep();
+      prevStep();
+      setModalTitle(
+        error.response.data.message || "알 수 없는 오류가 발생했습니다.",
+      );
+      setHasErrorOnResponse(true);
+      setShowResponseModal(true);
+      // throw error;
     }
   };
 
@@ -128,6 +142,11 @@ export default function Page() {
         setIsValid(true);
       }, 500);
     }
+  };
+
+  const handleCloseResponseModal = () => {
+    setShowResponseModal(false);
+    setHasErrorOnResponse(false);
   };
 
   useEffect(() => {
@@ -152,78 +171,92 @@ export default function Page() {
   // }
 
   return (
-    <RegisterPageStyled>
-      <RegisterTitleWrapperStyled>
-        <Image
-          src="/LET_logo.svg"
-          alt="LET Logo"
-          width={100}
-          height={100}
-          priority
-        />
-        <RegisterTitleStyled>L.E.T</RegisterTitleStyled>
-      </RegisterTitleWrapperStyled>
-      <RegisterCardsWrapperStyled>
-        {currentStep === UserRegisterCard.Nickname && (
-          <Card title={UserRegisterCardTitle[currentStep]}>
-            <>
-              <ProfileImage showBorder={true} borderRadius={40} />
-              <InputContainerStyled $isValid={isValid}>
-                <input
-                  type="text"
-                  placeholder="..."
-                  value={nickname}
-                  minLength={3}
-                  maxLength={12}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      submitNickname();
-                    }
-                  }}
-                  onChange={(e) => setNickname(e.target.value)}
+    <>
+      <RegisterPageStyled>
+        <RegisterTitleWrapperStyled>
+          <Image
+            src="/LET_logo.svg"
+            alt="LET Logo"
+            width={100}
+            height={100}
+            priority
+          />
+          <RegisterTitleStyled>L.E.T</RegisterTitleStyled>
+        </RegisterTitleWrapperStyled>
+        <RegisterCardsWrapperStyled>
+          {currentStep === UserRegisterCard.Nickname && (
+            <Card title={UserRegisterCardTitle[currentStep]}>
+              <>
+                <ProfileImage showBorder={true} borderRadius={40} />
+                <InputContainerStyled $isValid={isValid}>
+                  <input
+                    type="text"
+                    placeholder="..."
+                    value={nickname}
+                    minLength={3}
+                    maxLength={12}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        submitNickname();
+                      }
+                    }}
+                    onChange={(e) => setNickname(e.target.value)}
+                  />
+                </InputContainerStyled>
+                <PillButton
+                  text="확인"
+                  width="260px"
+                  fontWeight="400"
+                  theme="purple"
+                  onClick={submitNickname}
                 />
-              </InputContainerStyled>
-              <PillButton
-                text="확인"
-                width="260px"
-                fontWeight="400"
-                theme="purple"
-                onClick={submitNickname}
-              />
-            </>
-          </Card>
-        )}
-        {currentStep === UserRegisterCard.Avatar && (
-          <Card title="아바타를 선택해주세요">
-            <>
-              <ProfileImage showBorder={true} borderRadius={40} />
-              <PillButton
-                text="돌아가기"
-                width="260px"
-                fontWeight="400"
-                theme="white"
-                onClick={prevStep}
-              />
-              <PillButton
-                text="확인"
-                width="260px"
-                fontWeight="400"
-                theme="purple"
-                onClick={() => {
-                  nextStep();
-                  UserRegisterFinished();
-                }}
-              />
-            </>
-          </Card>
-        )}
-        {currentStep === UserRegisterCard.Welcome && (
-          <Card title="Welcome!">
-            <h1></h1>
-          </Card>
-        )}
-      </RegisterCardsWrapperStyled>
-    </RegisterPageStyled>
+              </>
+            </Card>
+          )}
+          {currentStep === UserRegisterCard.Avatar && (
+            <Card title="아바타를 선택해주세요">
+              <>
+                <ProfileImage showBorder={true} borderRadius={40} />
+                <PillButton
+                  text="돌아가기"
+                  width="260px"
+                  fontWeight="400"
+                  theme="white"
+                  onClick={prevStep}
+                />
+                <PillButton
+                  text="확인"
+                  width="260px"
+                  fontWeight="400"
+                  theme="purple"
+                  onClick={() => {
+                    nextStep();
+                    UserRegisterFinished();
+                  }}
+                />
+              </>
+            </Card>
+          )}
+          {currentStep === UserRegisterCard.Welcome && (
+            <Card title="Welcome!">
+              <h1></h1>
+            </Card>
+          )}
+        </RegisterCardsWrapperStyled>
+      </RegisterPageStyled>
+      {showResponseModal &&
+        (hasErrorOnResponse ? (
+          <FailResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ) : (
+          <SuccessResponseModal
+            modalTitle={modalTitle}
+            closeModal={handleCloseResponseModal}
+          />
+        ))}
+    </>
   );
 }
 
