@@ -15,5 +15,6 @@
   "home": "처음 화면",
   "games": "게임 목록",
   "channels": "채널 목록",
-  "searchUser" : "유저 검색"
+  "searchUser" : "유저 검색",
+  "noFriends" : "친구가 없어요!"
 }

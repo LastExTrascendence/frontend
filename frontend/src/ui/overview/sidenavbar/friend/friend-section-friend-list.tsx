@@ -4,12 +4,14 @@ import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserFriendListResponseDto } from "@/types/dto/user.dto";
 import { useMenu } from "@/hooks/useMenu";
 import FriendSectionCard from "./friend-section-card";
+import { useTranslation } from "react-i18next";
 
 export default function FriendSectionOnlineCount({
   friendList,
 }: {
   friendList: UserFriendListResponseDto;
 }) {
+  const { t } = useTranslation("common");
   if (
     friendList === undefined ||
     friendList === STATUS_400_BAD_REQUEST ||
@@ -17,7 +19,7 @@ export default function FriendSectionOnlineCount({
   ) {
     return (
       <div className="flex justify-center items-center h-full text-white">
-        <p>친구가 없어요!</p>
+        <p>{t("noFriends")}</p>
       </div>
     );
   }

@@ -15,5 +15,6 @@
   "home": "Accueil",
   "games": "Jeux",
   "channels": "Chaînes",
-  "searchUser" : "Rechercher un utilisateur"
+  "searchUser" : "Rechercher un utilisateur",
+  "noFriends" : "Vous n'avez pas d'amis"
 }
