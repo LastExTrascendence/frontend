@@ -3,11 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ChatChannelContainerStyled } from "@/app/(overview)/(channel)/channel/page";
+import { ChatChannelContainerStyled } from "@/app/(main)/(overview)/(channel)/channel/page";
 import {
   ProfileContainerStyled,
   ProfilePageStyled,
-} from "@/app/(overview)/(profile)/profile/page";
+} from "@/app/(main)/(overview)/(profile)/profile/page";
 import {
   FailResponseModal,
   SuccessResponseModal,

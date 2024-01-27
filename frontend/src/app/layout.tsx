@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "@/ui/css/globals.css";
 
 import RecoilRootProvider from "@/recoil/recoilRootProvider";
-import SocketProvider from "@/components/SocketProvider";
 import StyledComponentsRegistry from "@/lib/registry";
 import ProtectedRouted from "@/components/ProtectedRoute";
 import ModalPortalProvider from "@/components/ModalPortalProvider";
@@ -34,10 +33,8 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           <RecoilRootProvider>
             <ProtectedRouted>
-              <SocketProvider>
-                <ToastContainerProvider />
-                {children}
-              </SocketProvider>
+              <ToastContainerProvider />
+              {children}
             </ProtectedRouted>
           </RecoilRootProvider>
         </StyledComponentsRegistry>
