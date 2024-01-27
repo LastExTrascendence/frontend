@@ -106,20 +106,21 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (!gameSocket) return;
-    if (isGameConnected) {
-      const gameEndLogic = (data) => {
-        setGameEndData(data);
-        setIsGameStart(false);
-        setIsReady(false);
-        setShowGameEndModal(true);
-        gameSocket.emit("gameFinish", { gameId: params.id, title: name });
-      };
-      gameSocket.on("gameEnd", gameEndLogic);
+    const gameEndLogic = (data) => {
+      setGameEndData(data);
+      setIsGameStart(false);
+      setIsReady(false);
+      setShowGameEndModal(true);
+      gameSocket.emit("gameFinish", { gameId: params.id, title: name });
+    };
 
-      return () => {
-        gameSocket.off("gameEnd", gameEndLogic);
-      };
+    if (isGameConnected) {
+      gameSocket.on("gameEnd", gameEndLogic);
     }
+
+    return () => {
+      gameSocket.off("gameEnd", gameEndLogic);
+    };
   }, [gameSocket, isGameConnected]);
 
   const closeGameEndModal = () => {
