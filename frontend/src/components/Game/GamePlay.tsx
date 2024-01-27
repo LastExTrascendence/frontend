@@ -79,7 +79,7 @@ export default function GamePlay({
     team: "HOME",
   });
 
-  useEffect(() => {
+  const infoUpdator = (data: PlayInfoProps) => {
     if (myRole === "USER") {
       setPlayInfo((prevPlayInfo) => ({
         ...prevPlayInfo,
@@ -91,6 +91,9 @@ export default function GamePlay({
         team: "HOME",
       }));
     }
+  }
+  useEffect(() => {
+    infoUpdator(playInfo);
   }, [myRole]);
 
   useEffect(() => {
@@ -147,7 +150,8 @@ export default function GamePlay({
     if (!gameSocket) return;
     if (isGameConnected && isGameStart) {
       const playInfoInitialize = (data: PlayInfoProps) => {
-        setPlayInfo(data);
+        // setPlayInfo(data);
+        infoUpdator(data);
       };
       gameSocket.emit("play", { title: name, gameId: id });
       gameSocket.on("play", playInfoInitialize);

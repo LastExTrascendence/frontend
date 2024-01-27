@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { myState } from "@/recoil/atom";
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
 import ModalPortal from "@/components/Modals/ModalPortal";
@@ -18,7 +18,7 @@ export default function NewGameChannelModal({
   closeModal: () => void;
 }) {
   const router = useRouter();
-  const [myInfo] = useRecoilValue(myState);
+  const [myInfo, setMyInfo] = useRecoilState(myState);
   const [title, setTitle] = useState("");
   const [channelPolicy, setChannelPolicy] = useState(ChannelPolicy.PUBLIC);
   const [password, setPassword] = useState("");
