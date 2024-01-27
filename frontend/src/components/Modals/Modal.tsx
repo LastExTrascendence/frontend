@@ -204,8 +204,10 @@ const ModalTitleStyled = styled.h2`
 `;
 
 const ButtonWrapperStyled = styled.div`
+  width: 80%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-around;
   /* margin-top: 30px; */
 `;

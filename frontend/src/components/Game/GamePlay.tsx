@@ -6,8 +6,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useGameSocket } from "@/components/GameSocketProvider";
 import DrawGame from "@/ui/overview/game/draw-game";
 import { GameDataProps, PlayInfoProps } from "@/types/type/game-socket.type";
-import gameKeyDown from "@/api/socket/game/gameKeyDown";
-import gameKeyUp from "@/api/socket/game/gameKeyUp";
+import useGameKeyHandler from "@/hooks/useGameKeyHandler";
 
 const renderTime = ({ remainingTime }) => {
   const currentTime = useRef(remainingTime);
@@ -62,7 +61,7 @@ export default function GamePlay({
   const [countdown, setCountdown] = useState(3);
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
-  // const id = searchParams.get("id");
+  const type = searchParams.get("type");
   const { gameSocket, isGameConnected } = useGameSocket();
   const [gameData, setGameData] = useState<GameDataProps>({
     x: 256,
@@ -96,59 +95,29 @@ export default function GamePlay({
 
   useEffect(() => {
     if (!gameSocket) return;
+
+    const loopGameData = (data: GameDataProps) => {
+      setGameData(data);
+    };
+
     if (isGameStart) {
-      const loopGameData = (data: GameDataProps) => {
-        setGameData(data);
-      };
       gameSocket.on("loopGameData", loopGameData);
-
-      return () => {
-        gameSocket.off("loopGameData", loopGameData);
-      };
+    } else {
+      setGameData({
+        x: 256,
+        y: 150,
+        l: 100,
+        r: 100,
+      });
+      setScore([0, 0]);
+      if (countdown === 0)
+        setCountdown(3);
     }
-  }, [isGameStart]);
-
-  useEffect(() => {
-    const activeKeys = new Set();
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (activeKeys.has(event.key)) return; // 이미 눌린 키는 무시
-      activeKeys.add(event.key);
-      switch (event.key) {
-        case "ArrowUp":
-          gameKeyDown(gameSocket, id, playInfo.team, "ArrowUp");
-          break;
-        case "ArrowDown":
-          gameKeyDown(gameSocket, id, playInfo.team, "ArrowDown");
-          break;
-        default:
-          break;
-      }
-    };
-
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (!activeKeys.has(event.key)) return; // 관리되지 않는 키는 무시
-      activeKeys.delete(event.key);
-      switch (event.key) {
-        case "ArrowUp":
-          gameKeyUp(gameSocket, id, playInfo.team, "ArrowUp");
-          break;
-        case "ArrowDown":
-          gameKeyUp(gameSocket, id, playInfo.team, "ArrowDown");
-          break;
-        default:
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
+      gameSocket.off("loopGameData", loopGameData);
     };
-  }, [gameSocket, playInfo.team]);
+  }, [isGameStart]);
 
   useEffect(() => {
     let timer;
@@ -157,7 +126,6 @@ export default function GamePlay({
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0) {
       gameSocket.emit("loopPosition", { gameId: id, title: name, myRole });
-      clearTimeout(timer);
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [isGameStart, countdown]);
@@ -177,7 +145,7 @@ export default function GamePlay({
 
   useEffect(() => {
     if (!gameSocket) return;
-    if (isGameConnected) {
+    if (isGameConnected && isGameStart) {
       const playInfoInitialize = (data: PlayInfoProps) => {
         setPlayInfo(data);
       };
@@ -188,7 +156,9 @@ export default function GamePlay({
         gameSocket.off("play", playInfoInitialize);
       };
     }
-  }, [gameSocket, isGameConnected]);
+  }, [gameSocket, isGameConnected, isGameStart]);
+
+  useGameKeyHandler(gameSocket, id, playInfo.team, type);
 
   return (
     <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">

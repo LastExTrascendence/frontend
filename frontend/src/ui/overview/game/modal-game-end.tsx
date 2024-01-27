@@ -7,9 +7,9 @@ export default function GameEndModal({ data }: { data: GameEndData }) {
     <div className="space-y-3 text-lg">
       <p>Winner: <span className="font-semibold text-green-500">{data.winUserNick ? data.winUserNick : ""}</span></p>
       <p>Loser: <span className="font-semibold text-red-500">{data.loseUserNick ? data.loseUserNick : ""}</span></p>
-      <p>Play Time: {data.playTime ? data.playTime : ""}</p>
-      <p>Home Score: {data.homeScore ? data.homeScore : ""}</p>
-      <p>Away Score: {data.awayScore ? data.awayScore : ""}</p>
+      <p>Play Time: {data.playTime}</p>
+      <p>Home Score: {data.homeScore}</p>
+      <p>Away Score: {data.awayScore}</p>
     </div>
   );
 }
