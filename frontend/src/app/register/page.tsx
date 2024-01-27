@@ -8,7 +8,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { myState } from "@/recoil/atom";
-import { convertBase64 } from "@/app/(overview)/(profile)/profile/page";
+import { convertBase64 } from "@/app/(main)/(overview)/(profile)/profile/page";
 import {
   FailResponseModal,
   SuccessResponseModal,
@@ -121,15 +121,17 @@ export default function Page() {
       });
 
       setModalTitle("회원가입에 성공했습니다!");
-      // setTimeout(() => {
-      //   router.replace("/");
-      // }, 4000);
+      setTimeout(() => {
+        router.replace("/");
+      }, 4000);
     } catch (error: any) {
       // router.replace("/login");
       prevStep();
       prevStep();
       setModalTitle(
-        error.response.data.message ?? "알 수 없는 오류가 발생했습니다.",
+        error.response.data
+          ? error.response.data.message
+          : "알 수 없는 오류가 발생했습니다.",
       );
       setHasErrorOnResponse(true);
       // throw error;
