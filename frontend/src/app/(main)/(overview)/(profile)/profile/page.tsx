@@ -44,7 +44,7 @@ const languageList: toggleItem[] = [
   { name: "KO", key: LanguageType.KO },
   { name: "FR", key: LanguageType.FR },
 ];
-        
+
 export const convertBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -76,7 +76,7 @@ export default function Page() {
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const { openUserInfoCard } = useMenu();
-  const { t } = useTranslation('profile');
+  const { t } = useTranslation("profile");
 
   useEffect(() => {
     if (updateUserInfo) {
@@ -91,7 +91,7 @@ export default function Page() {
     two_fa: boolean,
   ) => {
     try {
-      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa);
+      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa, language);
       setUpdateUserInfo(true);
       setMyInfo((prevInfo) => ({
         ...prevInfo,
@@ -258,7 +258,7 @@ export default function Page() {
               </PropertyContainerWrapperStyled>
               <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
-                  {t('2-FactorAuthentication')}
+                  {t("2-FactorAuthentication")}
                 </PropertyTitleStyled>
                 <ToggleSwitchWrapperStyled>
                   <MultiToggleSwitch
@@ -271,7 +271,7 @@ export default function Page() {
               </PropertyContainerWrapperStyled>
               <PropertyContainerWrapperStyled>
                 <PropertyTitleStyled width={"300px"}>
-                  {t('language')}
+                  {t("language")}
                 </PropertyTitleStyled>
                 <ToggleSwitchWrapperStyled>
                   <MultiToggleSwitch
