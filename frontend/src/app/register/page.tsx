@@ -22,6 +22,7 @@ import { axiosCreateUser } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
 
 export interface IToken {
+  id: number;
   nickname: string | null;
   avatar: string;
   email: string;
