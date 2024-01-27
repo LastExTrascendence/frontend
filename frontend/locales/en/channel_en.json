@@ -1,0 +1,11 @@
+{
+  "new":"New",
+  "channel": "Channel",
+  "creator": "Creator",
+  "users": "Users",
+  "type": "Type",
+  "channelEmpty": "There is no chatting yet",
+  "searchChannels": "Search Channels",
+  "create": "Create",
+  "cancle": "Cancle"
+}

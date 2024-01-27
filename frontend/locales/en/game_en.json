@@ -1,0 +1,13 @@
+{
+  "new":"New",
+  "single":"Single",
+  "game": "Game",
+  "creator": "Creator",
+  "users": "Users",
+  "type": "Type",
+  "status": "Status",
+  "gameEmpty": "There is no game yet",
+  "searchGames": "Search Games",
+  "create": "Create",
+  "cancle": "Cancle"
+}

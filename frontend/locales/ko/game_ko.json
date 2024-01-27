@@ -1,0 +1,13 @@
+{
+  "new":"새 게임",
+  "single":"혼자하기",
+  "game": "게임명",
+  "creator": "생성자",
+  "users": "유저",
+  "type": "유형",
+  "status": "상태",
+  "gameEmpty": "게임이 없어요!",
+  "searchGames": "게임 검색",
+  "create": "생성",
+  "cancle": "취소"
+}
