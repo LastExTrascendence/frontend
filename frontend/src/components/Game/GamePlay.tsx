@@ -124,7 +124,7 @@ export default function GamePlay({
     if (isGameStart && countdown > 0) {
       // 1초마다 카운트다운 감소
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else if (countdown === 0) {
+    } else if (isGameStart && countdown === 0) {
       gameSocket.emit("loopPosition", { gameId: id, title: name, myRole });
     }
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
