@@ -118,7 +118,7 @@ export default function Page({ params }: { params: { nickname: string } }) {
       <ProfilePageStyled>
         <ProfileContainerStyled>
           <UserConfigAreaStyled>
-            <div className="w-full h-full content-start items-center">
+            <div className="w-full h-full flex flex-col content-start items-center">
               <UserInfoButtonStyled
                 onClick={() => {
                   openUserInfoCard();
@@ -139,13 +139,13 @@ export default function Page({ params }: { params: { nickname: string } }) {
                   width="130px"
                 />
               </ToggleSwitchWrapperStyled>
-              <ChatChannelContainerStyled>
+              <InfoContainerStyled>
                 {profileView === ProfileViewType.RECORD ? (
                   <Record games={gameRecordList} />
                 ) : (
                   <Stats stats={gameStats} />
                 )}
-              </ChatChannelContainerStyled>
+              </InfoContainerStyled>
             </div>
           </UserConfigAreaStyled>
           <UserInfoCard
@@ -181,4 +181,14 @@ const ToggleSwitchWrapperStyled = styled.div`
   margin: 1rem 0;
   padding-left: 1.5rem;
   border-radius: 10px;
+`;
+
+const InfoContainerStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100%);
+  height: calc(100%);
+  overflow-y: scroll;
 `;
