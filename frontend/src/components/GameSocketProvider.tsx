@@ -38,6 +38,10 @@ export default function GameSocketProvider({
       setGameIsConnected(false);
       router.replace("/game");
     });
+
+    return () => {
+      gameSocket.off("disconnect");
+    }
   }, [gameSocket]);
 
   useEffect(() => {
@@ -67,7 +71,6 @@ export default function GameSocketProvider({
       });
 
       socketInstance.off("connect");
-      socketInstance.off("disconnect");
       socketInstance.disconnect();
     };
   }, [gameId, userId]);

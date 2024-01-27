@@ -6,6 +6,7 @@ import styled from "styled-components";
 import NewGameChannelModal from "@/components/Modals/NewGameChannelModal/NewGameChannelModal";
 import GameList from "@/ui/overview/game/game-list";
 import PillButton from "@/ui/pill-button";
+import useCreateSingleGame from "@/hooks/useCreateSingleGame";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { GameChannelListResponseDto } from "@/types/interface/game.interface";
 import { axiosGetGameChannels } from "@/api/axios/axios.custom";
@@ -55,6 +56,12 @@ const SearchBarStyled = styled.input`
   }
 `;
 
+const ButtonWrapperStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const GameChannelContainerStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -75,6 +82,15 @@ export default function Page() {
     useState<GameChannelListResponseDto>(undefined);
   const [filteredGameChannelList, setFilteredGameChannelList] =
     useState<GameChannelListResponseDto>(gameChannelList);
+  const createSingleGame = useCreateSingleGame();
+
+  const handleCreateSingleGame = async () => {
+    try {
+      await createSingleGame();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getGameChannels = async () => {
     try {
@@ -139,16 +155,28 @@ export default function Page() {
             />
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-stone-300 peer-focus:text-gray-900" />
           </SearchBarWrapperStyled>
-          <PillButton
-            onClick={toggleNewGameChannelModal}
-            text="New"
-            width="100px"
-            height="35px"
-            fontWeight="800"
-            fontStyle="italic"
-            fontSize="1.5rem"
-            theme="purple"
-          />
+          <ButtonWrapperStyled>
+            <PillButton
+              onClick={handleCreateSingleGame}
+              text="Single"
+              width="100px"
+              height="35px"
+              fontWeight="800"
+              fontStyle="italic"
+              fontSize="1.5rem"
+              theme="white"
+            />
+            <PillButton
+              onClick={toggleNewGameChannelModal}
+              text="New"
+              width="100px"
+              height="35px"
+              fontWeight="800"
+              fontStyle="italic"
+              fontSize="1.5rem"
+              theme="purple"
+            />
+          </ButtonWrapperStyled>
         </TopSectionWrapperStyled>
         <GameChannelContainerStyled>
           <GameList games={filteredGameChannelList} />
