@@ -101,14 +101,16 @@ export default function GameList({
     setShowPrivateGameModal(false);
   }
 
-  function gameEnterLogic(gameId, gameTitle, gameType) {
+  function gameEnterLogic(gameId, gameTitle, gamePolicy) {
+    console.log(gameId, gameTitle, gamePolicy);
+
     setGameId(gameId);
     setTitle(gameTitle);
 
-    if (gameType === ChannelPolicy.PRIVATE) {
+    if (gamePolicy === ChannelPolicy.PRIVATE) {
       togglePrivateGameModal();
     } else {
-      router.push(`/game/${gameId}?name=${gameTitle}&type=${gameType}`);
+      router.push(`/game/${gameId}?name=${gameTitle}&type=${gamePolicy}`);
     }
   };
 
@@ -127,7 +129,7 @@ export default function GameList({
             <RowStyled
               key={game.id}
               onClick={() => {
-                gameEnterLogic(game.id, game.title, game.gameType);
+                gameEnterLogic(game.id, game.title, game.channelPolicy);
                 // router.push(`/game/${game.id}?name=${game.title}`);
               }}
               className="channel"
