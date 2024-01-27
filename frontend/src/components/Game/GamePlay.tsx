@@ -104,6 +104,14 @@ export default function GamePlay({
       return () => {
         gameSocket.off("loopGameData", loopGameData);
       };
+    } else {
+      setGameData({
+        x: 256,
+        y: 150,
+        l: 100,
+        r: 100,
+      });
+      setScore([0, 0]);
     }
   }, [isGameStart]);
 
