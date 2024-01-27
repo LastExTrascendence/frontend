@@ -89,14 +89,16 @@ export default function Page() {
     newNickname: string,
     newAvatar: string,
     two_fa: boolean,
+    newLanguage: LanguageType,
   ) => {
     try {
-      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa, language);
+      await axiosUpdateMyProfile(newNickname, newAvatar, two_fa, newLanguage);
       setUpdateUserInfo(true);
       setMyInfo((prevInfo) => ({
         ...prevInfo,
         nickname: newNickname,
         avatar: newAvatar,
+        language: newLanguage,
       }));
       setModalTitle("수정되었습니다");
     } catch (err: any) {
@@ -116,6 +118,7 @@ export default function Page() {
         setUserInfo(userProfileInfo);
         setNickname(userProfileInfo.nickname);
         setTwoFA(userProfileInfo.two_fa ? TwoFAType.ON : TwoFAType.OFF);
+        setLanguage(userProfileInfo.language ?? LanguageType.EN);
       }, 500);
     } catch (err: any) {
       setModalTitle("내 정보를 불러오는데 실패했습니다");
@@ -293,7 +296,7 @@ export default function Page() {
                     fontStyle="italic"
                     text={t("save")}
                     onClick={() => {
-                      updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON);
+                      updateMyInfo(nickname, avatar, twoFA === TwoFAType.ON, language);
                     }}
                   />
                 </ButtonWrapperStyled>

@@ -10,6 +10,12 @@ interface ExtendedUserInfoDto extends UserInfoDto {
   language?: string;
 }
 
+export enum LanguageType {
+  EN = "en",
+  KO = "ko",
+  FR = "fr",
+}
+
 /**
  * Atom for toast messages
  * @atom toastMessagesState
@@ -33,6 +39,6 @@ export const myState = atom<ExtendedUserInfoDto>({
     avatar: "/default_profile.svg",
     status: UserStatus.ONLINE,
     beforeUserNick: "",
-    language: "en",
+    language: LanguageType.EN,
   },
 });
