@@ -7,5 +7,11 @@
   "channelEmpty": "Aucun message dans cette chaîne",
   "searchChannels": "Rechercher des chaînes",
   "create": "Créer",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "channelName" : "Nom de la chaîne",
+  "channelPolicy" : "Politique de la chaîne",
+  "password" : "Mot de passe",
+  "public": "Public",
+  "private": "Privé",
+  "maxUser": "Nombre maximum d'utilisateurs"
 }

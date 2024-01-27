@@ -7,5 +7,11 @@
   "channelEmpty": "There is no chatting yet",
   "searchChannels": "Search Channels",
   "create": "Create",
-  "cancle": "Cancle"
+  "cancle": "Cancle",
+  "password" : "Password",
+  "channelName": "Channel Name",
+  "channelPolicy": "Channel Policy",
+  "public": "Public",
+  "private": "Private",
+  "maxUser": "Maximum no. of Users"
 }
