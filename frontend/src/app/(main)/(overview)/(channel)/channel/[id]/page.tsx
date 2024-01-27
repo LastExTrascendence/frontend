@@ -11,7 +11,7 @@ import ChannelInfo from "@/ui/overview/channel/channel-info";
 import useChannelHandler from "@/hooks/useChannelHandler";
 import { useMenu } from "@/hooks/useMenu";
 
-const ChannelPageStyled = styled.div`
+export const ChannelPageStyled = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -20,7 +20,7 @@ const ChannelPageStyled = styled.div`
   align-items: center;
 `;
 
-const ChannelContainerStyled = styled.div`
+export const ChannelContainerStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
