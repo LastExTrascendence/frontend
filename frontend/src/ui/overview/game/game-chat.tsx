@@ -1,13 +1,12 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
-
 import { useGameSocket } from "@/components/GameSocketProvider";
-import useChannelListener from "@/hooks/useChannelListener";
-import MessageItem from "@/ui/overview/channel/message-item";
-import MessageInput from "@/ui/overview/channel/message-input";
 import GrowBlank from "@/ui/grow-blank";
+import MessageInput from "@/ui/overview/channel/message-input";
+import MessageItem from "@/ui/overview/channel/message-item";
 import { Message } from "@/types/interface/chat.interface";
+import useChannelListener from "@/hooks/useChannelListener";
 
 export default function GameChat({ name }: { name: string }) {
   const myInfo = useRecoilValue(myState);
@@ -33,7 +32,7 @@ export default function GameChat({ name }: { name: string }) {
       sender: myInfo.id,
       content: message,
     });
-  }
+  };
 
   return (
     <div className="flex h-full w-full flex-col bg-chatColor p-9">
@@ -44,10 +43,7 @@ export default function GameChat({ name }: { name: string }) {
         <div ref={messagesEndRef} />
       </div>
       <GrowBlank />
-      <MessageInput
-        sendMessage={sendMessage}
-        name={name}
-      />
+      <MessageInput sendMessage={sendMessage} name={name} />
     </div>
-  )
+  );
 }

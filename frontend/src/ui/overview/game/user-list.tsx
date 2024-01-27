@@ -1,19 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import Image from "next/image"
-
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
-
-import { ChatAttendees } from "@/types/interface/chat.interface";
 import { useGameSocket } from "@/components/GameSocketProvider";
-import useUserListListener from "@/hooks/useUserListListener";
-import useUserListComposer from "@/hooks/useUserListComposer";
-
 import getAdminIcon from "@/ui/overview/channel/get-admin-icon";
+import { ChatAttendees } from "@/types/interface/chat.interface";
+import useUserListComposer from "@/hooks/useUserListComposer";
+import useUserListListener from "@/hooks/useUserListListener";
 
-export default function UserList({ setMyRole, myRole, setUserList, userList, name }: { setMyRole: any, myRole: string, setUserList: any, userList: ChatAttendees[], name: string }) {
+export default function UserList({
+  setMyRole,
+  myRole,
+  setUserList,
+  userList,
+  name,
+}: {
+  setMyRole: any;
+  myRole: string;
+  setUserList: any;
+  userList: ChatAttendees[];
+  name: string;
+}) {
   const { gameSocket } = useGameSocket();
   const myInfo = useRecoilValue(myState);
 
@@ -21,10 +30,13 @@ export default function UserList({ setMyRole, myRole, setUserList, userList, nam
   useUserListComposer(userList, myInfo.nickname, setMyRole);
 
   return (
-    <div className="mt-3 flex flex-col items-start space-y-4 overflow-y-scroll h-full">
+    <div className="mt-3 flex flex-col items-start space-y-4 overflow-y-scroll ">
       {userList &&
         userList.map((user) => (
-          <div key={user.id} className="flex justify-center items-center space-x-4">
+          <div
+            key={user.id}
+            className="flex justify-center items-center space-x-4"
+          >
             <Image
               className={
                 user.role === "CREATOR"
@@ -52,5 +64,5 @@ export default function UserList({ setMyRole, myRole, setUserList, userList, nam
           </div>
         ))}
     </div>
-  )
+  );
 }
