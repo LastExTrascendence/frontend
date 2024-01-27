@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import LoadingAnimation from "./loading-animation";
+import LoadingAnimation from "@/ui/loading-animation";
 
 export interface PillButtonProps {
   disabled?: boolean;
@@ -63,8 +63,10 @@ const PillButtonStyled = styled.button<{
   font-style: ${(props) => props.$fontStyle};
   border: none;
   cursor: pointer;
-  margin: 0 0.5rem;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  margin: 1rem 0.5rem;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 
   &:disabled {
     opacity: 0.5;

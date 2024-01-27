@@ -1,12 +1,12 @@
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { myState } from "@/recoil/atom";
-import { useSocket } from "@/components/SocketProvider";
 import GameInvite from "@/components/Game/GameInvite";
+import { useSocket } from "@/components/SocketProvider";
 import LoadingAnimation from "@/ui/loading-animation";
 import ProfileImage from "@/ui/profile-image";
 import { axiosGetSearchResult } from "@/api/axios/axios.custom";
@@ -142,7 +142,6 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
   const [pathnameRegex, query] = pathname.split("?");
 
   useEffect(() => {
-    console.log(pathnameRegex, query)
     const gamePathRegex = /^\/game\/\d+$/;
     if (!gamePathRegex.test(pathnameRegex)) {
       setInviteViewArea(true);
@@ -202,7 +201,7 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
     setShowDropdown(true);
   };
 
-  const handleInviteClick = (nickname) => {
+  const handleInviteClick = (nickname: string) => {
     const currentUrl = `${pathname}?${searchParams}`;
 
     if (isConnected && socket) {
@@ -272,10 +271,13 @@ export default function SearchUser({ placeholder }: { placeholder: string }) {
                     </NameContainerStyled>
                   </Link>
                 </SearchItemRightStyled>
-                {!inviteViewArea &&
-                  <InviteButtonStyled onClick={() => handleInviteClick(user.nickname)}>
+                {!inviteViewArea && (
+                  <InviteButtonStyled
+                    onClick={() => handleInviteClick(user.nickname)}
+                  >
                     <GameInvite />
-                  </InviteButtonStyled>}
+                  </InviteButtonStyled>
+                )}
               </DropdownItemStyled>
             ))}
           </DropdownStyled>
