@@ -7,7 +7,7 @@ export default function gameKeyDown(
   key: string,
 ) {
   if (!socket) return;
-  console.log("keyDown", "team", team, "key", key);
+  // console.log("keyDown", "team", team, "key", key);
   socket.emit(`keyDown${team}`, {
     gameId,
     key,

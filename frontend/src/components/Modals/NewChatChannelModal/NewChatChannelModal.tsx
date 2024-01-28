@@ -9,11 +9,8 @@ import { ChatCreateProps } from "@/types/interface/chat.interface";
 import { axiosCreateChatChannel } from "@/api/axios/axios.custom";
 import ModalPortal from "../ModalPortal";
 import { FailResponseModal } from "../ResponseModal/ResponseModal";
+import { useTranslation } from "react-i18next";
 
-const ChannelPolicyList = [
-  { name: "Public", key: ChannelPolicy.PUBLIC },
-  { name: "Private", key: ChannelPolicy.PRIVATE },
-];
 
 export default function NewChatChannelModal({
   closeModal,
@@ -28,15 +25,21 @@ export default function NewChatChannelModal({
   const [maxUser, setMaxUser] = useState<string>("42");
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
+  const { t } = useTranslation("channel");
+  const ChannelPolicyList = [
+    { name: t("public"), key: ChannelPolicy.PUBLIC },
+    { name: t("private"), key: ChannelPolicy.PRIVATE },
+  ];
 
   const tryCreateChatChannel = async (event: React.MouseEvent) => {
+
     if (!title || Number(maxUser) < 2 || Number(maxUser) > 42) return;
     else if (channelPolicy === ChannelPolicy.PRIVATE && !password) return;
     try {
       closeModal();
       const channelData: ChatCreateProps = {
         id: 0,
-        title: title,
+        title: encodeURIComponent(title),
         channelPolicy: channelPolicy,
         password: channelPolicy === ChannelPolicy.PRIVATE ? password : null,
         creatorId: myInfo.id,
@@ -47,7 +50,7 @@ export default function NewChatChannelModal({
       const responseChannelData: ChatCreateProps =
         await axiosCreateChatChannel(channelData);
 
-      router.push(`/channel/${responseChannelData.id}?name=${title}`);
+      router.push(`/channel/${responseChannelData.id}?name=${encodeURIComponent(title)}`);
     } catch (error: any) {
       console.log(error);
       // setModalTitle(error.response.data.message);
@@ -65,14 +68,14 @@ export default function NewChatChannelModal({
         <Modal
           type={ModalTypes.hasProceedBtn}
           // title={"New Channel"}
-          proceedBtnText={"Create"}
-          cancleBtnText={"Cancel"}
+          proceedBtnText={t("create")}
+          cancelBtnText={t("cancel")}
           closeModal={closeModal}
           onClickProceed={tryCreateChatChannel}
         >
           <div className="relative flex h-full w-9/12 flex-col items-start rounded-lg ">
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Channel Name
+              {t("channelName")}
               <input
                 type="text"
                 name="chat"
@@ -83,7 +86,7 @@ export default function NewChatChannelModal({
               />
             </label>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Room Type
+              {t("channelPolicy")}
               <MultiToggleSwitch
                 initialState={ChannelPolicy.PUBLIC}
                 setState={setChannelPolicy}
@@ -98,7 +101,7 @@ export default function NewChatChannelModal({
                 }`}
             >
               <label className="flex flex-col items-start justify-center">
-                Password
+                {t("password")}
                 <input
                   type="password"
                   name="password"
@@ -110,7 +113,7 @@ export default function NewChatChannelModal({
               </label>
             </div>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Maximum no. of Users
+              {t("maxUser")}
               <input
                 type="number"
                 name="maxUser"

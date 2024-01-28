@@ -11,20 +11,6 @@ import { GameMode, GameType } from "@/types/enum/game.enum";
 import { axiosCreateGame } from "@/api/axios/axios.custom";
 import { useTranslation } from "react-i18next";
 
-const ChannelPolicyList = [
-  { name: "Public", key: ChannelPolicy.PUBLIC },
-  { name: "Private", key: ChannelPolicy.PRIVATE },
-];
-
-const GameModeList = [
-  { name: "Normal", key: GameMode.NORMAL },
-  { name: "Speed", key: GameMode.SPEED },
-];
-
-const GameTypeList = [
-  { name: "Normal", key: GameType.NORMAL },
-  { name: "Ladder", key: GameType.LADDER },
-];
 
 export default function NewGameChannelModal({
   closeModal,
@@ -40,6 +26,21 @@ export default function NewGameChannelModal({
   const [gameMode, setGameMode] = useState(GameMode.NORMAL);
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const { t } = useTranslation("game");
+
+  const ChannelPolicyList = [
+    { name: t("public"), key: ChannelPolicy.PUBLIC },
+    { name: t("private"), key: ChannelPolicy.PRIVATE },
+  ];
+
+  const GameModeList = [
+    { name: t("normal"), key: GameMode.NORMAL },
+    { name: t("speed"), key: GameMode.SPEED },
+  ];
+
+  const GameTypeList = [
+    { name: t("normal"), key: GameType.NORMAL },
+    { name: t("ladder"), key: GameType.LADDER },
+  ];
 
   const tryCreateGame = async (event: React.MouseEvent) => {
     if (!title) return;
@@ -71,13 +72,13 @@ export default function NewGameChannelModal({
         <Modal
           type={ModalTypes.hasProceedBtn}
           proceedBtnText={t("create")}
-          cancleBtnText={t("cancel")}
+          cancelBtnText={t("cancel")}
           closeModal={closeModal}
           onClickProceed={tryCreateGame}
         >
           <div className="relative flex h-full w-9/12 flex-col items-center rounded-lg ">
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Game Name
+              {t("gameName")}
               <input
                 type="text"
                 name="game"
@@ -88,7 +89,7 @@ export default function NewGameChannelModal({
               />
             </label>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Room Type
+              {t("gamePolicy")}
               <MultiToggleSwitch
                 initialState={ChannelPolicy.PUBLIC}
                 setState={setChannelPolicy}
@@ -103,7 +104,7 @@ export default function NewGameChannelModal({
                 }`}
             >
               <label className="flex flex-col items-start justify-center">
-                Password
+                {t("password")}
                 <input
                   type="password"
                   name="password"
@@ -115,7 +116,7 @@ export default function NewGameChannelModal({
               </label>
             </div>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Game Mode
+              {t("gameMode")}
               <MultiToggleSwitch
                 initialState={GameMode.NORMAL}
                 setState={setGameMode}
@@ -124,7 +125,7 @@ export default function NewGameChannelModal({
               />
             </label>
             <label className="relative mb-3 flex flex-col items-start justify-center">
-              Game Type
+              {t("gameType")}
               <MultiToggleSwitch
                 initialState={GameType.NORMAL}
                 setState={setGameType}

@@ -13,6 +13,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      screens: {
+        'xs': '375px',
+      },
       colors: {
         buttonColor: "#827AAF",
         hoverColor: "rgb(187, 159, 270)",

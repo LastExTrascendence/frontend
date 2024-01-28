@@ -15,5 +15,6 @@
   "home": "Home",
   "games": "Games",
   "channels": "Channels",
-  "searchUser" : "Search User"
+  "searchUser" : "Search User",
+  "noFriends" : "You have no friends"  
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 import Modal, { ModalTypes } from "@/components/Modals/Modal";
 import ModalPortal from "@/components/Modals/ModalPortal";
@@ -15,6 +16,7 @@ export default function PrivateGameModal({
 }) {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
+  const { t } = useTranslation('game');
 
   const tryEnterPrivateGame = async (event: React.MouseEvent) => {
     try {
@@ -34,8 +36,8 @@ export default function PrivateGameModal({
     <ModalPortal>
       <Modal
         type={ModalTypes.hasProceedBtn}
-        proceedBtnText="Enter"
-        cancleBtnText="Cancel"
+        proceedBtnText={t("enter")}
+        cancelBtnText={t("cancel")}
         closeModal={closeModal}
         onClickProceed={tryEnterPrivateGame}
       >
@@ -44,7 +46,7 @@ export default function PrivateGameModal({
           className="mt-2 mb-8 h-12 rounded bg-buttonColor px-4 py-3 text-lg text-white focus:outline-none focus:ring-2 placeholder-white"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
+          placeholder={t("enterPassword")}
         />
       </Modal>
     </ModalPortal>
