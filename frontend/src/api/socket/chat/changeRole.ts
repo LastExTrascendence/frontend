@@ -4,7 +4,7 @@ export default function changeRole(
   myId: number,
   userNickname: string,
 ) {
-  console.log("change role User");
+  // console.log("change role User");
   socket.emit("changeRoleUser", {
     title,
     userId: myId,

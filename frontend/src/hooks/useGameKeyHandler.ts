@@ -9,7 +9,7 @@ export default function useGameKeyHandler(gameSocket, id, team, type) {
     let handleKeyDown: (event: KeyboardEvent) => void;
     let handleKeyUp: (event: KeyboardEvent) => void;
 
-    console.log("useGameKeyHandler", id, team, type);
+    // console.log("useGameKeyHandler", id, team, type);
 
     if (type === "single") {
       handleKeyDown = (event: KeyboardEvent) => {

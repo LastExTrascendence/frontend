@@ -4,6 +4,6 @@ export default function banUser(
   myId: number,
   userNickname: string,
 ) {
-  console.log("ban user");
+  // console.log("ban user");
   socket.emit("banUser", { title, userId: myId, banNick: userNickname });
 }
