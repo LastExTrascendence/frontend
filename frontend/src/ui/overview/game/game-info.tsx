@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 export default function GameInfo({ gameInfo }: { gameInfo: GameInfoProps }) {
   const { t } = useTranslation("game");
   return (
-    <div className="flex flex-col h-[320px] min-h-[320px] w-full min-w-[250px] rounded-[20px] bg-bgGrayColor">
-      <div className="flex w-full items-center justify-center rounded-r-[20px] mt-8 mb-8">
+    <div className="flex flex-col w-full min-w-[250px] rounded-[20px] bg-bgGrayColor">
+      <div className="hide-on-small-height flex w-full items-center justify-center rounded-r-[20px] mt-8 mb-8">
         <Image src="/map.svg" alt="basic map" width={240} height={160} />
       </div>
       <div className="flex m-1">
