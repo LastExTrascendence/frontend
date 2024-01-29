@@ -40,9 +40,8 @@ export default function SocketProvider({
   }, []);
 
   useEffect(() => {
-    if (!socket) {
-      const token = getCookie("access_token");
-      const socketInstance = io(
+    const token = getCookie("access_token") ?? null;
+    const socketInstance = io(
         `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_USER_PORT}/user`,
         {
           auth: {
@@ -53,19 +52,18 @@ export default function SocketProvider({
             },
           },
         },
-      );
-
+        );
+        
       socketInstance.on("connect", async () => {
         setIsConnected(true);
       });
 
       setSocket(socketInstance);
-
+      
       return () => {
         socketInstance.disconnect();
       };
-    }
-  }, [myInfo.id, myInfo.nickname, router]);
+  }, [myInfo.id, myInfo.nickname]);
 
   const enterQueue = () => {
     if (socket) {
@@ -115,6 +113,8 @@ export default function SocketProvider({
       socket.off("invitedUser");
     };
   }, [socket, isConnected]);
+
+  
 
   return (
     <SocketContext.Provider

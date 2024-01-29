@@ -13,6 +13,7 @@ import {
 import ProfileImage from "@/ui/profile-image";
 import { axiosMyInfo } from "@/api/axios/axios.custom";
 import { getCookie } from "@/api/cookie/cookies";
+import { UserStatus } from "@/types/enum/user.enum";
 
 export enum LanguageType {
   EN = "en",
@@ -58,7 +59,7 @@ export default function FriendSectionMyStatus() {
             height={50}
             showOutline={true}
           />
-          <UserStatusStyled $status={myInfo.status}></UserStatusStyled>
+          <UserStatusStyled $status={UserStatus.ONLINE}></UserStatusStyled>
           <UserNicknameWrapperStyled $width={50}>
             <UserNickNameStyled>{myInfo.nickname}</UserNickNameStyled>
           </UserNicknameWrapperStyled>

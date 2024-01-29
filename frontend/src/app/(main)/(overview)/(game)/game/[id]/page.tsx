@@ -156,7 +156,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <GamePlay myRole={myRole} id={params.id} isGameStart={isGameStart} />
       </div>
       <div
-        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${isGameStart ? "mt-8 hide-on-small-height" : "mt-4"
+        className={`relative mt-4 transition-margin duration-1000 ease-in-out ${isGameStart ? "mt-8 hide-on-small-height max-h-[500px]" : "mt-4"
           } flex h-full w-full min-w-[400px] flex-row content-center items-start z-9`}
       >
         <ChannelChatAreaStyled>

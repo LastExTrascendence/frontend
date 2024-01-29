@@ -1,12 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { useRecoilState } from "recoil";
+import { myState } from "@/recoil/atom";
+
 import InfoIcon from "@/ui/icon/info-icon";
 import LogoutIcon from "@/ui/icon/logout-icon";
 import MainButtonList from "@/ui/mainpage/main-buttons";
+import { axiosMyInfo } from "@/api/axios/axios.custom";
 
 
 const MainPageStyled = styled.main`
@@ -60,6 +66,21 @@ const ButtonGroupContainerStyled = styled.div`
 
 export default function Home() {
   const { t } = useTranslation('common');
+  const [myInfo, setMyInfo] = useRecoilState(myState);
+
+  const getMyInfo = async () => {
+    try {
+      const { data: userInfo } = await axiosMyInfo();
+      setMyInfo(userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getMyInfo();
+  }, []);
+
   return (
     <MainPageStyled>
       <TopNavStyled>
