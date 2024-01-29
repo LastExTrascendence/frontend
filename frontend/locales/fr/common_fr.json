@@ -6,7 +6,7 @@
   "profile": "Profil",
   "logout": "Déconnexion",
   "info": "Info",
-  "lookingForGame": "Recherche d'un jeu",
+  "lookingForGame": "Recherche d'un jeu...",
   "quickStartDescription": "Rejoignez rapidement la file d'attente pour un match en 1 contre 1",
   "gameDescription": "Créez ou rejoignez un jeu",
   "channelDescription": "Créez ou rejoignez une chaîne",
@@ -15,6 +15,6 @@
   "home": "Accueil",
   "games": "Jeux",
   "channels": "Chaînes",
-  "searchUser" : "Rechercher un utilisateur",
-  "noFriends" : "Vous n'avez pas d'amis"
+  "searchUser": "Rechercher un utilisateur",
+  "noFriends": "Vous n'avez pas d'amis!"
 }

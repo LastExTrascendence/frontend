@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled, { keyframes } from "styled-components";
 import { useSocket } from "@/components/SocketProvider";
 import { MainButtonItemProps } from "@/lib/definitions";
 import PillButton from "../pill-button";
-import { useTranslation } from "react-i18next";
 
 const slideDown = keyframes`
   from {
@@ -26,19 +26,28 @@ const QueueStatusContainer = styled.div<{
   width: 550px;
   height: 100px;
   background: #2d2d2d;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
   justify-content: space-around;
   align-items: center;
   padding: 0 20px;
   animation: ${slideDown} 0.5s ease-out;
   z-index: 1000;
+
+  @media (max-width: 610px) {
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 const StatusText = styled.div`
   color: white;
   font-size: 2rem;
   font-weight: bold;
+
+  @media (max-width: 610px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const TimerText = styled(StatusText)`
@@ -81,7 +90,7 @@ function MainButtonList() {
   const { enterQueue, exitQueue } = useSocket();
   const [isQueueConnected, setIsQueueConnected] = useState(false);
   const [timer, setTimer] = useState(0);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const buttons: MainButtonItemProps[] = [
     {

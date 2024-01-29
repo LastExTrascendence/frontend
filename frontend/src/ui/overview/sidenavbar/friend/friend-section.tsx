@@ -49,6 +49,10 @@ export default function FriendSection() {
   };
 
   useEffect(() => {
+    tryGetFriendsList();
+  }, []);
+
+  useEffect(() => {
     if (needFriendSectionUpdate) {
       tryGetFriendsList();
       setNeedFriendSectionUpdate(false);

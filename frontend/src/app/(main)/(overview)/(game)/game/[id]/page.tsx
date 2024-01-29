@@ -186,6 +186,7 @@ export default function Page({ params }: { params: { id: string } }) {
               setUserList={setUserList}
               userList={userList}
               name={name}
+              isGameStart={isGameStart}
             />
             <div
               className={

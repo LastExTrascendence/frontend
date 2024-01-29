@@ -17,6 +17,10 @@ const MainPageStyled = styled.main`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 6rem;
+  min-width: 400px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  overflow-x: hidden;
 `;
 
 const TopNavStyled = styled.div`
@@ -47,6 +51,11 @@ const ButtonGroupContainerStyled = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+    gap: 2rem;
+  }
 `;
 
 export default function Home() {
