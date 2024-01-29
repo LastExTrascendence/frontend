@@ -29,7 +29,7 @@ export default function UserInfoCard({
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
   const setNeedFriendSectionUpdate = useSetRecoilState(
-    needFriendSectionUpdateState,
+    needFriendSectionUpdateState
   );
   const { t } = useTranslation("profile");
 
