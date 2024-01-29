@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { myState } from "@/recoil/atom";
+import PrivateChannelModal from "@/components/Modals/PrivateChannelModal/PrivateChannelModal";
 import LoadingAnimation from "@/ui/loading-animation";
 import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
+import { ChannelPolicy } from "@/types/enum/channel.enum";
 import { ChannelListResponseDto } from "@/types/interface/channel.interface";
 import {
   CellHeaderStyled,
@@ -16,8 +18,6 @@ import {
   TableBody,
   TableHeader,
 } from "../game/game-list";
-import PrivateChannelModal from "@/components/Modals/PrivateChannelModal/PrivateChannelModal";
-import { ChannelPolicy } from "@/types/enum/channel.enum";
 
 export default function ChannelList({
   chats,
@@ -30,17 +30,17 @@ export default function ChannelList({
   const [title, setTitle] = useState<string>("");
   const [showPrivateChannelModal, setShowPrivateChannelModal] =
     useState<boolean>(false);
-  const { t } = useTranslation('channel');
+  const { t } = useTranslation("channel");
 
   if (chats === undefined) return <LoadingAnimation />;
 
   const togglePrivateChannelModal = () => {
     setShowPrivateChannelModal(!showPrivateChannelModal);
-  }
+  };
 
   const handleClosePrivateChannelModal = () => {
     setShowPrivateChannelModal(false);
-  }
+  };
 
   function channelEnterLogic(channelId, channelTitle, channelType) {
     setChannelId(channelId);
@@ -49,20 +49,22 @@ export default function ChannelList({
     if (channelType === ChannelPolicy.PRIVATE) {
       togglePrivateChannelModal();
     } else {
-      router.push(`/channel/${channelId}?name=${channelTitle}&type=${channelType}`);
+      router.push(
+        `/channel/${channelId}?name=${channelTitle}&type=${channelType}`,
+      );
     }
-  };
+  }
 
   return (
     <ChannelListContainerStyled>
       <TableHeader>
-        <CellHeaderStyled>{t('channel')}</CellHeaderStyled>
-        <CellHeaderStyled>{t('creator')}</CellHeaderStyled>
-        <CellHeaderStyled>{t('users')}</CellHeaderStyled>
-        <CellHeaderStyled>{t('type')}</CellHeaderStyled>
+        <CellHeaderStyled>{t("channel")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("creator")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("users")}</CellHeaderStyled>
+        <CellHeaderStyled>{t("type")}</CellHeaderStyled>
       </TableHeader>
       <TableBody>
-        {chats !== STATUS_400_BAD_REQUEST ? (
+        {chats !== STATUS_400_BAD_REQUEST && chats.length > 0 ? (
           chats.map((chat: any) => (
             <RowStyled
               key={chat.id}
@@ -91,7 +93,12 @@ export default function ChannelList({
         )}
       </TableBody>
       {showPrivateChannelModal && (
-        <PrivateChannelModal closeModal={handleClosePrivateChannelModal} channelId={channelId} myInfoId={myInfo.id} title={title} />
+        <PrivateChannelModal
+          closeModal={handleClosePrivateChannelModal}
+          channelId={channelId}
+          myInfoId={myInfo.id}
+          title={title}
+        />
       )}
     </ChannelListContainerStyled>
   );
