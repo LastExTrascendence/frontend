@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { needFriendSectionUpdateState } from "@/recoil/atom";
 import { useSocket } from "@/components/SocketProvider";
 import FriendSectionFriendList from "@/ui/overview/sidenavbar/friend/friend-section-friend-list";
 import FriendSectionMyStatus from "@/ui/overview/sidenavbar/friend/friend-section-mystatus";
@@ -19,7 +21,11 @@ const FriendSectionStyled = styled.section`
 `;
 
 export default function FriendSection() {
-  const [friendsList, setFriendsList] = useState<UserFriendListResponseDto>(undefined);
+  const [friendsList, setFriendsList] =
+    useState<UserFriendListResponseDto>(undefined);
+  const [needFriendSectionUpdate, setNeedFriendSectionUpdate] = useRecoilState(
+    needFriendSectionUpdateState,
+  );
   const { socket } = useSocket();
 
   useFriendStatusListner({ socket, friendsList, setFriendsList });
@@ -43,8 +49,11 @@ export default function FriendSection() {
   };
 
   useEffect(() => {
-    tryGetFriendsList();
-  }, []);
+    if (needFriendSectionUpdate) {
+      tryGetFriendsList();
+      setNeedFriendSectionUpdate(false);
+    }
+  }, [needFriendSectionUpdate]);
 
   return (
     <FriendSectionStyled>

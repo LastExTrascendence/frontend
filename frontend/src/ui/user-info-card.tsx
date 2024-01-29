@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { myState } from "@/recoil/atom";
+import { myState, needFriendSectionUpdateState } from "@/recoil/atom";
 import {
   FailResponseModal,
   SuccessResponseModal,
@@ -13,7 +14,6 @@ import { STATUS_400_BAD_REQUEST } from "@/types/constants/status-code";
 import { UserCardInfoResponseDto } from "@/types/interface/user.interface";
 import { axiosAddFriend, axiosRemoveFriend } from "@/api/axios/axios.custom";
 import { getFormattedDate } from "@/utils/dateUtils";
-import { useTranslation } from "react-i18next";
 
 interface UserInfoCardProps {
   userInfo: UserCardInfoResponseDto;
@@ -28,7 +28,10 @@ export default function UserInfoCard({
   const [modalTitle, setModalTitle] = useState<string>("");
   const [showResponseModal, setShowResponseModal] = useState<boolean>(false);
   const [hasErrorOnResponse, setHasErrorOnResponse] = useState(false);
-  const { t } = useTranslation('profile');
+  const setNeedFriendSectionUpdate = useSetRecoilState(
+    needFriendSectionUpdateState,
+  );
+  const { t } = useTranslation("profile");
 
   if (userInfo === undefined || userInfo === STATUS_400_BAD_REQUEST) {
     return (
@@ -44,6 +47,7 @@ export default function UserInfoCard({
     try {
       await axiosAddFriend(userInfo.nickname);
       setModalTitle("친구추가에 성공했습니다");
+      setNeedFriendSectionUpdate(true);
       if (updateUserInfo) updateUserInfo(true);
     } catch (err: any) {
       setModalTitle("친구추가에 실패했습니다");
@@ -57,6 +61,7 @@ export default function UserInfoCard({
     try {
       await axiosRemoveFriend(userInfo.nickname);
       setModalTitle("삭제에 성공했습니다");
+      setNeedFriendSectionUpdate(true);
       if (updateUserInfo) updateUserInfo(true);
     } catch (err: any) {
       setModalTitle("삭제에 실패했습니다");
