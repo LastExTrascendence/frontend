@@ -1,7 +1,5 @@
-import Translator from "@/language/Translator";
 import { atom } from "recoil";
 import { UserStatus } from "@/types/enum/user.enum";
-import { ILanguage } from "@/types/interface/language.interface";
 import { IToastInfo } from "@/types/interface/toast.interface";
 import { UserInfoDto } from "@/types/interface/user.interface";
 
@@ -29,7 +27,7 @@ export enum LanguageType {
 /**
  * Atom for user info
  * @atom myState
- * @property {UserDto} myState - user info
+ * @property {ExtendedUserInfoDto} myState - user info
  */
 export const myState = atom<ExtendedUserInfoDto>({
   key: "myInfo",
@@ -41,4 +39,14 @@ export const myState = atom<ExtendedUserInfoDto>({
     beforeUserNick: "",
     language: LanguageType.EN,
   },
+});
+
+/**
+ * Atom for fetching friend list
+ * @atom friendListState
+ * @property {boolean} needFriendSectionUpdateState - boolean for updating friend list
+ */
+export const needFriendSectionUpdateState = atom<boolean>({
+  key: "needFriendSectionUpdateState",
+  default: true,
 });
