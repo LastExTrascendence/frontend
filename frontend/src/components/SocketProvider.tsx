@@ -40,29 +40,32 @@ export default function SocketProvider({
   }, []);
 
   useEffect(() => {
-    const token = getCookie("access_token");
-    const socketInstance = io(
-      `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_USER_PORT}/user`,
-      {
-        auth: {
-          token: `Bearer ${token}`,
-          user: {
-            id: `${myInfo.id}`,
-            nickname: `${myInfo.nickname}`,
+    if (!socket) {
+      const token = getCookie("access_token");
+      const socketInstance = io(
+        `http://${process.env.FE_DOMAIN}:${process.env.NEXT_PUBLIC_USER_PORT}/user`,
+        {
+          auth: {
+            token: `Bearer ${token}`,
+            user: {
+              id: `${myInfo.id}`,
+              nickname: `${myInfo.nickname}`,
+            },
           },
         },
-      },
-    );
+      );
 
-    socketInstance.on("connect", async () => {
-      setIsConnected(true);
-    });
+      socketInstance.on("connect", async () => {
+        setIsConnected(true);
+      });
 
-    setSocket(socketInstance);
-    return () => {
-      socketInstance.disconnect();
-    };
-  }, [myInfo.id, myInfo.nickname]);
+      setSocket(socketInstance);
+
+      return () => {
+        socketInstance.disconnect();
+      };
+    }
+  }, [myInfo.id, myInfo.nickname, router]);
 
   const enterQueue = () => {
     if (socket) {
