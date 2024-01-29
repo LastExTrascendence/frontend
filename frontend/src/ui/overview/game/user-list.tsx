@@ -16,12 +16,14 @@ export default function UserList({
   setUserList,
   userList,
   name,
+  isGameStart,
 }: {
   setMyRole: any;
   myRole: string;
   setUserList: any;
   userList: ChatAttendees[];
   name: string;
+  isGameStart: boolean;
 }) {
   const { gameSocket } = useGameSocket();
   const myInfo = useRecoilValue(myState);
@@ -53,7 +55,7 @@ export default function UserList({
               {user.nickname}
             </span>
 
-            {myInfo.nickname !== user.nickname &&
+            {myInfo.nickname !== user.nickname && !isGameStart &&
               getAdminIcon({
                 role: myRole,
                 socket: gameSocket,
