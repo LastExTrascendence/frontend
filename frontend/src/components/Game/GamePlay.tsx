@@ -7,6 +7,7 @@ import { useGameSocket } from "@/components/GameSocketProvider";
 import DrawGame from "@/ui/overview/game/draw-game";
 import { GameDataProps, PlayInfoProps } from "@/types/type/game-socket.type";
 import useGameKeyHandler from "@/hooks/useGameKeyHandler";
+import useGameTouchHandler from "@/hooks/useGameTouchHandler";
 
 const renderTime = ({ remainingTime }) => {
   const currentTime = useRef(remainingTime);
@@ -163,16 +164,16 @@ export default function GamePlay({
   }, [gameSocket, isGameConnected, isGameStart]);
 
   useGameKeyHandler(gameSocket, id, playInfo.team, type);
+  useGameTouchHandler(gameSocket, id, playInfo.team, type);
 
   return (
-    <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-12">
-      <div className="h-[45px]" />
-      <DrawGame playInfo={playInfo} gameData={gameData} />
-      <div className="absolute top-[45px] left-0 z-3 flex w-full h-full justify-center">
+    <div className="relative min-w-[512px] min-h-[300px] items-center justify-center p-2 ">
+      <div className="h-[45px] left-0 z-3 flex w-full justify-center">
         <div className="text-white text-4xl">
           {score[0]} {" : "} {score[1]}
         </div>
       </div>
+      <DrawGame playInfo={playInfo} gameData={gameData} />
       {countdown > 0 && isGameStart && (
         <div className="absolute top-0 left-0 z-4 flex w-full h-full items-center justify-center bg-black bg-opacity-90 rounded-lg ">
           <div className="timer-wrapper text-white text-6xl">
