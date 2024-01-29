@@ -33,6 +33,10 @@ const MainSectionStyled = styled.main`
   height: calc(100vh - 90px);
   width: 100%;
   overflow: hidden;
+
+  @media (max-height: 666px) {
+    height: 100vh;
+  }
 `;
 
 const BackgroundStyled = styled.div`

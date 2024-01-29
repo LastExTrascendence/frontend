@@ -34,6 +34,10 @@ const TopNavStyled = styled.nav`
   justify-content: space-between;
   align-items: center;
   z-index: 10;
+
+  @media (max-height: 666px) {
+    display: none;
+  }
 `;
 
 const SideBarSectionStyled = styled.div`
